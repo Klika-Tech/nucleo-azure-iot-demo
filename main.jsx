@@ -36,6 +36,8 @@ var App = React.createClass({
 		  })
 		  .then(function(metricData) {
 
+		  	if (_.isEmpty(metricData)) return
+
 		  	metricData = _(metricData)
 				.map(function(item) {
 						return [
