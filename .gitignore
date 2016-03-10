@@ -1,0 +1,4 @@
+.eslintrc.json
+*.swp
+node_modules
+dist

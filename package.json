@@ -1,0 +1,26 @@
+{
+  "name": "nucleo-metrics",
+  "version": "0.0.1",
+  "dependencies": {
+    "babel-preset-react": "^6.5.0",
+    "chart.js": "^1.0.2",
+    "es6-promise": "^3.1.2",
+    "lodash": "^4.6.1",
+    "react": "^0.14.7",
+    "react-chartjs": "^0.7.3",
+    "react-dom": "^0.14.7",
+    "whatwg-fetch": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.0",
+    "babel-loader": "^6.2.4",
+    "exports-loader": "^0.6.3",
+    "file-loader": "^0.8.5",
+    "webpack": "^1.12.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
