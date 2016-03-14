@@ -13,10 +13,12 @@ module.exports = {
           presets: ["react"]
         }
       }
-    ]
+    ],
+	noParse: [
+		/aws\-sdk/
+	]
   },
   plugins: [
-  	new webpack.optimize.UglifyJsPlugin(),
   	new webpack.ProvidePlugin({
 		'Promise': 'exports?global.Promise!es6-promise',
 		'fetch': 'exports?self.fetch!whatwg-fetch'
