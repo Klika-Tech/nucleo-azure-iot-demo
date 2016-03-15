@@ -48,7 +48,9 @@ var App = React.createClass({
 
 		var self = this
 
-		fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=1457347223')
+		var since = Math.round(Date.now() / 1000) - 300
+
+		fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
 		  .then(function(response) {
 		  	return response.json()
 		  })
