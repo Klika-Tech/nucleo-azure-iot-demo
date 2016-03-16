@@ -110,7 +110,7 @@ var App = React.createClass({
 				awsCreds.secretAccessKey,
 				awsCreds.sessionToken)
 
-			var client = mqtt.connect(url)
+			var client = mqtt.connect(url, {reconnectPeriod: 2147483647})
 
 			client.on('connect', function() {
 				client.subscribe('Nucleo/data')
