@@ -46,11 +46,11 @@ var App = React.createClass({
 
 	fetchData: function() {
 
-		var self = this
+		var that = this
 
 		var since = Math.round(Date.now() / 1000) - 300
 
-		fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
+		return fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
 		  .then(function(response) {
 		  	return response.json()
 		  })
@@ -60,7 +60,7 @@ var App = React.createClass({
 
 		  	metricData = _(metricData)
 				.takeRight(60)
-				.map(self.prepareData)
+				.map(that.prepareData)
 				.unzip()
 				.value()
 
@@ -80,14 +80,14 @@ var App = React.createClass({
 				]
 			}
 
-			self.setState({temperatureData: data})
+			that.setState({temperatureData: data})
 		  })
 
 	},
 
 	initMqttClient: function() {
 
-		var self = this
+		var that = this
 
 		AWS.config.region = 'us-east-1'
 		var awsCreds = new AWS.CognitoIdentityCredentials({
@@ -118,16 +118,28 @@ var App = React.createClass({
 
 			client.on('message', function(topic, msg) {
 				
-				var data = self.prepareData(JSON.parse(msg.toString()))
+				var data = that.prepareData(JSON.parse(msg.toString()))
 
-				var tempData = self.state.temperatureData
+				var tempData = that.state.temperatureData
 
 				tempData.labels.push(data[1])
 				tempData.labels = _.takeRight(tempData.labels, 60)
 				tempData.datasets[0].data.push(data[0])
 				tempData.datasets[0].data = _.takeRight(tempData.datasets[0].data, 60)
 
-				self.setState({temperatureData: tempData})
+				that.setState({temperatureData: tempData})
+			})
+
+			client.on('close', function() {
+
+				console.log('MQTT client disconnected')
+
+				client.end()
+				
+				setTimeout(function() {
+					console.log('Reconnecting')
+					that.initMqttClient()
+				}, 1000)
 			})
 
 		})
@@ -135,8 +147,10 @@ var App = React.createClass({
 
 	componentDidMount: function() {
 
+		var that = this
+
 		this.fetchData()
-		this.initMqttClient()
+			.then(function() { that.initMqttClient() })
 	},
 
 	render: function() {
