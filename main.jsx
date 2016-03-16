@@ -11,7 +11,6 @@ var AWS = window.AWS
 var Chart = require('chart.js')
 Chart.defaults.global.responsive = true
 Chart.defaults.global.animation = false
-Chart.defaults.global.tooltipTemplate= "<%if (label){%><%=label%>: <%}%><%= value %>C"
 
 var LineChart = require('react-chartjs').Line
 
@@ -24,12 +23,20 @@ var TemperatureGraph = React.createClass({
 	render: function() {
 
 		if (this.props.data === undefined) return <div />
-		else return (
-			<div>
-				<h1>Temperature Sensor</h1>
-				<LineChart data={this.props.data} redraw />
-			</div>
-		)
+		else {
+
+			var opts = {
+				pointHitDetectionRadius: 5,
+				tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>C"
+			}
+
+			return (
+				<div>
+					<h1>Temperature Sensor</h1>
+					<LineChart data={this.props.data} redraw options={opts} />
+				</div>
+			)
+		}
 	}
 })
 
