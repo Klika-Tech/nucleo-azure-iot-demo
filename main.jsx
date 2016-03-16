@@ -11,6 +11,7 @@ var AWS = window.AWS
 var Chart = require('chart.js')
 Chart.defaults.global.responsive = true
 Chart.defaults.global.animation = false
+Chart.defaults.global.tooltipTemplate= "<%if (label){%><%=label%>: <%}%><%= value %>C"
 
 var LineChart = require('react-chartjs').Line
 
