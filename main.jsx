@@ -27,7 +27,11 @@ var TemperatureGraph = React.createClass({
 
 			var opts = {
 				pointHitDetectionRadius: 5,
-				tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>C"
+				tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>C",
+				scaleOverride: true,
+				scaleSteps: 12,
+				scaleStepWidth: 5,
+				scaleStartValue: -20
 			}
 
 			return (
@@ -118,6 +122,8 @@ var App = React.createClass({
 				awsCreds.secretAccessKey,
 				awsCreds.sessionToken)
 
+			// There is no way to disable auto-reconnect in mqtt so setting the
+			// reconnect period to max value
 			var client = mqtt.connect(url, {reconnectPeriod: 2147483647})
 
 			client.on('connect', function() {
