@@ -127,7 +127,14 @@ var App = React.createClass({
 			var client = mqtt.connect(url, {reconnectPeriod: 2147483647})
 
 			client.on('connect', function() {
+
 				client.subscribe('Nucleo/data')
+
+				// There is a limit on AWS side on websocket connection duration (5 minutes)
+				// So we're closing the connection in advance
+				setTimeout(function() {
+					client.end()
+				}, 270000)
 			})
 
 			client.on('message', function(topic, msg) {
