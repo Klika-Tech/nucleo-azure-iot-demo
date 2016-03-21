@@ -242,6 +242,24 @@
     <ClCompile Include="..\..\..\..\..\..\Users\Alexandr Cheorny\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c">
       <Filter>Source files\Device-specific files\HAL</Filter>
     </ClCompile>
+    <ClCompile Include="incl\app_wifi_read.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="incl\console.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="incl\stm32_xx_it.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="incl\user_button.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="incl\wifi_main.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="incl\stm32f4xx_nucleo.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stm32f4xx_hal_conf.h">
@@ -510,6 +528,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\Users\Alexandr Cheorny\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template\cmsis_os.h">
       <Filter>Header files\Device-specific files\HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\FreeRTOSConfig.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\mxconstants.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\stm32_xx_it.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\stm32f4xx_nucleo.h">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
