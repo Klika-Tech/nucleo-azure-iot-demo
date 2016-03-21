@@ -1,5 +1,9 @@
 #include <stm32f4xx_hal.h>
 
+#include <stm32f4xx_hal.h>
+#include <stm32f4xx_nucleo.h>
+#include <stm32f4xx_hal_rcc.h>
+#include <stm32f4xx_hal_rcc_ex.h>
 
 #ifdef __cplusplus
 extern "C"
