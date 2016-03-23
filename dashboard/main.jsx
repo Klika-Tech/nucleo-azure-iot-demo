@@ -5,8 +5,7 @@ var _ = require('lodash')
 var React = require('react')
 var ReactDOM = require('react-dom')
 
-require('aws-sdk/dist/aws-sdk')
-var AWS = window.AWS
+var AWS = require('exports?AWS!aws-sdk/dist/aws-sdk')
 
 var Chart = require('chart.js')
 Chart.defaults.global.responsive = true
@@ -19,6 +18,38 @@ var SigV4Utils = require('./sigv4utils')
 var mqtt = require('mqtt')
 
 var TemperatureGraph = React.createClass({
+
+	transformData: function(dataItem) {
+		return [
+			dataItem.temperature,
+			new Date(dataItem.timestamp * 1000).toLocaleTimeString()
+		]
+	},
+
+	prepareData: function() {
+
+		var metricData = _(this.props.data)
+			.takeRight(60)
+			.map(this.transformData)
+			.unzip()
+			.value()
+
+		return {
+			labels: metricData[1],
+			datasets: [
+				{
+					label: "Temperature Data",
+					fillColor: "rgba(151,187,205,0.2)",
+					strokeColor: "rgba(151,187,205,1)",
+					pointColor: "rgba(151,187,205,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: metricData[0]
+				}
+			]
+		}
+	},
 
 	render: function() {
 
@@ -37,7 +68,7 @@ var TemperatureGraph = React.createClass({
 			return (
 				<div>
 					<h1>Temperature Sensor</h1>
-					<LineChart data={this.props.data} redraw options={opts} />
+					<LineChart data={this.prepareData()} redraw options={opts} />
 				</div>
 			)
 		}
@@ -50,10 +81,10 @@ var App = React.createClass({
 	getInitialState: function() { return {} },
 
 	prepareData: function(dataItem) {
-		return [
-			parseInt(dataItem.temperature),
-			new Date(parseInt(dataItem.timestamp * 1000)).toLocaleTimeString()
-		]
+		return {
+			temperature: parseInt(dataItem.temperature),
+			timestamp: parseInt(dataItem.timestamp)
+		}
 	},
 
 	fetchData: function() {
@@ -70,29 +101,7 @@ var App = React.createClass({
 
 		  	if (_.isEmpty(metricData)) return
 
-		  	metricData = _(metricData)
-				.takeRight(60)
-				.map(that.prepareData)
-				.unzip()
-				.value()
-
-			var data = {
-				labels: metricData[1],
-				datasets: [
-					{
-						label: "Temperature Data",
-						fillColor: "rgba(151,187,205,0.2)",
-						strokeColor: "rgba(151,187,205,1)",
-						pointColor: "rgba(151,187,205,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(151,187,205,1)",
-						data: metricData[0]
-					}
-				]
-			}
-
-			that.setState({temperatureData: data})
+			that.setState({temperatureData: _.map(metricData, that.prepareData)})
 		  })
 
 	},
@@ -128,7 +137,7 @@ var App = React.createClass({
 
 			client.on('connect', function() {
 
-				client.subscribe('Nucleo/data')
+				client.subscribe(['Nucleo/data', 'Nucleo/test'])
 
 				// There is a limit on AWS side on websocket connection duration (5 minutes)
 				// So we're closing the connection in advance
@@ -139,16 +148,23 @@ var App = React.createClass({
 
 			client.on('message', function(topic, msg) {
 				
-				var data = that.prepareData(JSON.parse(msg.toString()))
+				var msg = msg.toString()
 
-				var tempData = that.state.temperatureData
+				console.log('Message recieved.\nTopic: ' + topic + '\nPayload: ' + msg)
 
-				tempData.labels.push(data[1])
-				tempData.labels = _.takeRight(tempData.labels, 60)
-				tempData.datasets[0].data.push(data[0])
-				tempData.datasets[0].data = _.takeRight(tempData.datasets[0].data, 60)
+				if (topic == 'Nucleo/data') {
 
-				that.setState({temperatureData: tempData})
+					var dataItem = that.prepareData(JSON.parse(msg.toString()))
+
+					var newData = _(that.state.temperatureData)
+						.filter(function(item) {
+							return item.timestamp >= Math.round(Date.now() / 1000) - 86400
+						})
+						.push(dataItem)
+						.value()
+
+					that.setState({temperatureData: newData})
+				}
 			})
 
 			client.on('close', function() {
