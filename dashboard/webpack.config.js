@@ -12,6 +12,10 @@ module.exports = {
         query: {
           presets: ['react']
         }
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
       }
     ],
 	noParse: [
