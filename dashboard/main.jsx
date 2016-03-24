@@ -7,73 +7,11 @@ var ReactDOM = require('react-dom')
 
 var AWS = require('exports?AWS!aws-sdk/dist/aws-sdk')
 
-var Chart = require('chart.js')
-Chart.defaults.global.responsive = true
-Chart.defaults.global.animation = false
-
-var LineChart = require('react-chartjs').Line
-
 var SigV4Utils = require('./sigv4utils')
 
 var mqtt = require('mqtt')
 
-var TemperatureGraph = React.createClass({
-
-	transformData: function(dataItem) {
-		return [
-			dataItem.temperature,
-			new Date(dataItem.timestamp * 1000).toLocaleTimeString()
-		]
-	},
-
-	prepareData: function() {
-
-		var metricData = _(this.props.data)
-			.takeRight(60)
-			.map(this.transformData)
-			.unzip()
-			.value()
-
-		return {
-			labels: metricData[1],
-			datasets: [
-				{
-					label: "Temperature Data",
-					fillColor: "rgba(151,187,205,0.2)",
-					strokeColor: "rgba(151,187,205,1)",
-					pointColor: "rgba(151,187,205,1)",
-					pointStrokeColor: "#fff",
-					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(151,187,205,1)",
-					data: metricData[0]
-				}
-			]
-		}
-	},
-
-	render: function() {
-
-		if (this.props.data === undefined) return <div />
-		else {
-
-			var opts = {
-				pointHitDetectionRadius: 5,
-				tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>C",
-				scaleOverride: true,
-				scaleSteps: 12,
-				scaleStepWidth: 5,
-				scaleStartValue: -20
-			}
-
-			return (
-				<div>
-					<h1>Temperature Sensor</h1>
-					<LineChart data={this.prepareData()} redraw options={opts} />
-				</div>
-			)
-		}
-	}
-})
+var TemperatureGraphLegacy = require('./components/temperature-graph-legacy')
 
 
 var App = React.createClass({
@@ -143,7 +81,7 @@ var App = React.createClass({
 				// So we're closing the connection in advance
 				setTimeout(function() {
 					client.end()
-				}, 270000)
+				}, 270000) // 4.5 minutes
 			})
 
 			client.on('message', function(topic, msg) {
@@ -191,7 +129,7 @@ var App = React.createClass({
 	},
 
 	render: function() {
-		return <TemperatureGraph data={this.state.temperatureData} />
+		return <TemperatureGraphLegacy data={this.state.temperatureData} />
 	}
 })
 

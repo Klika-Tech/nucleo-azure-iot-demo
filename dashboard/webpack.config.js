@@ -1,22 +1,25 @@
 var webpack = require('webpack')
 
 module.exports = {
-  entry: "./main.jsx",
-  output: { path: __dirname + "/dist", filename: "bundle.js" },
+  entry: './main.jsx',
+  output: { path: __dirname + '/dist', filename: 'bundle.js' },
   module: {
     loaders: [
       {
         test: /.jsx?$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ["react"]
+          presets: ['react']
         }
       }
     ],
 	noParse: [
 		/aws\-sdk/
 	]
+  },
+  resolve: {
+  	extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
   },
   plugins: [
   	new webpack.ProvidePlugin({
