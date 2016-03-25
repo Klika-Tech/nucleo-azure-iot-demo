@@ -124,6 +124,7 @@ module.exports = React.createClass({
 				x.domain(xDomain)
 				y.domain(yDomain)
 			}
+
 			x2.domain(xDomain)
 			y2.domain(yDomain)
 
@@ -132,6 +133,9 @@ module.exports = React.createClass({
 			focusXAxis.call(xAxis)
 			focusYAxis.call(yAxis)
 			contextXAxis.call(xAxis2)
+
+			if (!brush.empty())
+				brush.extent(x.domain())(context.select('.brush'))
 		}
 
 	},
