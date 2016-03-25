@@ -15,6 +15,20 @@ var TemperatureChart = require('./components/temperature-chart')
 
 var TemperatureGraphLegacy = require('./components/temperature-graph-legacy')
 
+require('./main.scss')
+
+
+var Loader = React.createClass({
+
+	render: function() {
+
+		return (
+			<svg>
+				<use xlinkHref={require('./oval.svg')} />
+			</svg>
+		)
+	}
+})
 
 var App = React.createClass({
 
@@ -32,7 +46,7 @@ var App = React.createClass({
 		var that = this
 
 		// getting the data for the last 24h
-		var since = Math.round(Date.now() / 1000) - 300 // 86400
+		var since = Math.round(Date.now() / 1000) - 86400
 
 		return fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
 		  .then(function(response) {
@@ -132,8 +146,15 @@ var App = React.createClass({
 	},
 
 	render: function() {
+
+		var that = this
+
 		return (
 			<div>
+				{function () {
+					if (that.state.temperatureData === undefined)
+						return <div className="loader"><Loader /></div>
+				}()}
 				<TemperatureChart data={this.state.temperatureData} />
 				{/*<TemperatureGraphLegacy data={this.state.temperatureData} />*/}
 			</div>

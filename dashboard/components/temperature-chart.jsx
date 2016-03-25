@@ -25,7 +25,7 @@ module.exports = React.createClass({
 
 			if (brush.empty()) {
 
-				x.domain(x2.domain())
+				x.domain([Date.now() - 300000, x2.domain()[1]])
 				y.domain(y2.domain())
 				focusYAxis.call(yAxis)
 
@@ -53,16 +53,16 @@ module.exports = React.createClass({
 		var brush = d3.svg.brush()
 			.x(x2)
 			.clamp(true)
-			.on('brush', brushed)
+			.on('brushend', brushed)
 
 		var area = d3.svg.area()
-			.interpolate('monotone')
+			.interpolate('basis')
 			.x(function(d) { return x(d.date) })
 			.y0(height)
 			.y1(function(d) { return y(d.temperature) })
 
 		var area2 = d3.svg.area()
-			.interpolate('monotone')
+			.interpolate('basis')
 			.x(function(d) { return x2(d.date) })
 			.y0(height2)
 			.y1(function(d) { return y2(d.temperature) })
@@ -114,14 +114,14 @@ module.exports = React.createClass({
 
 			var data = this.prepareData()
 
-			var xDomain = d3.extent(data.map(function(d) { return d.date }))
-			var yDomain = [
-				d3.min(data.map(function(d) { return d.temperature })) - 5,
-				d3.max(data.map(function(d) { return d.temperature }))
-			]
+			var xDomain = d3.extent(data.map(function(d) { return d.date })),
+				yDomain = [
+					d3.min(data.map(function(d) { return d.temperature })) - 5,
+					d3.max(data.map(function(d) { return d.temperature }))
+				]
 
 			if (brush.empty()) {
-				x.domain(xDomain)
+				x.domain([Date.now() - 300000, xDomain[1]])
 				y.domain(yDomain)
 			}
 

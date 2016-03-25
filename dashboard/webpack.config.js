@@ -6,8 +6,8 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
+        test: /\.jsx?$/,
+        loader: 'babel',
         exclude: /node_modules/,
         query: {
           presets: ['react']
@@ -16,7 +16,11 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass']
-      }
+      },
+	  {
+	  	test: /\.svg$/,
+		loader: 'svg-sprite'
+	  }
     ],
 	noParse: [
 		/aws\-sdk/

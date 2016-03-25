@@ -1,0 +1,13 @@
+$loader-size: 200px;
+
+.loader {
+
+	margin: 200px auto;
+	width: $loader-size;
+
+	svg {
+		stroke: #7598B6;
+		width: $loader-size;
+		height: $loader-size;
+	}
+}
