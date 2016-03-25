@@ -37,7 +37,10 @@ var App = React.createClass({
 	prepareData: function(dataItem) {
 		return {
 			temperature: parseInt(dataItem.temperature),
-			timestamp: parseInt(dataItem.timestamp)
+			timestamp:
+				dataItem.timestamp === undefined
+					? Math.round(Date.now() / 1000)
+					: parseInt(dataItem.timestamp)
 		}
 	},
 
