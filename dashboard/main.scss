@@ -1,5 +1,9 @@
 $loader-size: 200px;
 
+body {
+	font-family: sans-serif;
+}
+
 .loader {
 
 	margin: 200px auto;
@@ -9,5 +13,18 @@ $loader-size: 200px;
 		stroke: #7598B6;
 		width: $loader-size;
 		height: $loader-size;
+	}
+}
+
+.status {
+
+	float: right;
+
+	.online {
+		color: green;
+	}
+
+	.offline {
+		color: red;
 	}
 }

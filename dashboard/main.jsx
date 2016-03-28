@@ -36,7 +36,7 @@ var App = React.createClass({
 
 	prepareData: function(dataItem) {
 		return {
-			temperature: parseInt(dataItem.temperature),
+			temperature: parseFloat(dataItem.temperature),
 			timestamp:
 				dataItem.timestamp === undefined
 					? Math.round(Date.now() / 1000)
@@ -60,6 +60,7 @@ var App = React.createClass({
 		  	if (_.isEmpty(metricData)) return
 
 			that.setState({temperatureData: _.map(metricData, that.prepareData)})
+			that.resetStatusMonitor()
 		  })
 
 	},
@@ -121,7 +122,8 @@ var App = React.createClass({
 						.push(dataItem)
 						.value()
 
-					that.setState({temperatureData: newData})
+					that.setState({temperatureData: newData, online: true})
+					that.resetStatusMonitor()
 				}
 			})
 
@@ -148,16 +150,37 @@ var App = React.createClass({
 			.then(function() { that.initMqttClient() })
 	},
 
+	resetStatusMonitor: function() {
+
+		var that = this
+
+		if (this.statusMonitor) clearTimeout(this.statusMonitor)
+
+		this.statusMonitor = setTimeout(function() { that.setState({online: false}) }, 15000)
+	},
+
 	render: function() {
 
 		var that = this
 
 		return (
 			<div>
+				{function() {
+					if (that.state.online !== undefined) {
+
+						var statusStr = that.state.online
+								? <span className="online">online</span>
+								: <span className="offline">offline</span>
+
+						return <div className="status">Nucleo Board is {statusStr}</div>
+					}
+				}()}
+
 				{function () {
 					if (that.state.temperatureData === undefined)
 						return <div className="loader"><Loader /></div>
 				}()}
+
 				<TemperatureChart data={this.state.temperatureData} />
 				{/*<TemperatureGraphLegacy data={this.state.temperatureData} />*/}
 			</div>
