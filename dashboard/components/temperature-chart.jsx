@@ -12,7 +12,8 @@ module.exports = React.createClass({
 
 			return {
 				temperature: item.temperature,
-				date: new Date(item.timestamp * 1000)
+				date: new Date(item.timestamp * 1000),
+				marker: item.marker
 			}
 		})
 	},
@@ -21,18 +22,11 @@ module.exports = React.createClass({
 
 		if (!el) return
 
+		var that = this
+
 		var brushed = function() {
 
-			if (brush.empty()) {
-
-				x.domain([Date.now() - 300000, x2.domain()[1]])
-				y.domain(y2.domain())
-				focusYAxis.call(yAxis)
-
-			} else x.domain(brush.extent())
-
-			focusPath.attr('d', area)
-			focusXAxis.call(xAxis)
+			that.updateChart()
 		}
 
 		var margin = {top: 10, right: 10, bottom: 100, left: 40},
@@ -53,7 +47,7 @@ module.exports = React.createClass({
 		var brush = d3.svg.brush()
 			.x(x2)
 			.clamp(true)
-			.on('brushend', brushed)
+			.on('brushend', function() { that.updateChart() })
 
 		var area = d3.svg.area()
 			.interpolate('basis')
@@ -87,6 +81,9 @@ module.exports = React.createClass({
 
 		var focusPath = focus.append('path')
 			.attr('class', 'area')
+
+		var focusMarkers = focus.append('g')
+				.attr('class', 'markers')
 
 		var focusXAxis = focus.append('g')
 			.attr('class', 'x axis')
@@ -123,7 +120,7 @@ module.exports = React.createClass({
 			if (brush.empty()) {
 				x.domain([Date.now() - 300000, xDomain[1]])
 				y.domain(yDomain)
-			}
+			} else x.domain(brush.extent())
 
 			x2.domain(xDomain)
 			y2.domain(yDomain)
@@ -136,6 +133,23 @@ module.exports = React.createClass({
 
 			if (!brush.empty())
 				brush.extent(x.domain())(context.select('.brush'))
+
+			var markersData = _.filter(data, function(d) {
+				return d.marker && d.date >= x.domain()[0] && d.date <= x.domain()[1]
+			})
+
+			var markers = focusMarkers.selectAll('circle')
+				.data(markersData)
+
+			markers.enter().append('circle')
+				.attr('class', 'marker')
+				.attr('r', 5)
+
+			markers
+				.attr('cx', function(d) { return x(d.date) })
+				.attr('cy', function(d) { return y(d.temperature) })
+
+			markers.exit().remove()
 		}
 
 	},

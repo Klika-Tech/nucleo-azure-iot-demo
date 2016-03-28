@@ -40,7 +40,8 @@ var App = React.createClass({
 			timestamp:
 				dataItem.timestamp === undefined
 					? Math.round(Date.now() / 1000)
-					: parseInt(dataItem.timestamp)
+					: parseInt(dataItem.timestamp),
+			marker: dataItem.marker
 		}
 	},
 
