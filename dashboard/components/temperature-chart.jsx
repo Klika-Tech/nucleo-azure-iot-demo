@@ -179,9 +179,9 @@ module.exports = React.createClass({
 				.attr('class', 'context-marker')
 
 			contextMarkers
-				.attr('x1', function(d) { return Math.round(x2(d.date)) })
+				.attr('x1', function(d) { return x2(d.date) })
 				.attr('y1', height2)
-				.attr('x2', function(d) { return Math.round(x2(d.date)) })
+				.attr('x2', function(d) { return x2(d.date) })
 				.attr('y2', function(d) { return Math.round(y2(d.temperature)) })
 
 			contextMarkers.exit().remove()
