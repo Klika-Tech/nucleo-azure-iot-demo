@@ -113,7 +113,7 @@ module.exports = React.createClass({
 
 			var xDomain = d3.extent(data.map(function(d) { return d.date })),
 				yDomain = [
-					d3.min(data.map(function(d) { return d.temperature })) - 5,
+					d3.min(data.map(function(d) { return d.temperature })) - 2,
 					d3.max(data.map(function(d) { return d.temperature }))
 				]
 
