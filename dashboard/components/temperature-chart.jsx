@@ -83,7 +83,10 @@ module.exports = React.createClass({
 			.attr('class', 'area')
 
 		var focusMarkers = focus.append('g')
-				.attr('class', 'markers')
+			.attr('class', 'markers')
+
+		var markerTooltip = d3.select(el).append('div')
+			.attr('class', 'tooltip')
 
 		var focusXAxis = focus.append('g')
 			.attr('class', 'x axis')
@@ -113,8 +116,8 @@ module.exports = React.createClass({
 
 			var xDomain = d3.extent(data.map(function(d) { return d.date })),
 				yDomain = [
-					d3.min(data.map(function(d) { return d.temperature })) - 2,
-					d3.max(data.map(function(d) { return d.temperature }))
+					d3.min(data.map(function(d) { return d.temperature })) - .5,
+					d3.max(data.map(function(d) { return d.temperature })) + .5
 				]
 
 			if (brush.empty()) {
@@ -144,12 +147,23 @@ module.exports = React.createClass({
 			markers.enter().append('circle')
 				.attr('class', 'marker')
 				.attr('r', 5)
+				.on('mouseover', function(d) {
+						markerTooltip
+							.text(Math.round(d.temperature * 100) / 100 + "C @"
+								+ d3.time.format('%X')(d.date))
+							.style('left', (d3.event.pageX) + 'px')
+							.style('top', (d3.event.pageY - 28) + 'px')
+							.style('display', 'block')
+					})
+				.on('mouseout', function(d) {
+						markerTooltip.style('display', 'none')
+					})
 
 			markers
 				.attr('cx', function(d) { return x(d.date) })
 				.attr('cy', function(d) { return y(d.temperature) })
 
-			markers.exit().remove()
+			markers.iexit().remove()
 		}
 
 	},

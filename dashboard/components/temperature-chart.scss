@@ -27,4 +27,16 @@
 		fill: #B93535;
 		stroke: #E69090;
 	}
+
+	.tooltip {
+		position: absolute;
+		display: none;
+		font-size: small;
+		background-color: #4682B4;
+		padding: 4px 6px;
+		color: white;
+		border: 1px solid white;
+		border-radius: 4px;
+		pointer-events: none;
+	}
 }
