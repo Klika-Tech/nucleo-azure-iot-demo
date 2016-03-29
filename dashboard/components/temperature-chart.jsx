@@ -56,7 +56,7 @@ module.exports = React.createClass({
 			.y1(function(d) { return y(d.temperature) })
 
 		var area2 = d3.svg.area()
-			.interpolate('basis')
+			.interpolate('linear')
 			.x(function(d) { return x2(d.date) })
 			.y0(height2)
 			.y1(function(d) { return y2(d.temperature) })
@@ -179,10 +179,10 @@ module.exports = React.createClass({
 				.attr('class', 'context-marker')
 
 			contextMarkers
-				.attr('x1', function(d) { return x2(d.date) })
+				.attr('x1', function(d) { return Math.round(x2(d.date)) })
 				.attr('y1', height2)
-				.attr('x2', function(d) { return x2(d.date) })
-				.attr('y2', function(d) { return y2(d.temperature) })
+				.attr('x2', function(d) { return Math.round(x2(d.date)) })
+				.attr('y2', function(d) { return Math.round(y2(d.temperature)) })
 
 			contextMarkers.exit().remove()
 		}
