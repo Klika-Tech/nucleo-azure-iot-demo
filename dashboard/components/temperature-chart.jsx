@@ -82,7 +82,7 @@ module.exports = React.createClass({
 		var focusPath = focus.append('path')
 			.attr('class', 'area')
 
-		var focusMarkers = focus.append('g')
+		var focusMarkersG = focus.append('g')
 			.attr('class', 'markers')
 
 		var markerTooltip = d3.select(el).append('div')
@@ -97,6 +97,9 @@ module.exports = React.createClass({
 
 		var contextPath = context.append('path')
 			.attr('class', 'area')
+
+		var contextMarkersG = context.append('g')
+			.attr('class', 'context-markers')
 
 		var contextXAxis = context.append('g')
 			.attr('class', 'x axis')
@@ -138,11 +141,15 @@ module.exports = React.createClass({
 				brush.extent(x.domain())(context.select('.brush'))
 
 			var markersData = _.filter(data, function(d) {
-				return d.marker && d.date >= x.domain()[0] && d.date <= x.domain()[1]
+				return d.marker
 			})
 
-			var markers = focusMarkers.selectAll('circle')
-				.data(markersData)
+			var focusMarkersData = _.filter(markersData, function(d) {
+				return d.date >= x.domain()[0] && d.date <= x.domain()[1]
+			})
+
+			var markers = focusMarkersG.selectAll('circle')
+				.data(focusMarkersData)
 
 			markers.enter().append('circle')
 				.attr('class', 'marker')
@@ -163,7 +170,21 @@ module.exports = React.createClass({
 				.attr('cx', function(d) { return x(d.date) })
 				.attr('cy', function(d) { return y(d.temperature) })
 
-			markers.iexit().remove()
+			markers.exit().remove()
+
+			var contextMarkers = contextMarkersG.selectAll('line')
+				.data(markersData)
+
+			contextMarkers.enter().append('line')
+				.attr('class', 'context-marker')
+
+			contextMarkers
+				.attr('x1', function(d) { return x2(d.date) })
+				.attr('y1', height2)
+				.attr('x2', function(d) { return x2(d.date) })
+				.attr('y2', function(d) { return y2(d.temperature) })
+
+			contextMarkers.exit().remove()
 		}
 
 	},
