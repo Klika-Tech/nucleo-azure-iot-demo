@@ -1,30 +1,43 @@
-$loader-size: 200px;
 
 body {
 	font-family: sans-serif;
+	margin: 0;
 }
 
-.loader {
+.app {
 
-	margin: 200px auto;
-	width: $loader-size;
+	$app-padding: 8px;
 
-	svg {
-		stroke: #7598B6;
+	position: absolute;
+	top: $app-padding;
+	right: $app-padding;
+	bottom: $app-padding;
+	left: $app-padding;
+
+	$loader-size: 200px;
+
+	.loader {
+
+		margin: 200px auto;
 		width: $loader-size;
-		height: $loader-size;
-	}
-}
 
-.status {
-
-	float: right;
-
-	.online {
-		color: green;
+		svg {
+			stroke: #7598B6;
+			width: $loader-size;
+			height: $loader-size;
+		}
 	}
 
-	.offline {
-		color: red;
+	.status {
+
+		float: right;
+
+		.online {
+			color: green;
+		}
+
+		.offline {
+			color: red;
+		}
 	}
 }

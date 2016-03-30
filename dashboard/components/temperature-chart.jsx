@@ -24,55 +24,42 @@ module.exports = React.createClass({
 
 		var that = this
 
-		var margin = {top: 10, right: 10, bottom: 100, left: 40},
-			margin2 = {top: 430, right: 10, bottom: 20, left: 40},
-			width = 960 - margin.left - margin.right,
-			height = 500 - margin.top - margin.bottom,
-			height2 = 500 - margin2.top - margin2.bottom
+		var margin, margin2, width,	height, height2
 
-		var x = d3.time.scale().range([0, width]),
-			x2 = d3.time.scale().range([0, width]),
-			y = d3.scale.linear().range([height, 0]),
-			y2 = d3.scale.linear().range([height2, 0])
+		var x = d3.time.scale(),
+			x2 = d3.time.scale(),
+			y = d3.scale.linear(),
+			y2 = d3.scale.linear()
 
-		var xAxis = d3.svg.axis().scale(x).orient('bottom'),
-			xAxis2 = d3.svg.axis().scale(x2).orient('bottom'),
-			yAxis = d3.svg.axis().scale(y).orient('left')
+		var xAxis = d3.svg.axis().orient('bottom'),
+			xAxis2 = d3.svg.axis().orient('bottom'),
+			yAxis = d3.svg.axis().orient('left')
 
 		var brush = d3.svg.brush()
-			.x(x2)
 			.clamp(true)
 			.on('brushend', function() { that.updateChart() })
 
 		var area = d3.svg.area()
 			.interpolate('basis')
 			.x(function(d) { return x(d.date) })
-			.y0(height)
 			.y1(function(d) { return y(d.temperature) })
 
 		var area2 = d3.svg.area()
 			.interpolate('linear')
 			.x(function(d) { return x2(d.date) })
-			.y0(height2)
 			.y1(function(d) { return y2(d.temperature) })
 
 		var svg = d3.select(el).append('svg')
-			.attr('width', width + margin.left + margin.right)
-			.attr('height', height + margin.top + margin.bottom)
 
-		svg.append('defs').append('clipPath')
+		var rect = svg.append('defs').append('clipPath')
 				.attr('id', 'clip')
 			.append('rect')
-				.attr('width', width)
-				.attr('height', height)
 
 		var focus = svg.append('g')
 			.attr('class', 'focus')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
 		var context = svg.append('g')
 			.attr('class', 'context')
-			.attr('transform', 'translate(' + margin2.left + ',' + margin2.top + ')')
 
 		var focusPath = focus.append('path')
 			.attr('class', 'area')
@@ -85,7 +72,6 @@ module.exports = React.createClass({
 
 		var focusXAxis = focus.append('g')
 			.attr('class', 'x axis')
-			.attr('transform', 'translate(0,' + height + ')')
 
 		var focusYAxis = focus.append('g')
 			.attr('class', 'y axis')
@@ -98,14 +84,60 @@ module.exports = React.createClass({
 
 		var contextXAxis = context.append('g')
 			.attr('class', 'x axis')
-			.attr('transform', 'translate(0,' + height2 + ')')
 
-		context.append('g')
+		var contextG = context.append('g')
 				.attr('class', 'x brush')
-				.call(brush)
-			.selectAll('rect')
-				.attr('y', -6)
-				.attr('height', height2 + 7)
+
+
+		var setDimensions
+
+		(setDimensions = function() {
+
+			var container = el.getBoundingClientRect()
+
+			margin = {top: 10, right: 10, bottom: 100, left: 40}
+			margin2 = {top: container.height - 70, right: 10, bottom: 20, left: 40}
+			width = container.width - margin.left - margin.right
+			height = container.height - margin.top - margin.bottom
+			height2 = container.height - margin2.top - margin2.bottom
+
+			x.range([0, width])
+			x2.range([0, width])
+			y.range([height, 0])
+			y2.range([height2, 0])
+
+			xAxis.scale(x)
+			xAxis2.scale(x2)
+			yAxis.scale(y)
+
+			brush.x(x2)
+
+			area.y0(height)
+			area2.y0(height2)
+
+			svg
+				.attr('width', width + margin.left + margin.right)
+				.attr('height', height + margin.top + margin.bottom)
+
+			rect
+				.attr('width', width)
+				.attr('height', height)
+
+			focus.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			context.attr('transform', 'translate(' + margin2.left + ',' + margin2.top + ')')
+			focusXAxis.attr('transform', 'translate(0,' + height + ')')
+			contextXAxis.attr('transform', 'translate(0,' + height2 + ')')
+			
+			contextG.call(brush)
+				.selectAll('rect')
+					.attr('y', -6)
+					.attr('height', height2 + 7)
+		})()
+
+		d3.select(window).on('resize', function() {
+			setDimensions()
+			that.updateChart()
+		})
 
 
 		this.updateChart = function() {
@@ -126,8 +158,6 @@ module.exports = React.createClass({
 					Math.floor((d3.min(focusData.map(function(d) { return d.temperature })) - .3) * 30) / 30,
 					Math.ceil((d3.max(focusData.map(function(d) { return d.temperature })) + .3) * 30) / 30
 				])
-
-			console.log(y.domain())
 
 			x2.domain(xDomain)
 			y2.domain([
@@ -201,7 +231,7 @@ module.exports = React.createClass({
 	render: function() {
 		if (this.props.data === undefined) return <div />
 		else return (
-			<div>
+			<div className="temperature-chart-container">
 				<h1>Temperature Sensor</h1>
 				<div className="temperature-chart" ref={this.initChart} />
 			</div>

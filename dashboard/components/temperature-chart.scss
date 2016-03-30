@@ -1,46 +1,66 @@
 
-.temperature-chart {
+.temperature-chart-container {
+	
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 
-	svg {
-		font: 10px sans-serif;
-	}
+	.temperature-chart {
 
-	.area {
-		fill: steelblue;
-		clip-path: url(#clip);
-	}
-
-	.axis path,
-	.axis line {
-		fill: none;
-		stroke: #000;
-		shape-rendering: crispEdges;
-	}
-
-	.brush .extent {
-		stroke: #fff;
-		fill-opacity: .125;
-		shape-rendering: crispEdges;
-	}
-
-	.marker {
-		fill: #B93535;
-		stroke: #E69090;
-	}
-
-	.tooltip {
 		position: absolute;
-		display: none;
-		font-size: small;
-		background-color: #4682B4;
-		padding: 4px 6px;
-		color: white;
-		border: 1px solid white;
-		border-radius: 4px;
-		pointer-events: none;
-	}
+		top: 70px;
+		right: 0;
+		bottom: 0;
+		left: 0;
 
-	.context-marker {
-		stroke: #B93535;
+		h1 {
+			margin: 20px 0;
+		}
+
+		svg {
+			font: 10px sans-serif;
+		}
+
+		.area {
+			fill: steelblue;
+			clip-path: url(#clip);
+		}
+
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+
+		.brush .extent {
+			stroke: #fff;
+			fill-opacity: .125;
+			shape-rendering: crispEdges;
+		}
+
+		.marker {
+			fill: #B93535;
+			stroke: #E69090;
+		}
+
+		.tooltip {
+			position: absolute;
+			display: none;
+			font-size: small;
+			background-color: #4682B4;
+			padding: 4px 6px;
+			color: white;
+			border: 1px solid white;
+			border-radius: 4px;
+			pointer-events: none;
+		}
+
+		.context-marker {
+			stroke: #B93535;
+			shape-rendering: crispEdges;
+		}
 	}
 }

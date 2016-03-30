@@ -165,7 +165,7 @@ var App = React.createClass({
 		var that = this
 
 		return (
-			<div>
+			<div className="app">
 				{function() {
 					if (that.state.online !== undefined) {
 
