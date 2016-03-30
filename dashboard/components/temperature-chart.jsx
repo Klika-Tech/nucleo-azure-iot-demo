@@ -24,11 +24,6 @@ module.exports = React.createClass({
 
 		var that = this
 
-		var brushed = function() {
-
-			that.updateChart()
-		}
-
 		var margin = {top: 10, right: 10, bottom: 100, left: 40},
 			margin2 = {top: 430, right: 10, bottom: 20, left: 40},
 			width = 960 - margin.left - margin.right,
@@ -117,19 +112,28 @@ module.exports = React.createClass({
 
 			var data = this.prepareData()
 
-			var xDomain = d3.extent(data.map(function(d) { return d.date })),
-				yDomain = [
-					d3.min(data.map(function(d) { return d.temperature })) - .5,
-					d3.max(data.map(function(d) { return d.temperature })) + .5
-				]
+			var xDomain = d3.extent(data.map(function(d) { return d.date }))
 
 			if (brush.empty()) {
 				x.domain([Date.now() - 300000, xDomain[1]])
-				y.domain(yDomain)
 			} else x.domain(brush.extent())
 
+			var focusData = _.filter(data, function(d) {
+				return d.date >= x.domain()[0] && d.date <= x.domain()[1]
+			})
+
+			y.domain([
+					Math.floor((d3.min(focusData.map(function(d) { return d.temperature })) - .3) * 30) / 30,
+					Math.ceil((d3.max(focusData.map(function(d) { return d.temperature })) + .3) * 30) / 30
+				])
+
+			console.log(y.domain())
+
 			x2.domain(xDomain)
-			y2.domain(yDomain)
+			y2.domain([
+					Math.floor(d3.min(data.map(function(d) { return d.temperature })) - .5),
+					Math.ceil(d3.max(data.map(function(d) { return d.temperature })))
+				])
 
 			focusPath.datum(data).attr('d', area)
 			contextPath.datum(data).attr('d', area2)
