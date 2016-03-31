@@ -14,17 +14,17 @@ body {
 	bottom: $app-padding;
 	left: $app-padding;
 
-	$loader-size: 200px;
-
 	.loader {
 
-		margin: 200px auto;
-		width: $loader-size;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 
 		svg {
 			stroke: #7598B6;
-			width: $loader-size;
-			height: $loader-size;
+			width: 20vh;
+			height: 20vh;
 		}
 	}
 
