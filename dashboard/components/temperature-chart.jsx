@@ -189,11 +189,12 @@ module.exports = React.createClass({
 				.attr('class', 'marker')
 				.attr('r', 5)
 				.on('mouseover', function(d) {
+
 						markerTooltip
 							.text(Math.round(d.temperature * 100) / 100 + "C @"
 								+ d3.time.format('%X')(d.date))
-							.style('left', (d3.event.pageX) + 'px')
-							.style('top', (d3.event.pageY - 28) + 'px')
+							.style('left', d3.mouse(el)[0] + 'px')
+							.style('top', (d3.mouse(el)[1] - 28) + 'px')
 							.style('display', 'block')
 					})
 				.on('mouseout', function(d) {
