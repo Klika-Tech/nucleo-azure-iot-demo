@@ -39,11 +39,6 @@ module.exports = React.createClass({
 			.clamp(true)
 			.on('brushend', function() { that.updateChart() })
 
-		var area = d3.svg.area()
-			.interpolate('basis')
-			.x(function(d) { return x(d.date) })
-			.y1(function(d) { return y(d.temperature) })
-
 		var area2 = d3.svg.area()
 			.interpolate('linear')
 			.x(function(d) { return x2(d.date) })
@@ -62,7 +57,6 @@ module.exports = React.createClass({
 			.attr('class', 'context')
 
 		var focusPath = focus.append('path')
-			.attr('class', 'area')
 
 		var focusMarkersG = focus.append('g')
 			.attr('class', 'markers')
@@ -112,7 +106,6 @@ module.exports = React.createClass({
 
 			brush.x(x2)
 
-			area.y0(height)
 			area2.y0(height2)
 
 			svg
@@ -165,7 +158,20 @@ module.exports = React.createClass({
 					Math.ceil(d3.max(data.map(function(d) { return d.temperature })))
 				])
 
-			focusPath.datum(data).attr('d', area)
+			var focusPathGenerator = (false
+				? d3.svg.area()
+					.y0(height)
+					.y1(function(d) { return y(d.temperature) })
+				: d3.svg.line()
+					.y(function(d) { return y(d.temperature) })
+				)
+					.interpolate('monotone')
+					.x(function(d) { return x(d.date) })
+
+			focusPath
+				.datum(data)
+				.attr('d', focusPathGenerator)
+				.attr('class', false ? 'area' : 'line')
 			contextPath.datum(data).attr('d', area2)
 			focusXAxis.call(xAxis)
 			focusYAxis.call(yAxis)

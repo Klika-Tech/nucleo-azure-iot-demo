@@ -183,7 +183,6 @@ var App = React.createClass({
 				}()}
 
 				<TemperatureChart data={this.state.temperatureData} />
-				{/*<TemperatureGraphLegacy data={this.state.temperatureData} />*/}
 			</div>
 		)
 	}

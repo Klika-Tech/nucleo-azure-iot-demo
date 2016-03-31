@@ -28,6 +28,13 @@
 			clip-path: url(#clip);
 		}
 
+		.line {
+			stroke: steelblue;
+			stroke-width: 3px;
+			fill: none;
+			clip-path: url(#clip);
+		}
+
 		.axis path,
 		.axis line {
 			fill: none;
