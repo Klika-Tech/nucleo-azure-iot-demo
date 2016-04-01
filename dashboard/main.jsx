@@ -13,8 +13,6 @@ var mqtt = require('mqtt')
 
 var TemperatureChart = require('./components/temperature-chart')
 
-var TemperatureGraphLegacy = require('./components/temperature-graph-legacy')
-
 require('./main.scss')
 
 

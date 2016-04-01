@@ -7,11 +7,18 @@
 	bottom: 0;
 	left: 0;
 
+	.temperature-chart-params {
+		float: right;
+		width: 200px;
+		margin-top: 60px;
+		font-size: small;
+	}
+
 	.temperature-chart {
 
 		position: absolute;
 		top: 70px;
-		right: 0;
+		right: 200px;
 		bottom: 0;
 		left: 0;
 

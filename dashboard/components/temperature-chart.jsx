@@ -2,9 +2,20 @@ var React = require('react')
 var d3 = require('d3')
 var _ = require('lodash')
 
+var TemperatureChartParams = require('./temperature-chart-params')
+
 require('./temperature-chart.scss')
 
 module.exports = React.createClass({
+
+	getInitialState: function() {
+
+		return {
+			chartParams: {
+				chartType: 'area'
+			}
+		}
+	},
 
 	prepareData: function() {
 
@@ -52,7 +63,12 @@ module.exports = React.createClass({
 
 		var focus = svg.append('g')
 			.attr('class', 'focus')
+/*			
+			.on('mousemove', function() {
 
+				focusCursor
+			})
+*/
 		var context = svg.append('g')
 			.attr('class', 'context')
 
@@ -63,7 +79,11 @@ module.exports = React.createClass({
 
 		var markerTooltip = d3.select(el).append('div')
 			.attr('class', 'tooltip')
-
+/*
+		var focusCursor = focus.append('line')
+			.attr('class', 'focus-cursor')
+			.attr('y1', 0)
+*/
 		var focusXAxis = focus.append('g')
 			.attr('class', 'x axis')
 
@@ -80,7 +100,7 @@ module.exports = React.createClass({
 			.attr('class', 'x axis')
 
 		var contextG = context.append('g')
-				.attr('class', 'x brush')
+			.attr('class', 'x brush')
 
 
 		var setDimensions
@@ -158,7 +178,7 @@ module.exports = React.createClass({
 					Math.ceil(d3.max(data.map(function(d) { return d.temperature })))
 				])
 
-			var focusPathGenerator = (false
+			var focusPathGenerator = (this.state.chartParams.chartType == 'area'
 				? d3.svg.area()
 					.y0(height)
 					.y1(function(d) { return y(d.temperature) })
@@ -171,7 +191,7 @@ module.exports = React.createClass({
 			focusPath
 				.datum(data)
 				.attr('d', focusPathGenerator)
-				.attr('class', false ? 'area' : 'line')
+				.attr('class', this.state.chartParams.chartType == 'area' ? 'area' : 'line')
 			contextPath.datum(data).attr('d', area2)
 			focusXAxis.call(xAxis)
 			focusYAxis.call(yAxis)
@@ -235,10 +255,20 @@ module.exports = React.createClass({
 		this.updateChart()
 	},
 
+	setChartParam: function(paramName, value) {
+
+		this.state.chartParams[paramName] = value
+
+		this.setState({
+			chartParams: this.state.chartParams
+		})
+	},
+
 	render: function() {
 		if (this.props.data === undefined) return <div />
 		else return (
 			<div className="temperature-chart-container">
+				<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} />
 				<h1>Temperature Sensor</h1>
 				<div className="temperature-chart" ref={this.initChart} />
 			</div>
