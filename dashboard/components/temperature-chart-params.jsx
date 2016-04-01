@@ -18,9 +18,9 @@ module.exports = React.createClass({
 
 						Chart Type<br />
 						<input type="radio" name="chart-type" id="chart-type-area" value="area" checked={chartParams.chartType == 'area' ? 'checked' : ''} onChange={this.setChartType} />
-						<label for="chart-type-area">Area</label><br />
+						<label htmlFor="chart-type-area">Area</label><br />
 						<input type="radio" name="chart-type" id="chart-type-line" value="line" checked={chartParams.chartType == 'line' ? 'checked' : ''} onChange={this.setChartType} />
-						<label for="chart-type-line">Line</label>
+						<label htmlFor="chart-type-line">Line</label>
 					</fieldset>
 				</form>
 			</div>
