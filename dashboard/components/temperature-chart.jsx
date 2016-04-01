@@ -37,6 +37,8 @@ module.exports = React.createClass({
 
 		var margin, margin2, width,	height, height2
 
+		var focusData
+
 		var x = d3.time.scale(),
 			x2 = d3.time.scale(),
 			y = d3.scale.linear(),
@@ -63,12 +65,59 @@ module.exports = React.createClass({
 
 		var focus = svg.append('g')
 			.attr('class', 'focus')
-/*			
+			
 			.on('mousemove', function() {
 
+				var xPos = d3.mouse(el)[0] - margin.left
+
+				if (xPos < 0) return
+
+				var datePos = x.invert(xPos)
+
+				var i = d3.bisector(function(d) { return d.date }).right(focusData, datePos)
+
+				if (i == focusData.length
+					|| (i > 0 && datePos - focusData[i-1].date < focusData[i].date - datePos))
+						i--
+
+				var d = focusData[i]
+
+				xPos = x(d.date)
+
 				focusCursor
+					.attr('x1', xPos)
+					.attr('x2', xPos)
+					.attr('visibility', 'visible')
+
+				markerTooltip
+					.text(Math.round(d.temperature * 100) / 100 + "C @"
+						+ d3.time.format('%X')(d.date))
+					.style('top', y(d.temperature) - 25 + 'px')
+					.style('display', 'block')
+					.attr('class', 'tooltip' + (d.marker ? ' marker' : ''))
+
+				var rectBBox = rect.node().getBBox()
+
+				if (xPos - rectBBox.width < -200)
+					markerTooltip
+						.style('left', xPos + margin.left + 5 + 'px')
+						.style('right', 'initial')
+				else
+					markerTooltip
+						.style('right', rectBBox.width - xPos + margin.right + 5 + 'px')
+						.style('left', 'initial')
+
 			})
-*/
+			.on('mouseout', function() {
+				markerTooltip.style('display', 'none')
+				focusCursor.attr('visibility', 'hidden')
+			})
+
+		var focusBg = focus.append('rect')
+			.attr('class', 'focus-bg')
+			.attr('x', 0)
+			.attr('y', 0)
+
 		var context = svg.append('g')
 			.attr('class', 'context')
 
@@ -79,11 +128,11 @@ module.exports = React.createClass({
 
 		var markerTooltip = d3.select(el).append('div')
 			.attr('class', 'tooltip')
-/*
+
 		var focusCursor = focus.append('line')
 			.attr('class', 'focus-cursor')
 			.attr('y1', 0)
-*/
+
 		var focusXAxis = focus.append('g')
 			.attr('class', 'x axis')
 
@@ -137,6 +186,9 @@ module.exports = React.createClass({
 				.attr('height', height)
 
 			focus.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			focusCursor.attr('y2', height)
+			focusBg.attr('width', width)
+				.attr('height', height)
 			context.attr('transform', 'translate(' + margin2.left + ',' + margin2.top + ')')
 			focusXAxis.attr('transform', 'translate(0,' + height + ')')
 			contextXAxis.attr('transform', 'translate(0,' + height2 + ')')
@@ -163,7 +215,7 @@ module.exports = React.createClass({
 				x.domain([Date.now() - 300000, xDomain[1]])
 			} else x.domain(brush.extent())
 
-			var focusData = _.filter(data, function(d) {
+			focusData = _.filter(data, function(d) {
 				return d.date >= x.domain()[0] && d.date <= x.domain()[1]
 			})
 
@@ -214,18 +266,6 @@ module.exports = React.createClass({
 			markers.enter().append('circle')
 				.attr('class', 'marker')
 				.attr('r', 5)
-				.on('mouseover', function(d) {
-
-						markerTooltip
-							.text(Math.round(d.temperature * 100) / 100 + "C @"
-								+ d3.time.format('%X')(d.date))
-							.style('left', d3.mouse(el)[0] + 'px')
-							.style('top', (d3.mouse(el)[1] - 28) + 'px')
-							.style('display', 'block')
-					})
-				.on('mouseout', function(d) {
-						markerTooltip.style('display', 'none')
-					})
 
 			markers
 				.attr('cx', function(d) { return x(d.date) })

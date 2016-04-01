@@ -55,7 +55,7 @@
 			shape-rendering: crispEdges;
 		}
 
-		.marker {
+		circle.marker {
 			fill: #B93535;
 			stroke: #E69090;
 		}
@@ -70,6 +70,22 @@
 			border: 1px solid white;
 			border-radius: 4px;
 			pointer-events: none;
+		}
+
+		.tooltip.marker {
+			background-color: #B93535;
+			border-color: #B93535;
+		}
+
+		.focus-bg {
+			opacity: 0;
+		}
+
+		.focus-cursor {
+			stroke: black;
+			stroke-width: 1px;
+			stroke-opacity: .3;
+			shape-rendering: crispEdges;
 		}
 
 		.context-marker {
