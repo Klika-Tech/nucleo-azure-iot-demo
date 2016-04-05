@@ -9,10 +9,10 @@ require('./temperature-chart.scss')
 module.exports = React.createClass({
 
 	getInitialState: function() {
-
 		return {
 			chartParams: {
-				chartType: 'area'
+				chartType: 'area',
+				showWeatherFor: []
 			}
 		}
 	},
@@ -212,7 +212,7 @@ module.exports = React.createClass({
 			var xDomain = d3.extent(data.map(function(d) { return d.date }))
 
 			if (brush.empty()) {
-				x.domain([Date.now() - 300000, xDomain[1]])
+				x.domain([xDomain[1] - 300000, xDomain[1]])
 			} else x.domain(brush.extent())
 
 			focusData = _.filter(data, function(d) {
@@ -308,7 +308,7 @@ module.exports = React.createClass({
 		if (this.props.data === undefined) return <div />
 		else return (
 			<div className="temperature-chart-container">
-				<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} />
+				<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
 				<h1>Temperature Sensor</h1>
 				<div className="temperature-chart" ref={this.initChart} />
 			</div>
