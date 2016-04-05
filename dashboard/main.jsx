@@ -54,7 +54,9 @@ var App = React.createClass({
 		  .then(function(response) {
 		  	return response.json()
 		  })
-		  .then(function(metricData) {
+		  .then(function(data) {
+
+		  	var metricData = data.sensorData
 
 		  	if (_.isEmpty(metricData)) return
 
