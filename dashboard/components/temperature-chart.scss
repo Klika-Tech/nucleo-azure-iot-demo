@@ -42,6 +42,11 @@
 			clip-path: url(#clip);
 		}
 
+		.line.weather {
+			stroke: #8BC34A;
+			stroke-width: 2px;
+		}
+
 		.axis path,
 		.axis line {
 			fill: none;

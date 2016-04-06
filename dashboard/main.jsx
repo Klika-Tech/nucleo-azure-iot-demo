@@ -48,7 +48,7 @@ var App = React.createClass({
 		var that = this
 
 		// getting the data for the last 24h
-		var since = Math.round(Date.now() / 1000) - 14400 // 86400
+		var since = Math.round(Date.now() / 1000) - 86400
 
 		return fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
 		  .then(function(response) {

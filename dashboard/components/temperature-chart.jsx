@@ -17,16 +17,18 @@ module.exports = React.createClass({
 		}
 	},
 
-	prepareData: function() {
+	prepareData: function(data) {
 
-		return _.map(this.props.data, function(item) {
+		return _(data)
+				.map(function(item) {
 
-			return {
-				temperature: item.temperature,
-				date: new Date(item.timestamp * 1000),
-				marker: item.marker
-			}
-		})
+					return {
+						temperature: item.temperature,
+						date: new Date(item.timestamp * 1000),
+						marker: item.marker
+					}
+				})
+				.value()
 	},
 
 	initChart: function(el) {
@@ -139,6 +141,13 @@ module.exports = React.createClass({
 		var focusYAxis = focus.append('g')
 			.attr('class', 'y axis')
 
+		var focusWeatherPaths = {}
+
+		_.forEach(this.props.weatherData, function(d) {
+
+			focusWeatherPaths[d.cityId] = focus.append('path').attr('class', 'line weather')
+		})
+
 		var contextPath = context.append('path')
 			.attr('class', 'area')
 
@@ -207,7 +216,23 @@ module.exports = React.createClass({
 
 		this.updateChart = function() {
 
-			var data = this.prepareData()
+			var data = this.prepareData(this.props.data)
+
+			var weatherData = _.map(this.props.weatherData, function(d) {
+
+				var res = {
+					cityId: d.cityId,
+					tempData: that.prepareData(d.tempData)
+				}
+
+				if (res.tempData.length)
+					res.tempData.push({
+						temperature: _.last(res.tempData).temperature,
+						date: _.last(data).date
+					})
+
+				return res
+			})
 
 			var xDomain = d3.extent(data.map(function(d) { return d.date }))
 
@@ -215,13 +240,34 @@ module.exports = React.createClass({
 				x.domain([xDomain[1] - 300000, xDomain[1]])
 			} else x.domain(brush.extent())
 
-			focusData = _.filter(data, function(d) {
-				return d.date >= x.domain()[0] && d.date <= x.domain()[1]
+			var bisector = d3.bisector(function(d) { return d.date }).right
+
+			focusData = data.slice(
+				Math.max(0, bisector(data, x.domain()[0]) - 1),
+				Math.min(data.length, bisector(data, x.domain()[1]) + 1)
+			)
+
+			var focusWeatherData = _.map(weatherData, function(d) {
+				return {
+					cityId: d.cityId,
+					tempData: d.tempData.slice(
+							Math.max(0, bisector(d.tempData, x.domain()[0]) - 1),
+							Math.min(d.tempData.length, bisector(d.tempData, x.domain()[1]) + 1)
+						)
+					}
 			})
 
+			var dataUnion = _(focusWeatherData)
+					.map(function(d) {
+							return _.includes(that.state.chartParams.showWeatherFor, d.cityId) ? d.tempData : []
+						})
+					.push(focusData)
+					.flatten()
+					.value()
+
 			y.domain([
-					Math.floor((d3.min(focusData.map(function(d) { return d.temperature })) - .3) * 30) / 30,
-					Math.ceil((d3.max(focusData.map(function(d) { return d.temperature })) + .3) * 30) / 30
+					Math.floor((d3.min(dataUnion.map(function(d) { return d.temperature })) - .3) * 30) / 30,
+					Math.ceil((d3.max(dataUnion.map(function(d) { return d.temperature })) + .3) * 30) / 30
 				])
 
 			x2.domain(xDomain)
@@ -248,6 +294,20 @@ module.exports = React.createClass({
 			focusXAxis.call(xAxis)
 			focusYAxis.call(yAxis)
 			contextXAxis.call(xAxis2)
+
+			_.forEach(weatherData, function(d) {
+
+				focusWeatherPaths[d.cityId]
+					.datum(d.tempData)
+					.attr('d',
+						d3.svg.line()
+							.x(function(d) { return x(d.date) })
+							.y(function(d) { return y(d.temperature) })
+							.interpolate('basis')
+						)
+					.attr('visibility',
+						_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'visible' : 'hidden')
+			})
 
 			if (!brush.empty())
 				brush.extent(x.domain())(context.select('.brush'))
@@ -290,10 +350,7 @@ module.exports = React.createClass({
 
 	},
 
-	componentDidUpdate: function(prevProps) {
-
-		this.updateChart()
-	},
+	componentDidUpdate: function(prevProps) { this.updateChart() },
 
 	setChartParam: function(paramName, value) {
 
