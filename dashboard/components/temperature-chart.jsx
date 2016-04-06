@@ -142,11 +142,17 @@ module.exports = React.createClass({
 			.attr('class', 'y axis')
 
 		var focusWeatherPaths = {}
+		var cityLabels = {}
 
 		_.forEach(this.props.weatherData, function(d) {
 
 			focusWeatherPaths[d.cityId] = focus.append('path').attr('class', 'line weather')
+
+			cityLabels[d.cityId] = d3.select(el).append('div')
+				.attr('class', 'city-label')
+				.text(d.cityName)
 		})
+
 
 		var contextPath = context.append('path')
 			.attr('class', 'area')
@@ -249,6 +255,7 @@ module.exports = React.createClass({
 
 			var focusWeatherData = _.map(weatherData, function(d) {
 				return {
+					cityName: d.cityName,
 					cityId: d.cityId,
 					tempData: d.tempData.slice(
 							Math.max(0, bisector(d.tempData, x.domain()[0]) - 1),
@@ -307,6 +314,14 @@ module.exports = React.createClass({
 						)
 					.attr('visibility',
 						_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'visible' : 'hidden')
+			})
+
+			_.forEach(focusWeatherData, function(d) {
+				if (d.tempData.length)
+					cityLabels[d.cityId]
+						.style('display',
+							_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'block' : 'none')
+						.style('top', y(_.last(d.tempData).temperature) + 'px')
 			})
 
 			if (!brush.empty())

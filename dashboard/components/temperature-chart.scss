@@ -65,7 +65,7 @@
 			stroke: #E69090;
 		}
 
-		.tooltip {
+		.tooltip, .city-label {
 			position: absolute;
 			display: none;
 			font-size: small;
@@ -80,6 +80,13 @@
 		.tooltip.marker {
 			background-color: #B93535;
 			border-color: #B93535;
+		}
+
+		.city-label {
+			background-color: #8BC34A;
+			right: 15px;
+			border-radius: 2px;
+			padding: 0 3px;
 		}
 
 		.focus-bg {
