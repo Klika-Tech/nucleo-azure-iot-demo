@@ -98,7 +98,7 @@ module.exports = React.createClass({
 					.style('display', 'block')
 					.attr('class', 'tooltip' + (d.marker ? ' marker' : ''))
 
-				var rectBBox = rect.node().getBBox()
+				var rectBBox = focusBg.node().getBBox()
 
 				if (xPos - rectBBox.width < -200)
 					markerTooltip
@@ -327,9 +327,7 @@ module.exports = React.createClass({
 						)
 					.attr('visibility',
 						_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'visible' : 'hidden')
-			})
 
-			_.forEach(focusWeatherData, function(d) {
 				if (d.tempData.length)
 					cityLabels[d.cityId]
 						.style('display',
