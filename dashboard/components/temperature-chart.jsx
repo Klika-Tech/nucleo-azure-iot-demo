@@ -254,14 +254,27 @@ module.exports = React.createClass({
 			)
 
 			var focusWeatherData = _.map(weatherData, function(d) {
-				return {
-					cityName: d.cityName,
+				var res = {
 					cityId: d.cityId,
 					tempData: d.tempData.slice(
 							Math.max(0, bisector(d.tempData, x.domain()[0]) - 1),
 							Math.min(d.tempData.length, bisector(d.tempData, x.domain()[1]) + 1)
 						)
 					}
+
+				if (res.tempData.length > 1) {
+
+					var last = res.tempData[res.tempData.length - 1]
+					var last1 = res.tempData[res.tempData.length - 2]
+					var dTemp = last.temperature - last1.temperature
+					var dTime = last.date - last1.date
+					var dxDomainTime = x.domain()[1] - last1.date
+
+					last.date = x.domain()[1]
+					last.temperature = last1.temperature + (dxDomainTime * dTemp / dTime)
+				}
+
+				return res
 			})
 
 			var dataUnion = _(focusWeatherData)
@@ -302,7 +315,7 @@ module.exports = React.createClass({
 			focusYAxis.call(yAxis)
 			contextXAxis.call(xAxis2)
 
-			_.forEach(weatherData, function(d) {
+			_.forEach(focusWeatherData, function(d) {
 
 				focusWeatherPaths[d.cityId]
 					.datum(d.tempData)
