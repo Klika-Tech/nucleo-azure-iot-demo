@@ -174,23 +174,13 @@ var App = React.createClass({
 
 		return (
 			<div className="app">
-				{function() {
-					if (that.state.online !== undefined) {
-
-						var statusStr = that.state.online
-								? <span className="online">online</span>
-								: <span className="offline">offline</span>
-
-						return <div className="status">Nucleo Board is {statusStr}</div>
-					}
-				}()}
 
 				{function () {
 					if (that.state.temperatureData === undefined)
 						return <div className="loader"><Loader /></div>
 				}()}
 
-				<TemperatureChart data={this.state.temperatureData} weatherData={this.state.weatherData} />
+				<TemperatureChart data={this.state.temperatureData} weatherData={this.state.weatherData} boardOnline={this.state.online} />
 			</div>
 		)
 	}

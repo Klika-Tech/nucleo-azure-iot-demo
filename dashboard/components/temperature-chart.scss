@@ -7,6 +7,17 @@
 	bottom: 0;
 	left: 0;
 
+	h1 .status {
+
+		.online {
+			color: green;
+		}
+
+		.offline {
+			color: red;
+		}
+	}
+
 	.temperature-chart-params {
 		float: right;
 		width: 200px;
@@ -21,10 +32,6 @@
 		right: 200px;
 		bottom: 0;
 		left: 0;
-
-		h1 {
-			margin: 20px 0;
-		}
 
 		svg {
 			font: 10px sans-serif;
@@ -52,6 +59,12 @@
 			fill: none;
 			stroke: #000;
 			shape-rendering: crispEdges;
+		}
+
+		.y.axis {
+			.tick line, .domain {
+				opacity: .2;
+			}
 		}
 
 		.brush .extent {
@@ -98,6 +111,7 @@
 			stroke-width: 1px;
 			stroke-opacity: .3;
 			shape-rendering: crispEdges;
+			visibility: hidden;
 		}
 
 		.context-marker {

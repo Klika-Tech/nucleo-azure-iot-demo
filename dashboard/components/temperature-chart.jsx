@@ -48,7 +48,7 @@ module.exports = React.createClass({
 
 		var xAxis = d3.svg.axis().orient('bottom'),
 			xAxis2 = d3.svg.axis().orient('bottom'),
-			yAxis = d3.svg.axis().orient('left')
+			yAxis = d3.svg.axis().orient('right')
 
 		var brush = d3.svg.brush()
 			.clamp(true)
@@ -89,7 +89,7 @@ module.exports = React.createClass({
 				focusCursor
 					.attr('x1', xPos)
 					.attr('x2', xPos)
-					.attr('visibility', 'visible')
+					.style('visibility', 'visible')
 
 				markerTooltip
 					.text(Math.round(d.temperature * 100) / 100 + "C @"
@@ -112,7 +112,7 @@ module.exports = React.createClass({
 			})
 			.on('mouseout', function() {
 				markerTooltip.style('display', 'none')
-				focusCursor.attr('visibility', 'hidden')
+				focusCursor.style('visibility', 'hidden')
 			})
 
 		var focusBg = focus.append('rect')
@@ -124,6 +124,18 @@ module.exports = React.createClass({
 			.attr('class', 'context')
 
 		var focusPath = focus.append('path')
+
+		var focusWeatherPaths = {}
+		var cityLabels = {}
+
+		_.forEach(this.props.weatherData, function(d) {
+
+			focusWeatherPaths[d.cityId] = focus.append('path').attr('class', 'line weather')
+
+			cityLabels[d.cityId] = d3.select(el).append('div')
+				.attr('class', 'city-label')
+				.text(d.cityName)
+		})
 
 		var focusMarkersG = focus.append('g')
 			.attr('class', 'markers')
@@ -140,19 +152,6 @@ module.exports = React.createClass({
 
 		var focusYAxis = focus.append('g')
 			.attr('class', 'y axis')
-
-		var focusWeatherPaths = {}
-		var cityLabels = {}
-
-		_.forEach(this.props.weatherData, function(d) {
-
-			focusWeatherPaths[d.cityId] = focus.append('path').attr('class', 'line weather')
-
-			cityLabels[d.cityId] = d3.select(el).append('div')
-				.attr('class', 'city-label')
-				.text(d.cityName)
-		})
-
 
 		var contextPath = context.append('path')
 			.attr('class', 'area')
@@ -173,8 +172,8 @@ module.exports = React.createClass({
 
 			var container = el.getBoundingClientRect()
 
-			margin = {top: 10, right: 10, bottom: 100, left: 40}
-			margin2 = {top: container.height - 70, right: 10, bottom: 20, left: 40}
+			margin = {top: 10, right: 10, bottom: 100, left: 0}
+			margin2 = {top: container.height - 70, right: 10, bottom: 20, left: 0}
 			width = container.width - margin.left - margin.right
 			height = container.height - margin.top - margin.bottom
 			height2 = container.height - margin2.top - margin2.bottom
@@ -186,7 +185,10 @@ module.exports = React.createClass({
 
 			xAxis.scale(x)
 			xAxis2.scale(x2)
-			yAxis.scale(y)
+
+			yAxis
+				.scale(y)
+				.tickSize(width)
 
 			brush.x(x2)
 
@@ -312,7 +314,13 @@ module.exports = React.createClass({
 				.attr('class', this.state.chartParams.chartType == 'area' ? 'area' : 'line')
 			contextPath.datum(data).attr('d', area2)
 			focusXAxis.call(xAxis)
-			focusYAxis.call(yAxis)
+
+			focusYAxis
+				.call(yAxis)
+				.selectAll('text')
+					.attr('x', 4)
+					.attr('dy', -4)
+
 			contextXAxis.call(xAxis2)
 
 			_.forEach(focusWeatherData, function(d) {
@@ -389,12 +397,26 @@ module.exports = React.createClass({
 
 	render: function() {
 		if (this.props.data === undefined) return <div />
-		else return (
-			<div className="temperature-chart-container">
-				<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
-				<h1>Temperature Sensor</h1>
-				<div className="temperature-chart" ref={this.initChart} />
-			</div>
-		)
+		else {
+
+			var boardStatus = ''
+
+			if (this.props.boardOnline !== undefined) {
+
+				var statusStr = this.props.boardOnline
+						? <span className="online">online</span>
+						: <span className="offline">offline</span>
+
+				boardStatus = <span className="status">(Nucleo Board is {statusStr})</span>
+			}
+
+			return (
+				<div className="temperature-chart-container">
+					<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
+					<h1>Temperature Sensor {boardStatus}</h1>
+					<div className="temperature-chart" ref={this.initChart} />
+				</div>
+			)
+		}
 	}
 })
