@@ -3,7 +3,7 @@
 ## Files
 *nucleo* - **base folder**
 ## Configuration
-### Aws IoT config (aws_iot_config.h)
+### Aws IoT configuration (aws_iot_config.h)
 
 *Projects/Multi/Applications/MQTT_AWS/Inc/aws_iot_config.h* - **configuration for AWS connection**
 ```c
@@ -22,7 +22,7 @@
 ### Certificates (aws_nucleo_certificates.c)
 *Aws_iot_sdks/aws_iot_src/protocol/mqtt/aws_iot_embedded_client_wrapper/platform_nucleo/aws_nucleo_certificates.c* - **place to store PEM certificates.**
 ###### NOTE: To generate credentials for Amazon see comments inside 
-### Wi-Fi configurstion (wifi_main.c)
+### Wi-Fi configuration (wifi_main.c)
 *Projects/Multi/Applications/MQTT_AWS/Src/wifi_main.c* - **Wi-Fi AP credentials**
 ```c
 // Wifi SSID and Password 
