@@ -134,13 +134,34 @@ module.exports = React.createClass({
 		var focusWeatherPaths = {}
 		var cityLabels = {}
 
+		var cityColors = {}
+		cityColors[625144] = '#A04942'
+		cityColors[5128638] = '#E66390'
+		cityColors[5368361] = '#B61ED0'
+		cityColors[5809844] = '#6523DA'
+		cityColors[4887398] = '#3F51B5'
+		cityColors[4140963] = '#2A4458'
+		cityColors[4164138] = '#2E6B65'
+		cityColors[5391959] = '#46C54B'
+		cityColors[2643743] = '#8BC34A'
+		cityColors[3117735] = '#AEBB2C'
+		cityColors[3173435] = '#ABA14E'
+		cityColors[3169070] = '#AF9443'
+		cityColors[2950158] = '#B78B49'
+		cityColors[3067696] = '#A9482A'
+		cityColors[2988507] = '#795548'
+		cityColors[524901] = '#909090'
+
 		_.forEach(this.props.weatherData, function(d) {
 
-			focusWeatherPaths[d.cityId] = focus.append('path').attr('class', 'line weather')
+			focusWeatherPaths[d.cityId] = focus.append('path')
+				.attr('class', 'line weather city-' + d.cityId)
+				.style('stroke', cityColors[d.cityId])
 
 			cityLabels[d.cityId] = d3.select(el).append('div')
-				.attr('class', 'city-label')
+				.attr('class', 'city-label city-' + d.cityId)
 				.text(d.cityName)
+				.style('background-color', cityColors[d.cityId])
 		})
 
 		var focusCursorPoint = focus.append('circle')
