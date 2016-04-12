@@ -118,6 +118,12 @@
 			visibility: hidden;
 		}
 
+		.cursor-point {
+			visibility: hidden;
+			stroke: #325D81;
+			fill: #91B6D4;
+		}
+
 		.context-marker {
 			stroke: #B93535;
 			shape-rendering: crispEdges;

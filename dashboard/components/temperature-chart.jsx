@@ -91,6 +91,11 @@ module.exports = React.createClass({
 					.attr('x2', xPos)
 					.style('visibility', 'visible')
 
+				focusCursorPoint
+					.attr('cx', xPos)
+					.attr('cy', y(d.temperature))
+					.style('visibility', 'visible')
+
 				markerTooltip
 					.text(Math.round(d.temperature * 100) / 100 + "C @"
 						+ d3.time.format('%X')(d.date))
@@ -113,6 +118,7 @@ module.exports = React.createClass({
 			.on('mouseout', function() {
 				markerTooltip.style('display', 'none')
 				focusCursor.style('visibility', 'hidden')
+				focusCursorPoint.style('visibility', 'hidden')
 			})
 
 		var focusBg = focus.append('rect')
@@ -136,6 +142,10 @@ module.exports = React.createClass({
 				.attr('class', 'city-label')
 				.text(d.cityName)
 		})
+
+		var focusCursorPoint = focus.append('circle')
+			.attr('class', 'cursor-point')
+			.attr('r', 5)
 
 		var focusMarkersG = focus.append('g')
 			.attr('class', 'markers')
