@@ -7,14 +7,18 @@
 	bottom: 0;
 	left: 0;
 
-	h1 .status {
+	h1 {
+		font-size: 1.7em;
 
-		.online {
-			color: green;
-		}
+		.status {
 
-		.offline {
-			color: red;
+			.online {
+				color: green;
+			}
+
+			.offline {
+				color: red;
+			}
 		}
 	}
 
