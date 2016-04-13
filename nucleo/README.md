@@ -1,5 +1,6 @@
 # AWS IoT Sample App.
 ###### _version 0.2_
+**This project generated for Keil uVision.**
 ## Files
 *nucleo* - **base folder**
 ## Configuration
@@ -21,6 +22,7 @@
 ```
 ### Certificates (aws_nucleo_certificates.c)
 *Aws_iot_sdks/aws_iot_src/protocol/mqtt/aws_iot_embedded_client_wrapper/platform_nucleo/aws_nucleo_certificates.c* - **place to store PEM certificates.**
+**//NOTE: Need to add certificate generation how-to**
 ###### NOTE: To generate credentials for Amazon see comments inside 
 ### Wi-Fi configuration (wifi_main.c)
 *Projects/Multi/Applications/MQTT_AWS/Src/wifi_main.c* - **Wi-Fi AP credentials**

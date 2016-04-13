@@ -244,7 +244,7 @@ int aws_main() {
 			
 			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
 			ERROR("Temperature reading error\r\n");
-			
+			// Here is subscription topic.
 			Params.pTopic = "Nucleo/data";
 			
 			sprintf(cPayload, "{\"temperature\": %f, \"marker\": true}", TEMPERATURE_Value);
@@ -263,7 +263,7 @@ int aws_main() {
 			fsleep(4900);
 			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
 			ERROR("Temperature reading error\r\n");
-			
+			// Here is subscription topic for shadow.
 			Params.pTopic = "$aws/things/Nucleo/shadow/update";
 			
 			sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f}}}", TEMPERATURE_Value);
