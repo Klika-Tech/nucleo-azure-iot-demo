@@ -48,8 +48,8 @@
 
 
 // Wifi SSID and Password 
-char * ssid = "Keenetic";
-char * seckey = "Al3x@ndr";
+char * ssid = "<SSID>";
+char * seckey = "<SECURE KEY>";
 
 
 
