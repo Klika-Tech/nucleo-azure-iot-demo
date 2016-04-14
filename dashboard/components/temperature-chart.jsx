@@ -120,6 +120,32 @@ module.exports = React.createClass({
 				focusCursor.style('visibility', 'hidden')
 				focusCursorPoint.style('visibility', 'hidden')
 			})
+			.on('wheel', function() {
+				if (brush.empty())
+					brush.extent(x.domain())
+
+				var brushFrom = brush.extent()[0].getTime()
+				var brushTo = brush.extent()[1].getTime()
+				var brushSize = brushTo - brushFrom
+
+				var contextFrom = x2.domain()[0].getTime()
+				var contextTo = x2.domain()[1].getTime()
+
+				var multiplier = d3.event.deltaY === undefined ? d3.event.wheelDeltaY : d3.event.deltaY
+				multiplier = multiplier > 0 ? 1.5 : .67
+
+				brushSize = Math.min(brushSize * multiplier, contextTo - contextFrom)
+				brushSize = Math.max(brushSize, 60000)
+
+				var brushCenter = (brushTo - brushFrom) / 2 + brushFrom
+				brushCenter = Math.min(brushCenter, contextTo - brushSize / 2)
+				brushCenter = Math.max(contextFrom + brushSize / 2, brushCenter)
+
+				brush.extent([new Date(brushCenter - brushSize / 2), new Date(brushCenter + brushSize / 2)])
+				brush(context.select('.brush'))
+
+				that.updateChart()
+			})
 
 		var focusBg = focus.append('rect')
 			.attr('class', 'focus-bg')
