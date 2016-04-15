@@ -37,7 +37,7 @@ openssl req -new -sha256 -key nucleo.key.pem -out nucleo.csr
 ```
 Now you can sign it on Amazon. 
 
-Finally you have identity certificate *<somecode>-certificate.pem.crt* and private key *nucleo.key.pem* 
+Finally you have identity certificate * < somecode > -certificate.pem.crt* and private key *nucleo.key.pem* 
 ### Wi-Fi configuration (wifi_main.c)
 *Projects/Multi/Applications/MQTT_AWS/Src/wifi_main.c* - **Wi-Fi AP credentials**
 ```c
