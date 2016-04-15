@@ -68,6 +68,10 @@
 			.tick line, .domain {
 				opacity: .2;
 			}
+
+			.tick text {
+				font-size: medium;
+			}
 		}
 
 		.brush .extent {
