@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">nucleo</string>
+
+    <string name="dialog_title_1">Welcome to Nucleo Board!</string>
+    <string name="dialog_title_2">Zoom in to see the details. You can also move along the timeline. Our application stores data for the past 24 hours.</string>
+
+    <string name="dialog_button">Start working</string>
+    <string name="server_error_text">Server error</string>
+
+    <string name="setting_label">Settings</string>
+    <string name="setting_label_chart_type">Chart type</string>
+    <string name="setting_label_cities">Cities</string>
+
+    <string name="setting_rb_line">Line</string>
+    <string name="setting_rb_area">Area</string>
+
+</resources>
