@@ -1,9 +1,8 @@
 {
   "name": "nucleo-metrics",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "aws-sdk": "^2.2.43",
-    "chart.js": "^1.0.2",
     "crypto-js": "^3.1.6",
     "d3": "^3.5.16",
     "es6-promise": "^3.1.2",
@@ -11,7 +10,6 @@
     "moment": "^2.12.0",
     "mqtt": "^1.7.3",
     "react": "^0.14.7",
-    "react-chartjs": "^0.7.3",
     "react-dom": "^0.14.7",
     "whatwg-fetch": "^0.11.0"
   },
@@ -31,6 +29,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Eugene Volchek <evolchek@klika-tech.com>",
+  "license": "MIT"
 }
