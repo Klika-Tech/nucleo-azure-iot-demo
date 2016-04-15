@@ -27,19 +27,17 @@ First, select an available curve using the following commands.
 ```bash
 openssl ecparam -list_curves
 ```
-Then generates a private key using a standard elliptic curve secp521r1  over a 521 bit prime field.
+Then generates a private key using a standard elliptic curve prime256v1  over a 256 bit prime field.
 ```bash
-openssl ecparam -genkey -name secp521r1 -out key.pem
+openssl ecparam -genkey -name prime256v1 -out nucleo.key.pem 
 ```
 Next step is to make signing request. You will be prompted for additional information.
 ```bash
-openssl req -new -key key.pem -out csr.pem
+openssl req -new -sha256 -key nucleo.key.pem -out nucleo.csr
 ```
-You can create self-signed request with command below.
-```bash
-openssl req -x509 -days 365 -key key.pem -in csr.pem -out certificate.pem
-```
-Now you have identity certificate *certificate.pem* and private key *key.pem* 
+Now you can sign it on Amazon. 
+
+Finally you have identity certificate *<somecode>-certificate.pem.crt* and private key *nucleo.key.pem* 
 ### Wi-Fi configuration (wifi_main.c)
 *Projects/Multi/Applications/MQTT_AWS/Src/wifi_main.c* - **Wi-Fi AP credentials**
 ```c
