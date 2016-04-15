@@ -22,8 +22,24 @@
 ```
 ### Certificates (aws_nucleo_certificates.c)
 *Aws_iot_sdks/aws_iot_src/protocol/mqtt/aws_iot_embedded_client_wrapper/platform_nucleo/aws_nucleo_certificates.c* - **place to store PEM certificates.**
-**//NOTE: Need to add certificate generation how-to**
-###### NOTE: To generate credentials for Amazon see comments inside 
+#### Generating certificate
+First, select an available curve using the following commands.
+```bash
+openssl ecparam -list_curves
+```
+Then generates a private key using a standard elliptic curve secp521r1  over a 521 bit prime field.
+```bash
+openssl ecparam -genkey -name secp521r1 -out key.pem
+```
+Next step is to make signing request. You will be prompted for additional information.
+```bash
+openssl req -new -key key.pem -out csr.pem
+```
+You can create self-signed request with command below.
+```bash
+openssl req -x509 -days 365 -key key.pem -in csr.pem -out certificate.pem
+```
+Now you have identity certificate *certificate.pem* and private key *key.pem* 
 ### Wi-Fi configuration (wifi_main.c)
 *Projects/Multi/Applications/MQTT_AWS/Src/wifi_main.c* - **Wi-Fi AP credentials**
 ```c
