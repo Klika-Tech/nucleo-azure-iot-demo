@@ -6,11 +6,9 @@ There is a number of Amazon services to be configured for the Nucleo board demo 
 
 1. [Amazon DynamoDB](#amazon-dynamodb)
 1. [AWS IoT](#aws-iot)
-1. AWS Lambda
-1. Amazon API Gateway
-1. Amazon CloudWatch
-1. Amazon Cognito
-1. Amazon S3
+1. [AWS Lambda](#aws-lambda)
+1. [Amazon Cognito](#amazon-cognito)
+1. [Amazon S3](#amazon-s3)
 
 ## AWS DynamoDB
 
@@ -56,3 +54,12 @@ There are three Lambdas to set up. See the `lambdas` folder for their sources.
 
 Open the AWS Lambda console and create a lambda for each file. Copy and paste the file contents to the respective lambda.
 
+## Amazon Cognito
+
+We use Amazon Cognito to provide public read only access to IoT data streams.
+
+The configuration here is pretty simple. Create a new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
+
+## Amazon S3
+
+The web dashboard is a static web application which can be hosted on Amazon S3. Just create a bucket and configure it as described in [this guide](https://docs.aws.amazon.com/AmazonS3/latest/dev/HowDoIWebsiteConfiguration.html).
