@@ -50,7 +50,7 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 
 ## AWS Lambda
 
-There are three Lambdas to set up. See the `lambdas` folder for their sources.
+There are three Lambdas to set up. See the [lambdas folder](lambdas/) for their sources.
 
 Open the AWS Lambda console and create a lambda for each file. Copy and paste the file contents to the respective lambda.
 
