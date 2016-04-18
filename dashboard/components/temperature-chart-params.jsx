@@ -6,6 +6,10 @@ module.exports = React.createClass({
 		this.props.setChartParam('chartType', event.target.value)
 	},
 
+	setUnits: function(event) {
+		this.props.setChartParam('units', event.target.value)
+	},
+
 	setShowWeatherFor: function(event) {
 
 		var value = parseInt(event.target.value)
@@ -37,6 +41,13 @@ module.exports = React.createClass({
 						<label htmlFor="chart-type-area">Area</label><br />
 						<input type="radio" name="chart-type" id="chart-type-line" value="line" checked={chartParams.chartType == 'line' ? 'checked' : ''} onChange={this.setChartType} />
 						<label htmlFor="chart-type-line">Line</label>
+						<hr />
+
+						Units<br />
+						<input type="radio" name="chart-units" id="chart-units-c" value="c" checked={chartParams.units == 'c' ? 'checked' : ''} onChange={this.setUnits} />
+						<label htmlFor="chart-units-c">C</label>
+						<input type="radio" name="chart-units" id="chart-units-f" value="f" checked={chartParams.units == 'f' ? 'checked' : ''} onChange={this.setUnits} />
+						<label htmlFor="chart-units-f">F</label>
 						<hr />
 
 						Show weather data for:
