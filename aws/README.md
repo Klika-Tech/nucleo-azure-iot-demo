@@ -67,7 +67,19 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 
 There are three Lambdas to set up. See the [lambdas folder](lambdas/) for their sources.
 
-Open the AWS Lambda console and create a lambda for each file. Copy and paste the file contents to the respective lambda.
+Open the AWS Lambda console and create a lambda for each file:
+1. Click "Create a Lambda Function"
+1. Click "Skip" on blueprints select page
+1. Give a name to the function and select Node.js runtime
+1. Copy and paste the corresponding file contents
+1. If this is the first lambda, select "Basic with DynamoDB" in the "Role" field. This will generate a default IAM role with DynamoDB access. Select this role for the next lambdas as well.
+
+<!--
+The `getNucleoData` lambda provides initial data set for client applications. We need to assign an API endpoint to it so the clients will be able to call it remotely:
+1. Go to the Lambda console and click on the `getNucleoData` lambda
+-->
+
+The `generateNucleoData` lambda is an optional one. It emulates the Nucleo board activity by updating its shadow and generating markers.
 
 ## Amazon Cognito
 
