@@ -68,16 +68,46 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 There are three Lambdas to set up. See the [lambdas folder](lambdas/) for their sources.
 
 Open the AWS Lambda console and create a lambda for each file:
+
 1. Click "Create a Lambda Function"
 1. Click "Skip" on blueprints select page
 1. Give a name to the function and select Node.js runtime
 1. Copy and paste the corresponding file contents
 1. If this is the first lambda, select "Basic with DynamoDB" in the "Role" field. This will generate a default IAM role with DynamoDB access. Select this role for the next lambdas as well.
 
-<!--
 The `getNucleoData` lambda provides initial data set for client applications. We need to assign an API endpoint to it so the clients will be able to call it remotely:
+
 1. Go to the Lambda console and click on the `getNucleoData` lambda
--->
+1. Go to API Endpoints tab
+1. Click "Add API Endpoint" and select "API Gateway" as API endpoint type
+1. Set the API endpoint parameters:
+  - API name: any
+  - Resurce name: any, i.e. `/getNucleoData`
+  - Method: GET
+  - Deployment stage: `prod`
+  - Security: Open
+1. Go to API Gateway console and click on the API created on previous step
+1. Click on the GET metod of the resource created on prevoius steps
+1. Click on "Method Request"
+1. Expand "URL Query String Parameters" and click on "Add query string"
+1. Add "metric" and "since" parameters
+1. Return to Metod Execution
+1. Click on "Integration Request" and expand "Body Mapping Templates"
+1. Click on "Add mapping template" and specify "application/json" as content type
+1. Paste this JSON into text area:
+
+    ```
+	{
+      "metric": "$input.params('metric')",
+      "since": "$input.params('since')"
+    }
+    ```
+1. Click "Save"
+1. Select the resource in the resources list and click "Actions"
+1. Select "Enable CORS" and then click on "Enable CORS and replace existing CORS headers"
+
+Now the API endpoint is open and available for invocation by user browsers.
+
 
 The `generateNucleoData` lambda is an optional one. It emulates the Nucleo board activity by updating its shadow and generating markers.
 
@@ -88,6 +118,7 @@ We use Amazon Cognito to provide public read only access to IoT data streams.
 The configuration here is pretty simple. Create a new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
 
 Along with the pool, an IAM role will be generated. This role will not grant access to our IoT topics by default. We need to extend it:
+
 1. In Cognito console go to the just created pool and click "Edit identity pool"
 1. Note the Unauthenticated role name. We will need it on the next step.
 1. Go to IAM console
@@ -96,7 +127,8 @@ Along with the pool, an IAM role will be generated. This role will not grant acc
 1. Click "Custom Policy" then "Select"
 1. Give it any name and paste the following text into the "Policy Document" text area:
 
-    ```{
+    ```
+	{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -119,7 +151,8 @@ Along with the pool, an IAM role will be generated. This role will not grant acc
             ]
         }
     ]
-}```
+    }
+    ```
 
     Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
 1. Click "Apply Policy"
