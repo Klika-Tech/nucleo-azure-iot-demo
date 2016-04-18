@@ -3,13 +3,14 @@ package com.klikatech.nucleo.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,9 +21,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSSessionCredentials;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -34,24 +37,43 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Utils;
 import com.klikatech.nucleo.NucleoApplication;
 import com.klikatech.nucleo.R;
 import com.klikatech.nucleo.custom.MyMarkerView;
 import com.klikatech.nucleo.custom.XAxisValueFormat;
 import com.klikatech.nucleo.event.StartDataEvent;
 import com.klikatech.nucleo.job.StartDataJob;
+import com.klikatech.nucleo.net.paho.MqttWebSocketAsyncClient;
+
 import com.klikatech.nucleo.net.response.StartDataResponse;
 import com.path.android.jobqueue.JobManager;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import org.apache.commons.codec.binary.Hex;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import java.net.URI;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import de.greenrobot.event.EventBus;
 
@@ -66,7 +88,32 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
     private LineChart mChart;
 
+    CustomDialogClass cdd;
+
     public final String TAG_mqtt = "MQTT";
+
+    public final String TAG = "MQTT_test";
+
+    AWSSessionCredentials awsSessionCredentials;
+
+    private boolean isStartChartAnimation = false;
+
+
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT_PREFIX = "data";
+    // AWS IoT permissions.
+    private static final String POOL_ID = "us-east-1:094c9684-1d40-449f-8305-b4ad3d6e5ff4";
+    // Region of AWS IoT
+    private static final Regions REGION = Regions.US_EAST_1; //us-east-1
+
+    CognitoCachingCredentialsProvider credentialsProvider;
+
+    String  requestUrl;
+
+    Thread threadUpdate;
+
+    //MqttAndroidClient clientAndroid;
+    MqttWebSocketAsyncClient client;
+    //MqttAsyncClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         setContentView(R.layout.activity_main);
 
         if(!NucleoApplication.getInstance().isStart) {
-            CustomDialogClass cdd = new CustomDialogClass(MainActivity.this);
+            cdd = new CustomDialogClass(MainActivity.this);
             cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             cdd.show();
             NucleoApplication.getInstance().isStart = true;
@@ -101,10 +148,37 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
         pb = (ProgressBar) findViewById(R.id.progressBar);
 
+        if(threadUpdate!=null){
+            threadUpdate.interrupt();
+            threadUpdate = null;
+        }
+
+        threadUpdate = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while(true) {
+
+                    synchronized(threadUpdate) {
+                        try {
+                            threadUpdate.wait(11000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    long time = System.currentTimeMillis() - 86400000;
+                    StartDataJob startDataJob = new StartDataJob(String.valueOf(time / 1000));
+                    jobManager.addJob(startDataJob);
+                }
+
+            }
+        });
+
+        threadUpdate.start();
+
+
         //startMqtt();
-
-        //setChart();
-
     }
 
     private void setCity(){
@@ -177,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
             }
         }
     }
-
 
     private void setChart(StartDataResponse startDataResponse) {
 
@@ -258,12 +331,23 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         // add data
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChart.getXAxis().setValueFormatter(new XAxisValueFormat());
-        setData(startDataResponse);
+
+        if(!isStartChartAnimation) {
+            setData(startDataResponse, true);
+            isStartChartAnimation = true;
+        }
+        else
+            setData(startDataResponse, false);
+
         mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
         mChart.invalidate();
+
+
     }
 
-    private void setData(StartDataResponse startDataResponse) {
+    private void setData(StartDataResponse startDataResponse, boolean isZoom) {
+
+
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
             xVals.add(startDataResponse.sensorData.get(i).timestamp + "");
@@ -333,6 +417,14 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         // set data
         mChart.setData(data);
         mChart.notifyDataSetChanged();
+        mChart.invalidate();
+
+        if(isZoom){
+            mChart.zoom(24f,24,10000,24.47f, YAxis.AxisDependency.RIGHT);
+
+            //mChart.moveViewToX(data.getXValMaximumLength());
+        }
+        //mChart.moveViewTo(data.getXValCount(),data.getYValCount(),);
     }
 
     private List<Integer> getCityColors() {
@@ -368,160 +460,81 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         return colors;
     }
 
-    /*
-    private void setChart(int count, List<Float>values){
-
-        mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setOnChartGestureListener(this);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
-
-        // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        // mChart.setScaleXEnabled(true);
-        // mChart.setScaleYEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
-        // set an alternative background color
-        // mChart.setBackgroundColor(Color.GRAY);
-
-        // create a custom MarkerView (extend MarkerView) and specify the layout
-        // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
-
-
-        // x-axis limit line
-        LimitLine llXAxis = new LimitLine(10f, "Index 10");
-        llXAxis.setLineWidth(4f);
-        llXAxis.enableDashedLine(10f, 10f, 0f);
-        llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-        llXAxis.setTextSize(10f);
-
-        XAxis xAxis = mChart.getXAxis();
-        //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
-        //xAxis.addLimitLine(llXAxis); // add x-axis limit line
-
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-
-        leftAxis.setAxisMaxValue(50f);
-        leftAxis.setAxisMinValue(-0f);
-        //leftAxis.setYOffset(20f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setDrawZeroLine(false);
-
-        // limit lines are drawn behind data (and not on top)
-        leftAxis.setDrawLimitLinesBehindData(true);
-
-        mChart.getAxisRight().setEnabled(false);
-
-        //mChart.getViewPortHandler().setMaximumScaleY(2f);
-        //mChart.getViewPortHandler().setMaximumScaleX(2f);
-
-        // add data
-        setData(count, values);
-
-//        mChart.setVisibleXRange(20);
-//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
-//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
-
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
-//        mChart.invalidate();
-
-        // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        //l.setForm(Legend.LegendForm.LINE);
-
-        // // dont forget to refresh the drawing
-        // mChart.invalidate();
-    }
-
-    private void setData(int count, List<Float> range) {
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
-        }
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-            yVals.add(new Entry(range.get(i), i));
-        }
-
-        LineDataSet set1;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setYVals(yVals);
-            mChart.getData().setXVals(xVals);
-            mChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, null);
-
-            // set1.setFillAlpha(110);
-            // set1.setFillColor(Color.RED);
-
-            // set the line to be drawn like this "- - - - - -"
-            set1.enableDashedLine(10f, 5f, 0f);
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.BLACK);
-            set1.setCircleColor(Color.BLACK);
-            set1.setLineWidth(1f);
-            set1.setCircleRadius(1f);
-            set1.setDrawCircleHole(false);
-            set1.setValueTextSize(9f);
-            set1.setDrawFilled(true);
-
-            if (Utils.getSDKInt() >= 18) {
-                // fill drawable only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue);
-                set1.setFillDrawable(drawable);
-            }
-            else {
-                set1.setFillColor(Color.BLACK);
-            }
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
-
-            // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
-
-            // set data
-            mChart.setData(data);
-        }
-    }
-    */
-
-    private void startMqtt(){
-        String clientId = MqttClient.generateClientId();
-        MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "wss://data.iot.us-east-1.amazonaws.com/mqtt",
-                        clientId);
+    private String getSignature(String secret, String message) {
+        String hash = "";
 
         try {
-            IMqttToken token = client.connect();
+
+            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+            sha256_HMAC.init(secret_key);
+
+            hash = new String(Hex.encodeHex(sha256_HMAC.doFinal(message.getBytes())));
+        }
+        catch (Exception e) {
+
+        }
+
+        return hash;
+    }
+
+    private String getSignatureKey(String key, String dateStamp, String regionName, String serviceName){
+
+        String  kDate = getSignature(dateStamp, "AWS4" + key);
+        String  kRegion = getSignature(regionName, kDate);
+        String  kService = getSignature(serviceName, kRegion);
+        String  kSigning = getSignature("aws4_request", kService);
+        return kSigning;
+    }
+
+    private void startClientMqtt(){
+
+        String clientId = MqttClient.generateClientId();
+
+        try {
+
+            client = new MqttWebSocketAsyncClient(
+                    requestUrl, clientId, new MemoryPersistence());
+
+
+            //clientAndroid = new MqttAndroidClient(NucleoApplication.getContext(),requestUrl, clientId,new MemoryPersistence());
+
+            final MqttConnectOptions options = new MqttConnectOptions();
+            options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
+
+            options.setCleanSession(true);
+
+            //IMqttToken token2 = clientAndroid.connect(options);
+
+            IMqttToken token = client.connect(options);
+
+            String topic = "Nucleo/data";
+            int qos = 1;
+            try {
+                IMqttToken subToken = client.subscribe(topic, qos);
+                subToken.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        // The message was published
+
+                        Log.d(TAG_mqtt, "onSuccess");
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken,
+                                          Throwable exception) {
+                        // The subscription could not be performed, maybe the user was not
+                        // authorized to subscribe on the specified topic e.g. using wildcards
+
+                        Log.d(TAG_mqtt, "onFailure");
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+            //IMqttToken token = client.connect(options);
+
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -536,9 +549,269 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
                 }
             });
+
+            client.setCallback(new MqttCallback() {
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message)
+                        throws Exception {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void connectionLost(Throwable cause) {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+            });
+
         } catch (MqttException e) {
             e.printStackTrace();
         }
+
+        /*
+        client = new MqttAndroidClient(NucleoApplication.getContext(), requestUrl, clientId);
+                        */
+    }
+
+    private void startMqtt(){
+
+        // MQTT over WebSocket
+        final String uriString = "wss://data.iot.us-east-1.amazonaws.com/mqtt";
+
+        final String host = "data.iot.us-east-1.amazonaws.com";
+
+        final String protocol = "wss";
+
+        final String uri = "/mqtt";
+
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                POOL_ID, // Identity Pool ID
+                REGION // Region
+        );
+
+
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    awsSessionCredentials = credentialsProvider.getCredentials();
+
+                    Date currentDate = new Date();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                    SimpleDateFormat dateFormatTime = new SimpleDateFormat("HHmmss");
+
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    dateFormatTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                    String date = dateFormat.format(currentDate);
+                    String time = dateFormatTime.format(currentDate);
+
+                    String amzTime = date + "T"+time+"Z";
+
+                    String algorithm = "AWS4-HMAC-SHA256";
+                    String method = "GET";
+
+                    String credentialScope = date + '/' + "us-east-1" + '/' + "iotdevicegateway" + '/' + "aws4_request";
+                    String canonicalQuerystring = "X-Amz-Algorithm=AWS4-HMAC-SHA256";
+                    canonicalQuerystring += "&X-Amz-Credential=" + URLEncoder.encode(awsSessionCredentials.getAWSAccessKeyId() + '/' + credentialScope, "UTF-8");
+                    canonicalQuerystring += "&X-Amz-Date=" + amzTime;
+                    canonicalQuerystring += "&X-Amz-SignedHeaders=host";
+
+                    String canonicalHeaders = "host:" + host + '\n';
+
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    String text = "";
+
+                    md.update(text.getBytes("UTF-8"));
+                    byte[] digest = md.digest();
+                    String  payloadHash = new String(Hex.encodeHex((digest)));
+
+                    String canonicalRequest = method + '\n' + uri + '\n' + canonicalQuerystring + '\n' + canonicalHeaders + '\n'+host+'\n' + payloadHash;
+
+                    md.update(canonicalRequest.getBytes("UTF-8"));
+                    digest = md.digest();
+
+                    String canonicalRequestHash = new String(Hex.encodeHex((digest)));
+
+                    String stringToSign = algorithm + '\n' + amzTime + '\n' + credentialScope + '\n' + canonicalRequestHash;
+                    String signingKey = getSignatureKey(awsSessionCredentials.getAWSSecretKey(), date, "us-east-1", "iotdevicegateway");
+                    String signature = getSignature(signingKey, stringToSign);
+
+                    canonicalQuerystring += "&X-Amz-Signature=" + signature;
+
+                    if (!TextUtils.isEmpty(awsSessionCredentials.getSessionToken())) {
+                        canonicalQuerystring += "&X-Amz-Security-Token=" + URLEncoder.encode(awsSessionCredentials.getSessionToken(), "UTF-8");
+                    }
+
+                    requestUrl = protocol + "://" + host + uri + '?' + canonicalQuerystring;
+
+                    //requestUrl = "tcp://"+host + uri + '?' + canonicalQuerystring;
+
+                    //startClientMqtt();
+
+                    /*
+                    String clientId = MqttClient.generateClientId();
+
+
+                    try {
+
+
+                        String logerName = "MQTT Loger";
+                        client = new MqttWebSocketAsyncClient(
+                                requestUrl, clientId, new MemoryPersistence(), logerName);
+
+
+                        //client = new MqttAsyncClient(requestUrl, clientId,new MemoryPersistence());
+
+                        final MqttConnectOptions options = new MqttConnectOptions();
+                        options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
+
+                        options.setCleanSession(true);
+
+                        IMqttToken token = client.connect(options);
+
+                        String topic = "Nucleo/data";
+                        int qos = 1;
+                        try {
+                            IMqttToken subToken = client.subscribe(topic, qos);
+                            subToken.setActionCallback(new IMqttActionListener() {
+                                @Override
+                                public void onSuccess(IMqttToken asyncActionToken) {
+                                    // The message was published
+
+                                    Log.d(TAG_mqtt, "onSuccess");
+                                }
+
+                                @Override
+                                public void onFailure(IMqttToken asyncActionToken,
+                                                      Throwable exception) {
+                                    // The subscription could not be performed, maybe the user was not
+                                    // authorized to subscribe on the specified topic e.g. using wildcards
+
+                                    Log.d(TAG_mqtt, "onFailure");
+                                }
+                            });
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    catch (Exception e){
+
+                    }
+
+                    */
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+
+        /*
+        // Plain MQTT
+        // final String uriString = "tcp://your-mqtt-broker:1883";
+
+        // Credentials
+        final String clientId = POOL_ID;
+
+        final MqttWebSocketAsyncClient client;
+
+        final MqttAndroidClient client2;
+
+
+        try {
+
+            PahoConsoleLogger.enableLog();
+
+            client = new MqttWebSocketAsyncClient(
+                    uriString, clientId, new MemoryPersistence());
+
+            client2 =
+                    new MqttAndroidClient(this.getApplicationContext(), uriString,
+                            clientId);
+
+            final MqttConnectOptions options = new MqttConnectOptions();
+            options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
+            options.setCleanSession(true);
+            IMqttToken token  = client.connect(options);
+
+            IMqttToken token2  = client2.connect(options);
+
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.d(TAG_mqtt, "onFailure");
+
+                }
+            });
+
+
+            token2.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.d(TAG_mqtt, "onFailure");
+
+                }
+            });
+
+            client.setCallback(new MqttCallback() {
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message)
+                        throws Exception {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+
+                @Override
+                public void connectionLost(Throwable cause) {
+
+                    Log.d(TAG_mqtt, "onSuccess");
+                }
+            });
+
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        */
+
     }
 
     @Override
@@ -548,9 +821,20 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (mStartDataResponse != null)
+            setChart(mStartDataResponse);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+
+        if(cdd!= null)
+            cdd.dismiss();
     }
 
     @Override
@@ -571,27 +855,35 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
                 mStartDataResponse = (StartDataResponse) eventResult.getEntity();
 
+                if(mStartDataResponse.weatherData!=null) {
 
-                if(nameCity!=null) {
-                    nameCity.clear();
-                    nameCity = null;
+                    if(nameCity!=null) {
+                        nameCity.clear();
+                        nameCity = null;
+                    }
+
+                    nameCity = new ArrayList<>();
+
+                    for (int i = 0; i < mStartDataResponse.weatherData.size(); i++) {
+                        nameCity.add(mStartDataResponse.weatherData.get(i).cityName);
+                    }
+                    NucleoApplication.getInstance().setNames(nameCity);
                 }
 
-                nameCity = new ArrayList<>();
 
-                for (int i = 0; i<mStartDataResponse.weatherData.size(); i++) {
-                    nameCity.add(mStartDataResponse.weatherData.get(i).cityName);
-                }
-
-                NucleoApplication.getInstance().setNames(nameCity);
 
                 List<Float> values = new ArrayList<Float>();
 
-                for (int i = 0; i<mStartDataResponse.sensorData.size(); i++){
-                    values.add(mStartDataResponse.sensorData.get(i).temperature);
-                }
+                if(mStartDataResponse.sensorData!=null) {
+                    for (int i = 0; i < mStartDataResponse.sensorData.size(); i++) {
+                        values.add(mStartDataResponse.sensorData.get(i).temperature);
+                    }
 
-                setChart(mStartDataResponse);
+                    if (!isStartChartAnimation)
+                        setChart(mStartDataResponse);
+                    else
+                        setData(mStartDataResponse, false);
+                }
 
                 break;
             case FAIL:
