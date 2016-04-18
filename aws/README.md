@@ -4,13 +4,27 @@ The demo platform is entirely powered by [Amazon Web Services](http://aws.amazon
 
 There is a number of Amazon services to be configured for the Nucleo board demo platform:
 
+1. [Amazon DynamoDB](#amazon-dynamodb)
 1. [AWS IoT](#aws-iot)
 1. AWS Lambda
-1. Amazon DynamoDB
 1. Amazon API Gateway
 1. Amazon CloudWatch
 1. Amazon Cognito
 1. Amazon S3
+
+## AWS DynamoDB
+
+DynamoDB is used as a data storage for the demo platform. We will need two tables: one for sensor data and one for weather data.
+
+Create the sensor data table with the following parameters:
+- Name: any, i.e. `nucleo-sensor`
+- Primary partition key: `metric` (String)
+- Primary sort key: `timestamp` (String)
+
+Create the weather data table with the following parameters:
+- Name: any, i.e. `nucleo-weather`
+- Primary partition key: `city` (Number)
+- Primary sort key: `timestamp` (Number)
 
 ## AWS IoT
 
@@ -26,8 +40,19 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 1. **Certificate**. The thing uses the certificate for authentication. Please see the [Nucleo board software readme](../nucleo/README.md) details on how to generate a CSR. As soon as you get the CSR, upload it by clicking "Create with CSR". Amazon will sign a certificate for you. After the certificate is added, click on it in the IoT console and attach the thing and the policy.
 1. **Rules**. We will need two rules:
   1. A rule to store sensor data to DynamoDB. Click "Create a rule" and set the following parameters:
-    - Name: any, i.e. "store_temperature"
+    - Name: any, i.e. `store_temperature`
 	- Attribute: `state.reported.temperature, timestamp`
 	- Topic filter: `$aws/things/Nucleo/shadow/update/accepted`
 	- Choose an Action: Insert message into a database table (DynamoDB)
-	- Table name: select a table created earlier
+	- Table name: select the sensor data table created earlier
+	- Hash key value: `temperature`
+	- Range key value: `${metadata.reported.temperature.timestamp}`
+	- Payload field: `payload`
+	- Role name: click "Create new role"
+
+## AWS Lambda
+
+There are three Lambdas to set up. See the `lambdas` folder for their sources.
+
+Open the AWS Lambda console and create a lambda for each file. Copy and paste the file contents to the respective lambda.
+
