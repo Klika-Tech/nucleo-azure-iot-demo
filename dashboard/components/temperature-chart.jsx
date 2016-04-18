@@ -12,6 +12,7 @@ module.exports = React.createClass({
 		return {
 			chartParams: {
 				chartType: 'area',
+				units: 'c',
 				showWeatherFor: []
 			}
 		}
@@ -19,11 +20,13 @@ module.exports = React.createClass({
 
 	prepareData: function(data) {
 
+		var that = this
+
 		return _(data)
 				.map(function(item) {
 
 					return {
-						temperature: item.temperature,
+						temperature: that.state.chartParams.units == 'f' ? item.temperature * 9/5 + 32 : item.temperature,
 						date: new Date(item.timestamp * 1000),
 						marker: item.marker
 					}
@@ -97,7 +100,7 @@ module.exports = React.createClass({
 					.style('visibility', 'visible')
 
 				markerTooltip
-					.text(Math.round(d.temperature * 100) / 100 + "C @"
+					.text(Math.round(d.temperature * 100) / 100 + that.state.chartParams.units.toUpperCase() + " @ "
 						+ d3.time.format('%X')(d.date))
 					.style('top', y(d.temperature) - 25 + 'px')
 					.style('display', 'block')
@@ -246,6 +249,9 @@ module.exports = React.createClass({
 			yAxis
 				.scale(y)
 				.tickSize(width)
+				.tickFormat(function(v) {
+					return y.tickFormat()(v) + that.state.chartParams.units.toUpperCase()
+				})
 
 			brush.x(x2)
 

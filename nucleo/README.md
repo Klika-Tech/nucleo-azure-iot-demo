@@ -1,5 +1,4 @@
 # AWS IoT Sample App.
-###### _version 0.2_
 **This project generated for Keil uVision.**
 ## Files
 *nucleo* - **base folder**
