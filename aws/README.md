@@ -75,6 +75,43 @@ We use Amazon Cognito to provide public read only access to IoT data streams.
 
 The configuration here is pretty simple. Create a new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
 
+Along with the pool, an IAM role will be generated. This role will not grant access to our IoT topics by default. We need to extend it:
+1. In Cognito console go to the just created pool and click "Edit identity pool"
+1. Note the Unauthenticated role name. We will need it on the next step.
+1. Go to IAM console
+1. Go to Roles and find the role from the previous step, click on it
+1. Click "Create Role Policy"
+1. Click "Custom Policy" then "Select"
+1. Give it any name and paste the following text into the "Policy Document" text area:
+
+    ```{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:Connect",
+                "iot:Receive"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:Subscribe"
+            ],
+            "Resource": [
+                "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topicfilter/Nucleo/data"
+            ]
+        }
+    ]
+}```
+
+    Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
+1. Click "Apply Policy"
+
 ## Amazon S3
 
 The web dashboard is a static web application which can be hosted on Amazon S3. Just create a bucket and configure it as described in [this guide](https://docs.aws.amazon.com/AmazonS3/latest/dev/HowDoIWebsiteConfiguration.html).
