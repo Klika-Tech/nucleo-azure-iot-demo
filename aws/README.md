@@ -24,7 +24,7 @@ Create the weather data table with the following parameters:
 - Primary partition key: `city` (Number)
 - Primary sort key: `timestamp` (Number)
 
-In fact, you can use any table names but don't forget change them in lambdas code as well.
+In fact, you can use any table names but don't forget to change them in lambdas code as well.
 
 ## AWS IoT
 
@@ -32,7 +32,7 @@ AWS IoT works as a middleware between the "things" (Nucleo board in our case) an
 
 Open the AWS IoT console and create the following resources (click on "Create a resource" button):
 
-1. **Thing**. Name is the only required parameter here. Name the thing whatever you like (i.e. Nucleo). The thing will reflect the Nucleo board status.
+1. **Thing**. Name is the only required parameter here. Set it to "Nucleo". The thing will reflect the Nucleo board status.
 1. **Policy**. The policy defines access rules for the thing. Give it any name and set the parameters:
   - Action: `iot:*`
   - Resource: `*`
@@ -108,8 +108,44 @@ The `getNucleoData` lambda provides initial data set for client applications. We
 
 Now the API endpoint is open and available for invocation by user browsers.
 
+The `nucleoFetchWeather` lambda fetches weather data for a number of cities from [OpenWeatherMap](http://openweathermap.org/) API. Historical data is not available for free accounts so we have to fetch current data from time to time to bild the temperature history. In order to be able to invoke the API please [sign up](https://home.openweathermap.org/users/sign_up) for a free account, get an API key, copy and paste it into the `owmApiKey` variable value.
 
-The `generateNucleoData` lambda is an optional one. It emulates the Nucleo board activity by updating its shadow and generating markers.
+In order to invoke the lambda periodically we can use Amazon CloudWatch scheduling service. AWS Lambda console provides handy funcionality to set up the invokations schedule:
+1. Go to AWS Lambda console and click on the lambda
+1. Go to the "Event sources" tab and click on "Add eventsource"
+1. Select "CloudWatch Events - Schedule" as an event source type
+1. Give a name for the rule and select a schedule expression, i.e. "rate (20 minutes)"
+1. Make sure the "Enable event source" checkbox is checked and click "Submit" button
+
+The `generateNucleoData` lambda is an optional one. It emulates the Nucleo board activity by updating its shadow and generating markers. You can set up an API endpoint or invokations scheduler like for the previous lambdas.
+
+This lambda requires more privileges in order to publish to IoT data streams. Perform the following steps to grant it access:
+1. Go to IAM console and then to "Roles" section
+1. Select the role you generated for the lambdas
+1. Click "Create Role Policy" then "Custom Policy" then "Select" button
+1. Give a name to the policy and copy and paste the following JSON into the "Policy Document" text area:
+
+    ```
+	{
+		"Version": "2012-10-17",
+		"Statement": [
+			{
+				"Effect": "Allow",
+				"Action": [
+					"iot:Publish"
+				],
+				"Resource": [
+					"arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/$aws/things/Nucleo/shadow/update",
+					"arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/Nucleo/data"
+				]
+			}
+		]
+	}
+    ```
+
+    Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
+
+There is one configuration parameter in the lambda code: IoT endpoint host name. It is unique for every AWS account. You can get it in IoT console. Go to the console and click the small button with a question mark on the right then copy any paste the hostname to the `iotEndpoint` variable at the beginning of the lambda code.
 
 ## Amazon Cognito
 

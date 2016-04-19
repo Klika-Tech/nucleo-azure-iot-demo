@@ -1,6 +1,8 @@
+var iotEndpoint = "XXXXXXXXXXXXXX.iot.us-east-1.amazonaws.com"
+
 var aws = require('aws-sdk')
 var dynamo = new aws.DynamoDB()
-var iotData = new aws.IotData({endpoint: "A1YBEPOVZYYAZ5.iot.us-east-1.amazonaws.com"})
+var iotData = new aws.IotData({endpoint: iotEndpoint})
 
 exports.handler=  function(event, context) {
     

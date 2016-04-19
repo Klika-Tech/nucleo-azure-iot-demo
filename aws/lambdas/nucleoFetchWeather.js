@@ -1,3 +1,5 @@
+var owmApiKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
 var aws = require('aws-sdk')
 var dynamo = new aws.DynamoDB()
 var http = require('http')
@@ -23,13 +25,11 @@ exports.handler = function(event, context) {
             {name: 'Moscow', id: 524901}
         ]
         
-    var appid = '3b7d7908a176d9bea104de439de274e1'
-    
     var cityIds = cities
         .map(function(d) {return d.id})
         .reduce(function(prev,cur) { return prev + ',' + cur })
 
-    http.get('http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + appid,
+    http.get('http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + owmApiKey,
         function(res) {
             
             var data = ''
