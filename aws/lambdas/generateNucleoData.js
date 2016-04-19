@@ -35,12 +35,19 @@ exports.handler=  function(event, context) {
 
         var params
             
-        if (event.marker)
+        if (event.marker) {
+        
+            if (rnd > .25) {
+                context.succeed()
+                return
+            }
+        
             params = {
                 topic: "Nucleo/data",
                 payload: "{\"temperature\": " + newTemp + ", \"marker\": true}"
             }
-        else
+            
+        } else
             params = {
                 topic: "$aws/things/Nucleo/shadow/update",
                 payload: "{\"state\": {\"reported\": {\"temperature\": " + newTemp + "}}}"
