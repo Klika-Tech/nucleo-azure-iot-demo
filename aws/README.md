@@ -143,9 +143,8 @@ This lambda requires more privileges in order to publish to IoT data streams. Pe
         ]
     }
     ```
-
     Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
-
+    
 There is one configuration parameter in the lambda code: IoT endpoint host name. It is unique for every AWS account. You can get it in IoT console. Go to the console and click the small button with a question mark on the right then copy any paste the host name to the `iotEndpoint` variable at the beginning of the lambda code.
 
 ## Amazon Cognito
@@ -190,7 +189,6 @@ Along with the pool, an IAM role will be generated. This role will not grant acc
         ]
     }
     ```
-
     Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
 1. Click "Apply Policy"
 
