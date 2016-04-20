@@ -24,7 +24,7 @@ Create the weather data table with the following parameters:
 - Primary partition key: `city` (Number)
 - Primary sort key: `timestamp` (Number)
 
-In fact, you can use any table names but don't forget change them in lambdas code as well.
+In fact, you can use any table names but don't forget to change them in lambdas code as well.
 
 ## AWS IoT
 
@@ -32,12 +32,12 @@ AWS IoT works as a middleware between the "things" (Nucleo board in our case) an
 
 Open the AWS IoT console and create the following resources (click on "Create a resource" button):
 
-1. **Thing**. Name is the only required parameter here. Name the thing whatever you like (i.e. Nucleo). The thing will reflect the Nucleo board status.
+1. **Thing**. Name is the only required parameter here. Set it to `Nucleo`. The thing will reflect the Nucleo board status.
 1. **Policy**. The policy defines access rules for the thing. Give it any name and set the parameters:
   - Action: `iot:*`
   - Resource: `*`
   - Allow: checked
-1. **Certificate**. The thing uses the certificate for authentication. Please see the [Nucleo board software readme](../nucleo/README.md) for details on how to generate a CSR. As soon as you get the CSR, upload it by clicking "Create with CSR". Amazon will sign a certificate for you. After the certificate is added, click on it in the IoT console and attach the thing and the policy.
+1. **Certificate**. The thing will use the certificate for authentication. Please see the [Nucleo board software readme](../nucleo/README.md) for details on how to generate a CSR. As soon as you get the CSR, upload it by clicking "Create with CSR". Amazon will sign a certificate for you. After the certificate is added, click on it in the IoT console and attach the thing and the policy.
 1. **Rules**. We will need two rules:
   1. A rule to store **sensor data** to DynamoDB. Click "Create a rule" and set the following parameters:
     - Name: any, i.e. `store_temperature`
@@ -67,13 +67,130 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 
 There are three Lambdas to set up. See the [lambdas folder](lambdas/) for their sources.
 
-Open the AWS Lambda console and create a lambda for each file. Copy and paste the file contents to the respective lambda.
+Open the AWS Lambda console and create a lambda for each file:
+
+1. Click "Create a Lambda Function"
+1. Click "Skip" on blueprints select page
+1. Give a name to the function and select Node.js runtime
+1. Copy and paste the corresponding file content
+1. If this is the first lambda, select "Basic with DynamoDB" in the "Role" field. This will generate a default IAM role with DynamoDB access. Select this role for the next lambdas as well.
+
+The `getNucleoData` lambda provides initial data set for client applications. We need to assign an API endpoint to it so the clients will be able to call it remotely:
+
+1. Go to the Lambda console and click on the `getNucleoData` lambda
+1. Go to API Endpoints tab
+1. Click "Add API Endpoint" and select "API Gateway" as API endpoint type
+1. Set the API endpoint parameters:
+  - API name: any
+  - Resource name: any, i.e. `/getNucleoData`
+  - Method: GET
+  - Deployment stage: `prod`
+  - Security: Open
+1. Go to API Gateway console and click on the API created on previous step
+1. Click on the GET method of the resource created on previous steps
+1. Click on "Method Request"
+1. Expand "URL Query String Parameters" and click on "Add query string"
+1. Add "metric" and "since" parameters
+1. Return to Method Execution
+1. Click on "Integration Request" and expand "Body Mapping Templates"
+1. Click on "Add mapping template" and specify "application/json" as content type
+1. Copy and paste this JSON into text area:
+
+    ```
+	{
+        "metric": "$input.params('metric')",
+        "since": "$input.params('since')"
+    }
+    ```
+1. Click "Save"
+1. Select the resource in the resources list and click "Actions"
+1. Select "Enable CORS" and then click on "Enable CORS and replace existing CORS headers"
+
+Now the API endpoint is open and available for invocation by user browsers.
+
+The `nucleoFetchWeather` lambda fetches weather data for a number of cities from [OpenWeatherMap](http://openweathermap.org/) API. Historical data is not available for free accounts so we have to fetch current data from time to time to build the temperature history. In order to be able to invoke the API [sign up](https://home.openweathermap.org/users/sign_up) for a free account, get an API key, copy and paste it into the `owmApiKey` variable value.
+
+In order to invoke the lambda periodically we can use Amazon CloudWatch scheduling service. AWS Lambda console provides handy functionality to set up the invocations schedule:
+
+1. Go to AWS Lambda console and click on the lambda
+1. Go to the "Event sources" tab and click on "Add event source"
+1. Select "CloudWatch Events - Schedule" as event source type
+1. Give a name for the rule and select a schedule expression, i.e. "rate (20 minutes)"
+1. Make sure the "Enable event source" checkbox is checked and click "Submit" button
+
+The `generateNucleoData` lambda is an optional one. It emulates the Nucleo board activity by updating its shadow and generating markers. You can set up an API endpoint or invocations scheduler like for the previous lambdas.
+
+This lambda requires more privileges in order to publish to IoT data streams. Perform the following steps to grant it access:
+1. Go to IAM console and then to "Roles" section
+1. Select the role you generated for the lambdas
+1. Click "Create Role Policy" then "Custom Policy" then "Select" button
+1. Give a name to the policy and copy and paste the following JSON into the "Policy Document" text area:
+
+    ```
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "iot:Publish"
+                ],
+                "Resource": [
+                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/$aws/things/Nucleo/shadow/update",
+                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/Nucleo/data"
+                ]
+            }
+        ]
+    }
+    ```
+    Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
+    
+There is one configuration parameter in the lambda code: IoT endpoint host name. It is unique for every AWS account. You can get it in IoT console. Go to the console and click the small button with a question mark on the right then copy any paste the host name to the `iotEndpoint` variable at the beginning of the lambda code.
 
 ## Amazon Cognito
 
 We use Amazon Cognito to provide public read only access to IoT data streams.
 
 The configuration here is pretty simple. Create a new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
+
+Along with the pool, an IAM role will be generated. This role will not grant access to our IoT topics by default. We need to extend it:
+
+1. In Cognito console go to the just created pool and click "Edit identity pool"
+1. Note the Unauthenticated role name. We will need it on the next step.
+1. Go to IAM console
+1. Go to Roles and find the role from the previous step, click on it
+1. Click "Create Role Policy"
+1. Click "Custom Policy" then "Select"
+1. Give it any name and paste the following text into the "Policy Document" text area:
+
+    ```
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "iot:Connect",
+                    "iot:Receive"
+                ],
+                "Resource": [
+                    "*"
+                ]
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "iot:Subscribe"
+                ],
+                "Resource": [
+                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topicfilter/Nucleo/data"
+                ]
+            }
+        ]
+    }
+    ```
+    Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
+1. Click "Apply Policy"
 
 ## Amazon S3
 

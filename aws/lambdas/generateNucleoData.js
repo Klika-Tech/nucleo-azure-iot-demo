@@ -1,6 +1,8 @@
+var iotEndpoint = "XXXXXXXXXXXXXX.iot.us-east-1.amazonaws.com"
+
 var aws = require('aws-sdk')
 var dynamo = new aws.DynamoDB()
-var iotData = new aws.IotData({endpoint: "A1YBEPOVZYYAZ5.iot.us-east-1.amazonaws.com"})
+var iotData = new aws.IotData({endpoint: iotEndpoint})
 
 exports.handler=  function(event, context) {
     
@@ -35,12 +37,19 @@ exports.handler=  function(event, context) {
 
         var params
             
-        if (event.marker)
+        if (event.marker) {
+        
+            if (rnd > .25) {
+                context.succeed()
+                return
+            }
+        
             params = {
                 topic: "Nucleo/data",
                 payload: "{\"temperature\": " + newTemp + ", \"marker\": true}"
             }
-        else
+            
+        } else
             params = {
                 topic: "$aws/things/Nucleo/shadow/update",
                 payload: "{\"state\": {\"reported\": {\"temperature\": " + newTemp + "}}}"

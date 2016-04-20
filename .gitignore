@@ -1,4 +1,5 @@
-.eslintrc.json
+dashboard/.eslintrc.json
 *.swp
-node_modules
-dist
+dashboard/node_modules
+dashboard/dist
+dashboard/config.js

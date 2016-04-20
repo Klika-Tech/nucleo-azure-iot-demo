@@ -8,11 +8,12 @@ In order to build the application perform the following:
 
 1. [Install Node.js](https://docs.npmjs.com/getting-started/installing-node)
 1. Run `npm install`. This will install the dependencies.
+1. Rename `config.dist.js` to `config.js` and update the configuration parameters. See [AWS Setup Guide](../aws/README.md) for AWS parameters details.
 1. Run `node_modules/webpack/bin/webpack.js -p`. This will build the application. The application files are now in the `dist` folder.
 
 ## (optional) Deployment
 
-One of the simpliest hosting options is Amazon S3. In order to deploy the application to S3 do the following:
+One of the simplest hosting options is Amazon S3. In order to deploy the application to S3 do the following:
 
 1. Configure an S3 bucket to host a website as described in the [AWS setup guide](../aws/README.md)
 1. [Install and configure AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html)
