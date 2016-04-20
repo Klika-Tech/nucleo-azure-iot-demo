@@ -15,6 +15,8 @@ var TemperatureChart = require('./components/temperature-chart')
 
 require('./main.scss')
 
+var config = require('./config')
+
 
 var Loader = React.createClass({
 
@@ -50,7 +52,7 @@ var App = React.createClass({
 		// getting the data for the last 24h
 		var since = Math.round(Date.now() / 1000) - 86400
 
-		return fetch('https://v7yns2sew7.execute-api.us-east-1.amazonaws.com/prod/getNucleoMetrics?metric=temperature&since=' + since)
+		return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
 		  .then(function(response) {
 		  	return response.json()
 		  })
@@ -78,9 +80,9 @@ var App = React.createClass({
 
 		var that = this
 
-		AWS.config.region = 'us-east-1'
+		AWS.config.region = config.awsRegion
 		var awsCreds = new AWS.CognitoIdentityCredentials({
-			IdentityPoolId: 'us-east-1:094c9684-1d40-449f-8305-b4ad3d6e5ff4',
+			IdentityPoolId: config.cognitoIdentityPool,
 		})
 
 		awsCreds.get(function(err) {
@@ -91,10 +93,10 @@ var App = React.createClass({
 			}
 			var url = SigV4Utils.getSignedUrl(
 				'wss',
-				'data.iot.us-east-1.amazonaws.com',
+				config.iotEndpoint,
 				'/mqtt',
 				'iotdevicegateway',
-				'us-east-1',
+				config.awsRegion,
 				awsCreds.accessKeyId,
 				awsCreds.secretAccessKey,
 				awsCreds.sessionToken)
@@ -105,7 +107,7 @@ var App = React.createClass({
 
 			client.on('connect', function() {
 
-				client.subscribe(['Nucleo/data', 'Nucleo/test'])
+				client.subscribe(config.mqttTopic)
 
 				// There is a limit on AWS side on websocket connection duration (5 minutes)
 				// So we're closing the connection in advance
@@ -118,9 +120,10 @@ var App = React.createClass({
 				
 				var msg = msg.toString()
 
-				console.log('Message recieved.\nTopic: ' + topic + '\nPayload: ' + msg)
+				if (config.debug)
+					console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, msg)
 
-				if (topic == 'Nucleo/data') {
+				if (topic == config.mqttTopic) {
 
 					var dataItem = that.prepareData(JSON.parse(msg.toString()))
 

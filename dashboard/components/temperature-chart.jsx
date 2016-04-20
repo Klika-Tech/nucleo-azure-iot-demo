@@ -26,7 +26,10 @@ module.exports = React.createClass({
 				.map(function(item) {
 
 					return {
-						temperature: that.state.chartParams.units == 'f' ? item.temperature * 9/5 + 32 : item.temperature,
+						temperature:
+							that.state.chartParams.units == 'f'
+								? item.temperature * 9/5 + 32
+								: item.temperature,
 						date: new Date(item.timestamp * 1000),
 						marker: item.marker
 					}
