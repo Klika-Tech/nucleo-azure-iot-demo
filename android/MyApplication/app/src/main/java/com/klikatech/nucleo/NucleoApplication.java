@@ -18,7 +18,7 @@ public class NucleoApplication extends Application {
     public static boolean IS_DEBUG;
 
     public boolean isStart = false;
-    public boolean isLine = true;
+    public boolean isLine = false;
 
     private List<String> names;
     private List<String> selectedNames;

@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                         set.setDrawCircleHole(false);
                         set.setDrawCircles(false);
                         set.setValueTextSize(9f);
-                        set.setDrawFilled(!NucleoApplication.getInstance().isLine);
+                        set.setDrawFilled(false);
                         dataSets.add(set);
                     }
                 }
