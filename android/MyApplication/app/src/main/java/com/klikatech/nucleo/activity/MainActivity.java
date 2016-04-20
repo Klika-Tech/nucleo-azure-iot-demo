@@ -420,9 +420,10 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         mChart.invalidate();
 
         if(isZoom){
-            mChart.zoom(24f,24,10000,24.47f, YAxis.AxisDependency.RIGHT);
+            //mChart.zoom(20f,20f,10000,0, YAxis.AxisDependency.RIGHT);
+            //mChart.moveViewToY(yVals.get(yVals.size()-1).getVal(), YAxis.AxisDependency.RIGHT);
 
-            //mChart.moveViewToX(data.getXValMaximumLength());
+            mChart.zoomAndCenterAnimated(24f,24f,xVals.size()-1,yVals.get(yVals.size()-1).getVal(),YAxis.AxisDependency.LEFT,3000);
         }
         //mChart.moveViewTo(data.getXValCount(),data.getYValCount(),);
     }
