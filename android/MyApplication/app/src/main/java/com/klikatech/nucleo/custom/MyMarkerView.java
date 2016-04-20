@@ -10,15 +10,24 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.klikatech.nucleo.R;
+import com.klikatech.nucleo.net.response.StartDataResponse;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class MyMarkerView extends MarkerView {
 
     private TextView tvContent;
 
-    public MyMarkerView(Context context, int layoutResource) {
+    private StartDataResponse startDataResponse;
+
+    public MyMarkerView(Context context, int layoutResource, StartDataResponse startDataResponse) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(R.id.tvContent);
+
+        this.startDataResponse = startDataResponse;
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
@@ -26,14 +35,22 @@ public class MyMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
+        SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
+        dateFormatTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String time = "";
+        if(startDataResponse.sensorData!=null&&startDataResponse.sensorData.size()!=0)
+             time = dateFormatTime.format(startDataResponse.sensorData.get(e.getXIndex()).timestamp);
+
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
+            tvContent.setText(Utils.formatNumber(ce.getHigh(), 2, true)+" \u00B0"+" @" + time);
 
-            tvContent.setText("t = " + Utils.formatNumber(ce.getHigh(), 2, true));
         } else {
 
-            tvContent.setText("t = " + Utils.formatNumber(e.getVal(), 2, true));
+            tvContent.setText(Utils.formatNumber(e.getVal(), 2, true)+" \u00B0"+" @"+time);
+
         }
     }
 

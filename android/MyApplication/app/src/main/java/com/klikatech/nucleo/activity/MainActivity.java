@@ -278,13 +278,6 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         // set an alternative background color
         mChart.setBackgroundColor(Color.TRANSPARENT);
 
-        // create a custom MarkerView (extend MarkerView) and specify the layout
-        // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
-
 
         // x-axis limit line
         LimitLine llXAxis = new LimitLine(10f, "Index 10");
@@ -339,6 +332,13 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         else
             setData(startDataResponse, false);
 
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view, startDataResponse);
+
+        // set the marker to the chart
+        mChart.setMarkerView(mv);
+
         mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
         mChart.invalidate();
 
@@ -347,85 +347,90 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
     private void setData(StartDataResponse startDataResponse, boolean isZoom) {
 
+        if(startDataResponse.sensorData!=null && startDataResponse.sensorData.size()!=0) {
+            ArrayList<String> xVals = new ArrayList<String>();
+            for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
+                xVals.add(startDataResponse.sensorData.get(i).timestamp + "");
+            }
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-            xVals.add(startDataResponse.sensorData.get(i).timestamp + "");
-        }
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            //sensor data
+            ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        //sensor data
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+            for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
+                yVals.add(new Entry(startDataResponse.sensorData.get(i).temperature, i));
+            }
 
-        for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-            yVals.add(new Entry(startDataResponse.sensorData.get(i).temperature, i));
-        }
+            LineDataSet set1;
 
-        LineDataSet set1;
+            set1 = new LineDataSet(yVals, null);
+            set1.setColor(getResources().getColor(R.color.bg_city1));
+            set1.setLineWidth(1f);
+            set1.setDrawCircles(false);
+            set1.setDrawCircleHole(false);
+            set1.setValueTextSize(9f);
+            set1.setDrawFilled(!NucleoApplication.getInstance().isLine);
+            dataSets.add(set1);
 
-        set1 = new LineDataSet(yVals, null);
-        set1.setColor(getResources().getColor(R.color.bg_city1));
-        set1.setLineWidth(1f);
-        set1.setDrawCircles(false);
-        set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
-        set1.setDrawFilled(!NucleoApplication.getInstance().isLine);
-        dataSets.add(set1);
+            if (NucleoApplication.getInstance().getSelectedCity() != null && NucleoApplication.getInstance().getSelectedCity().size() != 0) {
+                List<Integer> colors = getCityColors();
 
-        if(NucleoApplication.getInstance().getSelectedCity()!=null && NucleoApplication.getInstance().getSelectedCity().size()!=0) {
-            List<Integer> colors = getCityColors();
-            for (int i = 0; i < startDataResponse.weatherData.size(); i++) {
+                if(startDataResponse.weatherData!=null && startDataResponse.weatherData.size()!=0) {
 
-                if (NucleoApplication.getInstance().getSelectedCity().contains(startDataResponse.weatherData.get(i).cityName)) {
+                    for (int i = 0; i < startDataResponse.weatherData.size(); i++) {
 
-                    StartDataResponse.weatherData weatherData = startDataResponse.weatherData.get(i);
+                        if (NucleoApplication.getInstance().getSelectedCity().contains(startDataResponse.weatherData.get(i).cityName)) {
 
-                    if (weatherData.tempData.size() > 0) {
-                        ArrayList<Entry> yValsTemp = new ArrayList<Entry>();
-                        yValsTemp.clear();
-                        for (int j = 0; j < weatherData.tempData.size(); j++) {
+                            StartDataResponse.weatherData weatherData = startDataResponse.weatherData.get(i);
 
-                            int k = Math.round(xVals.size()*(weatherData.tempData.get(j).timestamp-startDataResponse.sensorData.get(0).timestamp)/
-                                    (startDataResponse.sensorData.get(startDataResponse.sensorData.size()-1).timestamp-startDataResponse.sensorData.get(0).timestamp));
+                            if (weatherData.tempData.size() > 0) {
+                                ArrayList<Entry> yValsTemp = new ArrayList<Entry>();
+                                yValsTemp.clear();
+                                for (int j = 0; j < weatherData.tempData.size(); j++) {
+
+                                    int k = Math.round(xVals.size() * (weatherData.tempData.get(j).timestamp - startDataResponse.sensorData.get(0).timestamp) /
+                                            (startDataResponse.sensorData.get(startDataResponse.sensorData.size() - 1).timestamp - startDataResponse.sensorData.get(0).timestamp));
 
 
-                            if(k<=xVals.size()-1)
-                                yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, k));
+                                    if (k <= xVals.size() - 1)
+                                        yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, k));
+                                }
+
+                                LineDataSet set;
+                                set = new LineDataSet(yValsTemp, null);
+
+                                if (i < 7)
+                                    set.setColor(colors.get(i));
+                                else
+                                    set.setColor(colors.get(7));
+
+                                set.setLineWidth(1f);
+                                set.setDrawCircleHole(false);
+                                set.setDrawCircles(false);
+                                set.setValueTextSize(9f);
+                                set.setDrawFilled(false);
+                                dataSets.add(set);
+                            }
                         }
-
-                        LineDataSet set;
-                        set = new LineDataSet(yValsTemp, null);
-
-                        if (i < 7)
-                            set.setColor(colors.get(i));
-                        else
-                            set.setColor(colors.get(7));
-
-                        set.setLineWidth(1f);
-                        set.setDrawCircleHole(false);
-                        set.setDrawCircles(false);
-                        set.setValueTextSize(9f);
-                        set.setDrawFilled(false);
-                        dataSets.add(set);
                     }
                 }
             }
+
+            LineData data = new LineData(xVals, dataSets);
+
+            // set data
+            mChart.setData(data);
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
+
+            if (isZoom) {
+                //mChart.zoom(20f,20f,10000,0, YAxis.AxisDependency.RIGHT);
+                //mChart.moveViewToY(yVals.get(yVals.size()-1).getVal(), YAxis.AxisDependency.RIGHT);
+
+                mChart.zoomAndCenterAnimated(24f, 24f, xVals.size() - 1, yVals.get(yVals.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 3000);
+            }
+            //mChart.moveViewTo(data.getXValCount(),data.getYValCount(),);
         }
-
-        LineData data = new LineData(xVals, dataSets);
-
-        // set data
-        mChart.setData(data);
-        mChart.notifyDataSetChanged();
-        mChart.invalidate();
-
-        if(isZoom){
-            //mChart.zoom(20f,20f,10000,0, YAxis.AxisDependency.RIGHT);
-            //mChart.moveViewToY(yVals.get(yVals.size()-1).getVal(), YAxis.AxisDependency.RIGHT);
-
-            mChart.zoomAndCenterAnimated(24f,24f,xVals.size()-1,yVals.get(yVals.size()-1).getVal(),YAxis.AxisDependency.LEFT,3000);
-        }
-        //mChart.moveViewTo(data.getXValCount(),data.getYValCount(),);
     }
 
     private List<Integer> getCityColors() {
@@ -865,20 +870,17 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
                     nameCity = new ArrayList<>();
 
-                    for (int i = 0; i < mStartDataResponse.weatherData.size(); i++) {
-                        nameCity.add(mStartDataResponse.weatherData.get(i).cityName);
+                    if(mStartDataResponse.weatherData!=null && mStartDataResponse.weatherData.size()!=0) {
+
+                        for (int i = 0; i < mStartDataResponse.weatherData.size(); i++) {
+                            nameCity.add(mStartDataResponse.weatherData.get(i).cityName);
+                        }
+                        NucleoApplication.getInstance().setNames(nameCity);
                     }
-                    NucleoApplication.getInstance().setNames(nameCity);
                 }
 
-
-
-                List<Float> values = new ArrayList<Float>();
-
                 if(mStartDataResponse.sensorData!=null) {
-                    for (int i = 0; i < mStartDataResponse.sensorData.size(); i++) {
-                        values.add(mStartDataResponse.sensorData.get(i).temperature);
-                    }
+
 
                     if (!isStartChartAnimation)
                         setChart(mStartDataResponse);
