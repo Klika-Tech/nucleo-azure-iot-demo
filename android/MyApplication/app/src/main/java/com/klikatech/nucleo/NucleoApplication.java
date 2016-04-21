@@ -4,10 +4,19 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
+import com.google.gson.JsonObject;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.path.android.jobqueue.log.CustomLogger;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NucleoApplication extends Application {
@@ -22,6 +31,10 @@ public class NucleoApplication extends Application {
 
     private List<String> names;
     private List<String> selectedNames;
+
+
+    private String endpoint_hostname;
+    private String region;
 
     public NucleoApplication() {
         super();
@@ -41,6 +54,16 @@ public class NucleoApplication extends Application {
         applicationInst = this;
         configureJobManager();
         mContext = getApplicationContext();
+
+        try {
+            JSONObject settings = (new JSONObject(loadSettingsJSONFromAsset())).getJSONObject("settings");
+
+            endpoint_hostname = settings.getString("endpoint_hostname");
+            region = settings.getString("region");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Context getContext(){
@@ -93,6 +116,32 @@ public class NucleoApplication extends Application {
     public List<String> getSelectedCity(){
 
         return this.selectedNames;
+    }
+
+    private String loadSettingsJSONFromAsset() {
+
+        String json = null;
+        try {
+            InputStream is = getAssets().open("settings.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return json;
+    }
+
+    public String getEndPointHost(){
+        return endpoint_hostname;
+    }
+
+    public String getRegion(){
+        return region;
     }
 }
 

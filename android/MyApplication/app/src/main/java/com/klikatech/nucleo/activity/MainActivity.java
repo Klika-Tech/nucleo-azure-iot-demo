@@ -62,6 +62,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -994,6 +996,8 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
             dismiss();
         }
     }
+
+
 }
 
 

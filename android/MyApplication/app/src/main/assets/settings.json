@@ -1,0 +1,7 @@
+{
+  "settings":
+  {
+      "endpoint_hostname": "https://v7yns2sew7.execute-api.us-east-1.amazonaws.com",
+      "region":"us-east-1"
+  }
+}

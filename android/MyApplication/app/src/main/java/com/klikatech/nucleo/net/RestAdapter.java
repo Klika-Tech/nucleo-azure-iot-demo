@@ -37,7 +37,8 @@ public class RestAdapter {
                 .setLogLevel(NucleoApplication.IS_DEBUG ? retrofit.RestAdapter.LogLevel.FULL : retrofit.RestAdapter.LogLevel.NONE)
                 .setConverter(new GsonConverter(getGson()))
                 .setErrorHandler(new ReffErrorHandler())
-                .setEndpoint(Api.HOST_0)
+                //.setEndpoint(Api.HOST_0)
+                .setEndpoint(NucleoApplication.getInstance().getEndPointHost())
                 .build();
     }
 
