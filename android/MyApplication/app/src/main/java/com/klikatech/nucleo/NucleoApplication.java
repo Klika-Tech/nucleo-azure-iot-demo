@@ -35,6 +35,7 @@ public class NucleoApplication extends Application {
 
     private String endpoint_hostname;
     private String region;
+    private String topic;
 
     public NucleoApplication() {
         super();
@@ -60,6 +61,7 @@ public class NucleoApplication extends Application {
 
             endpoint_hostname = settings.getString("endpoint_hostname");
             region = settings.getString("region");
+            topic = settings.getString("topic");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -142,6 +144,10 @@ public class NucleoApplication extends Application {
 
     public String getRegion(){
         return region;
+    }
+
+    public String getTopic(){
+        return topic;
     }
 }
 
