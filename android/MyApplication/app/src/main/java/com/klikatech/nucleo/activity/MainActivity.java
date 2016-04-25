@@ -8,10 +8,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.AWSSessionCredentials;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
@@ -31,7 +28,6 @@ import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
 import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.iot.AWSIotClient;
 import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
@@ -63,34 +59,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.KeyStore;
-import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.UUID;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import de.greenrobot.event.EventBus;
-
-import static com.klikatech.nucleo.net.response.StartDataResponse.*;
 
 public class MainActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
 
     public final String LOG_TAG = "NUCLEO_TAG";
 
-    private static final String CUSTOMER_SPECIFIC_ENDPOINT_PREFIX = "A1YBEPOVZYYAZ5";
-    private static final String COGNITO_POOL_ID = "us-east-1:094c9684-1d40-449f-8305-b4ad3d6e5ff4";
-    private static final String AWS_IOT_POLICY_NAME = "Nucleo-Policy";
-    private static final Regions MY_REGION = Regions.US_EAST_1;
-    private static final String KEYSTORE_NAME = "iot_keystore";
-    private static final String KEYSTORE_PASSWORD = "password";
-    private static final String CERTIFICATE_ID = "default";
 
     AWSIotClient mIotAndroidClient;
     AWSIotMqttManager mqttManager;
@@ -468,13 +447,13 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
         credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(), // context
-                COGNITO_POOL_ID, // Identity Pool ID
-                MY_REGION // Region
+                NucleoApplication.getInstance().getPoolId(), // Identity Pool ID
+                NucleoApplication.getInstance().getRegion() // Region
         );
 
-        Region region = Region.getRegion(MY_REGION);
+        Region region = Region.getRegion(NucleoApplication.getInstance().getRegion());
 
-        mqttManager = new AWSIotMqttManager(clientId, region, CUSTOMER_SPECIFIC_ENDPOINT_PREFIX);
+        mqttManager = new AWSIotMqttManager(clientId, region, NucleoApplication.getInstance().getEndpointPrefix());
 
         mqttManager.setKeepAlive(10);
 
@@ -486,9 +465,9 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         mIotAndroidClient.setRegion(region);
 
         keystorePath = getFilesDir().getPath();
-        keystoreName = KEYSTORE_NAME;
-        keystorePassword = KEYSTORE_PASSWORD;
-        certificateId = CERTIFICATE_ID;
+        keystoreName = NucleoApplication.getInstance().getKeystoreName();
+        keystorePassword = NucleoApplication.getInstance().getKeystorePass();
+        certificateId = NucleoApplication.getInstance().getCertId();
 
         try {
             if (AWSIotKeystoreHelper.isKeystorePresent(keystorePath, keystoreName)) {
@@ -541,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
                         AttachPrincipalPolicyRequest policyAttachRequest =
                                 new AttachPrincipalPolicyRequest();
-                        policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
+                        policyAttachRequest.setPolicyName(NucleoApplication.getInstance().getIotPolicyName());
                         policyAttachRequest.setPrincipal(createKeysAndCertificateResult
                                 .getCertificateArn());
                         mIotAndroidClient.attachPrincipalPolicy(policyAttachRequest);

@@ -4,19 +4,16 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
-import com.google.gson.JsonObject;
+import com.amazonaws.regions.Regions;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.path.android.jobqueue.log.CustomLogger;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class NucleoApplication extends Application {
@@ -34,8 +31,15 @@ public class NucleoApplication extends Application {
 
 
     private String endpoint_hostname;
-    private String region;
     private String topic;
+
+    private String customer_specific_endpoint_prefix;
+    private String cognito_pool_id;
+    private String aws_iot_policy_name;
+    private Regions my_region;
+    private String keystore_name;
+    private String keystore_password;
+    private String certificate_id;
 
     public NucleoApplication() {
         super();
@@ -60,8 +64,16 @@ public class NucleoApplication extends Application {
             JSONObject settings = (new JSONObject(loadSettingsJSONFromAsset())).getJSONObject("settings");
 
             endpoint_hostname = settings.getString("endpoint_hostname");
-            region = settings.getString("region");
             topic = settings.getString("topic");
+
+            my_region = Regions.fromName(settings.getString("region"));
+
+            customer_specific_endpoint_prefix = settings.getString("customer_specific_endpoint_prefix");
+            cognito_pool_id = settings.getString("cognito_pool_id");
+            aws_iot_policy_name = settings.getString("aws_iot_policy_name");
+            keystore_name = settings.getString("keystore_name");
+            keystore_password = settings.getString("keystore_password");
+            certificate_id = settings.getString("certificate_id");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -138,16 +150,41 @@ public class NucleoApplication extends Application {
         return json;
     }
 
+    public String getTopic(){
+        return topic;
+    }
+
     public String getEndPointHost(){
         return endpoint_hostname;
     }
 
-    public String getRegion(){
-        return region;
+    public Regions getRegion(){
+        return my_region;
     }
 
-    public String getTopic(){
-        return topic;
+    public String getEndpointPrefix(){
+        return customer_specific_endpoint_prefix;
     }
+
+    public String getPoolId(){
+        return cognito_pool_id;
+    }
+
+    public String getIotPolicyName(){
+        return aws_iot_policy_name;
+    }
+
+    public String getKeystoreName(){
+        return keystore_name;
+    }
+
+    public String getKeystorePass(){
+        return keystore_password;
+    }
+
+    public String getCertId(){
+        return certificate_id;
+    }
+
 }
 
