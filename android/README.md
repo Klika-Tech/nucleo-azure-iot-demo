@@ -1,7 +1,11 @@
-# Build Instructions
+# Nucleo Board Demo Android App
+
+## Build Instructions
 
 1. Download android studio 2.0 http://developer.android.com/intl/ru/sdk/index.html and android SDK >=15 
 1. Import project (select folder MyApplication)
+1. Go to `app/src/main/assets` and rename the settings template file `settings.dist.json` to `settings.json`
+1. Open the settings file and substitute all placeholders in setting values with your AWS account details. See [AWS Setup Guide](../aws/README.md) for details
 1. Build and Start application
 
 
