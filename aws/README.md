@@ -33,7 +33,7 @@ AWS IoT works as a middleware between the "things" (Nucleo board in our case) an
 Open the AWS IoT console and create the following resources (click on "Create a resource" button):
 
 1. **Thing**. Name is the only required parameter here. Set it to `Nucleo`. The thing will reflect the Nucleo board status.
-1. **Policy**. The policy defines access rules for the thing. Give it any name and set the parameters:
+1. **Policy**. The policy defines access rules for the thing. Name it `Nucleo-Policy` and set the parameters:
   - Action: `iot:*`
   - Resource: `*`
   - Allow: checked
@@ -156,41 +156,31 @@ The configuration here is pretty simple. Create a new identity pool. Give it any
 Along with the pool, an IAM role will be generated. This role will not grant access to our IoT topics by default. We need to extend it:
 
 1. In Cognito console go to the just created pool and click "Edit identity pool"
-1. Note the Unauthenticated role name. We will need it on the next step.
+1. Note the authenticated and unauthenticated role name. We will need it on the next step.
 1. Go to IAM console
-1. Go to Roles and find the role from the previous step, click on it
-1. Click "Create Role Policy"
-1. Click "Custom Policy" then "Select"
-1. Give it any name and paste the following text into the "Policy Document" text area:
+1. Go to Roles and find the roles from the previous step, do the following for both:
+  1. Click on the role
+  1. Click "Create Role Policy"
+  1. Click "Custom Policy" then "Select"
+  1. Give it any name and paste the following text into the "Policy Document" text area:
 
-    ```
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "iot:Connect",
-                    "iot:Receive"
-                ],
-                "Resource": [
-                    "*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "iot:Subscribe"
-                ],
-                "Resource": [
-                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topicfilter/Nucleo/data"
-                ]
-            }
-        ]
-    }
-    ```
-    Don't forget to replace `<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>` with your account id.
-1. Click "Apply Policy"
+      ```
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "iot:*"
+                  ],
+                  "Resource": [
+                      "*"
+                  ]
+              }
+          ]
+      }
+      ```
+  1. Click "Apply Policy"
 
 ## Amazon S3
 
