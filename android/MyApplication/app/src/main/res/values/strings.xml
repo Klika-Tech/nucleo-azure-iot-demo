@@ -14,4 +14,7 @@
     <string name="setting_rb_line">Line</string>
     <string name="setting_rb_area">Area</string>
 
+    <string name="setting_rb_cels">C</string>
+    <string name="setting_rb_faren">F</string>
+
 </resources>

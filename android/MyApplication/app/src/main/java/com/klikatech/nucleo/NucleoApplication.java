@@ -25,6 +25,7 @@ public class NucleoApplication extends Application {
 
     public boolean isStart = false;
     public boolean isLine = false;
+    public boolean isFarengate = false;
 
     private List<String> names;
     private List<String> selectedNames;

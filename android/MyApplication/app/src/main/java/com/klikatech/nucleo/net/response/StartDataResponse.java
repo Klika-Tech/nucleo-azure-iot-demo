@@ -24,6 +24,10 @@ public class StartDataResponse {
         @Expose
         @SerializedName("timestamp")
         public long timestamp;
+
+        @Expose
+        @SerializedName("marker")
+        public boolean marker;
     }
 
     public class weatherData{

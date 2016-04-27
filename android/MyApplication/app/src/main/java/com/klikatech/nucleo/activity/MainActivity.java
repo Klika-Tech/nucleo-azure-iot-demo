@@ -7,9 +7,8 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,7 +50,6 @@ import com.klikatech.nucleo.custom.MyMarkerView;
 import com.klikatech.nucleo.custom.XAxisValueFormat;
 import com.klikatech.nucleo.event.StartDataEvent;
 import com.klikatech.nucleo.job.StartDataJob;
-
 import com.klikatech.nucleo.net.response.StartDataResponse;
 import com.path.android.jobqueue.JobManager;
 
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
     String keystorePath;
     String keystoreName;
     String keystorePassword;
-
+    boolean zoomOut = false;
     KeyStore clientKeyStore = null;
     String certificateId;
 
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
     JobManager jobManager = NucleoApplication.getInstance().getJobManager();
     List<String> nameCity;
-
     private StartDataResponse mStartDataResponse;
 
     private LineChart mChart;
@@ -313,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
 
         // set the marker to the chart
         mChart.setMarkerView(mv);
-
         mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
         mChart.invalidate();
 
@@ -323,6 +319,8 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
     private void setData(StartDataResponse startDataResponse, boolean isZoom) {
 
         if (startDataResponse.sensorData != null && startDataResponse.sensorData.size() != 0) {
+
+
             ArrayList<String> xVals = new ArrayList<String>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
                 xVals.add(startDataResponse.sensorData.get(i).timestamp + "");
@@ -335,6 +333,12 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
                 yVals.add(new Entry(startDataResponse.sensorData.get(i).temperature, i));
             }
+            ArrayList<Entry> yCircleVals = new ArrayList<Entry>();
+            for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
+                if (startDataResponse.sensorData.get(i).marker) {
+                    yCircleVals.add(new Entry(startDataResponse.sensorData.get(i).temperature, i));
+                }
+            }
 
             LineDataSet set1;
 
@@ -343,9 +347,24 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
             set1.setLineWidth(1f);
             set1.setDrawCircles(false);
             set1.setDrawCircleHole(false);
-            set1.setValueTextSize(9f);
+            set1.setDrawValues(false);
             set1.setDrawFilled(!NucleoApplication.getInstance().isLine);
+            set1.setDrawHighlightIndicators(false);
             dataSets.add(set1);
+
+            LineDataSet setCircle;
+            setCircle = new LineDataSet(yCircleVals, null);
+            setCircle.setColor(getResources().getColor(android.R.color.transparent));
+            setCircle.setLineWidth(0f);
+            setCircle.setCircleColor(getResources().getColor(android.R.color.holo_red_dark));
+            setCircle.setCircleRadius(2f);
+            setCircle.setDrawCircles(true);
+            setCircle.setDrawCircleHole(false);
+            setCircle.setDrawValues(false);
+            setCircle.setDrawFilled(false);
+            setCircle.setDrawHighlightIndicators(false);
+            dataSets.add(setCircle);
+
 
             if (NucleoApplication.getInstance().getSelectedCity() != null && NucleoApplication.getInstance().getSelectedCity().size() != 0) {
                 List<Integer> colors = getCityColors();
@@ -362,13 +381,18 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                                 ArrayList<Entry> yValsTemp = new ArrayList<Entry>();
                                 yValsTemp.clear();
                                 for (int j = 0; j < weatherData.tempData.size(); j++) {
+                                    if (j == 0) {
+                                        yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, 0));
+                                    } else if (j == weatherData.tempData.size() - 1) {
+                                        yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, xVals.size() - 1));
+                                    } else {
+                                        int k = Math.round(xVals.size() * (weatherData.tempData.get(j).timestamp - startDataResponse.sensorData.get(0).timestamp) /
+                                                (startDataResponse.sensorData.get(startDataResponse.sensorData.size() - 1).timestamp - startDataResponse.sensorData.get(0).timestamp));
+                                        if (k <= xVals.size() - 1) {
+                                            yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, k));
+                                        }
+                                    }
 
-                                    int k = Math.round(xVals.size() * (weatherData.tempData.get(j).timestamp - startDataResponse.sensorData.get(0).timestamp) /
-                                            (startDataResponse.sensorData.get(startDataResponse.sensorData.size() - 1).timestamp - startDataResponse.sensorData.get(0).timestamp));
-
-
-                                    if (k <= xVals.size() - 1)
-                                        yValsTemp.add(new Entry(weatherData.tempData.get(j).temperature, k));
                                 }
 
                                 LineDataSet set;
@@ -382,8 +406,10 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                                 set.setLineWidth(1f);
                                 set.setDrawCircleHole(false);
                                 set.setDrawCircles(false);
-                                set.setValueTextSize(9f);
+                                set.setValueTextSize(0f);
                                 set.setDrawFilled(false);
+                                set.setDrawValues(false);
+                                set.setDrawHighlightIndicators(false);
                                 dataSets.add(set);
                             }
                         }
@@ -403,6 +429,12 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                 //mChart.moveViewToY(yVals.get(yVals.size()-1).getVal(), YAxis.AxisDependency.RIGHT);
 
                 mChart.zoomAndCenterAnimated(24f, 24f, xVals.size() - 1, yVals.get(yVals.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 3000);
+            }
+
+            if (zoomOut) {
+                do {
+                    mChart.zoomOut();
+                } while (!mChart.isFullyZoomedOut());
             }
             //mChart.moveViewTo(data.getXValCount(),data.getYValCount(),);
         }
@@ -614,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                                             float temperature = (float) tJson.getDouble("temperature");
                                             long time = tJson.getLong("timestamp");
 
-                                            if(mStartDataResponse!=null && mStartDataResponse.sensorData!=null && mStartDataResponse.sensorData.size()!=0) {
+                                            if (mStartDataResponse != null && mStartDataResponse.sensorData != null && mStartDataResponse.sensorData.size() != 0) {
 
                                                 StartDataResponse.sensorData sensorData = mStartDataResponse.sensorData.get(0);
 
@@ -667,7 +699,7 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
         if (cdd != null)
             cdd.dismiss();
 
-}
+    }
 
     @Override
     protected void onResume() {
@@ -704,6 +736,8 @@ public class MainActivity extends AppCompatActivity implements OnChartGestureLis
                         NucleoApplication.getInstance().setNames(nameCity);
                     }
                 }
+
+                zoomOut = (nameCity != null);
 
                 if (mStartDataResponse.sensorData != null) {
 

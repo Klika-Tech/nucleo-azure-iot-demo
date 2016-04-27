@@ -68,6 +68,33 @@ public class SettingActivity extends AppCompatActivity {
                     NucleoApplication.getInstance().isLine = false;
             }
         });
+
+        final RadioButton rbC = (RadioButton)findViewById(R.id.rb_celsius);
+        final RadioButton rbF = (RadioButton)findViewById(R.id.rb_farengate);
+
+
+        if(NucleoApplication.getInstance().isFarengate)
+            rbF.setChecked(true);
+        else
+            rbC.setChecked(true);
+
+        rbC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(rbC.isChecked())
+                    NucleoApplication.getInstance().isFarengate = false;
+            }
+        });
+
+        rbF.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(rbF.isChecked())
+                    NucleoApplication.getInstance().isFarengate = true;
+            }
+        });
+
     }
 
     @Override

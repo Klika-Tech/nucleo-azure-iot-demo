@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
+import com.klikatech.nucleo.NucleoApplication;
 import com.klikatech.nucleo.R;
 import com.klikatech.nucleo.net.response.StartDataResponse;
 
@@ -45,11 +46,21 @@ public class MyMarkerView extends MarkerView {
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
-            tvContent.setText(Utils.formatNumber(ce.getHigh(), 2, true)+" \u00B0"+" @" + time);
+
+            if(!NucleoApplication.getInstance().isFarengate)
+                tvContent.setText(Utils.formatNumber(ce.getHigh(), 2, true)+" \u2103"+" @" + time);
+            else{
+
+                tvContent.setText(Utils.formatNumber(9*ce.getHigh()/5+32, 2, true)+" \u2109"+" @" + time);
+            }
+
 
         } else {
 
-            tvContent.setText(Utils.formatNumber(e.getVal(), 2, true)+" \u00B0"+" @"+time);
+            if(!NucleoApplication.getInstance().isFarengate)
+                tvContent.setText(Utils.formatNumber(e.getVal(), 2, true)+" \u2103"+" @"+time);
+            else
+                tvContent.setText(Utils.formatNumber(9*e.getVal()/5+32, 2, true)+" \u2109"+" @"+time);
 
         }
     }
