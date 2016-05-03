@@ -80,6 +80,9 @@
 #include "aws_iot_mqtt_interface.h"
 #include "aws_iot_config.h"
 #include "x_nucleo_iks01a1_hum_temp.h"
+#include "x_nucleo_iks01a1_pressure.h"
+#include "x_nucleo_iks01a1_magneto.h"
+#include "x_nucleo_iks01a1_imu_6axes.h"
 
 #define PATH_MAX 800
 char *optarg;
@@ -117,6 +120,7 @@ uint32_t port = AWS_IOT_MQTT_PORT;
 */
 uint32_t publishCount = 0;
 float TEMPERATURE_Value;
+float HUMIDITY_Value;
 int32_t d1 = 0, d2 = 0;
 
 
@@ -185,8 +189,8 @@ int aws_main() {
 	connectParams.pDevicePrivateKeyLocation = clientKey;
 	connectParams.mqttCommandTimeout_ms = 15000;//2000 //ST
 	connectParams.tlsHandshakeTimeout_ms = 15000;//5000; //ST
-	//connectParams.isSSLHostnameVerify = true;// ensure this is set to true for production
-	connectParams.isSSLHostnameVerify = false;// ensure this is set to true for production 
+	connectParams.isSSLHostnameVerify = true;// ensure this is set to true for production
+	//connectParams.isSSLHostnameVerify = false;// ensure this is set to true for production 
 	connectParams.disconnectHandler = disconnectCallbackHandler;
 
 	INFO("Connecting AWS IoT...");
@@ -244,6 +248,10 @@ int aws_main() {
 			
 			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
 			ERROR("Temperature reading error\r\n");
+			
+			if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
+			ERROR("Humidity rreading error\r\n");
+			
 			// Here is subscription topic.
 			Params.pTopic = "Nucleo/data";
 			
@@ -263,6 +271,10 @@ int aws_main() {
 			fsleep(4900);
 			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
 			ERROR("Temperature reading error\r\n");
+			
+			if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
+			ERROR("Humidity rreading error\r\n");
+			
 			// Here is subscription topic for shadow.
 			Params.pTopic = "$aws/things/Nucleo/shadow/update";
 			
