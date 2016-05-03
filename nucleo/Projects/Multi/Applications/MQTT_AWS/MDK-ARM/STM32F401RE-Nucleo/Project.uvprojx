@@ -332,7 +332,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F401xE, USART_PRINT_MSG, USE_STM32F4XX_NUCLEO, IOT_INFO, IOT_ERROR, _IOT_WARN, _IOT_DEBUG, MBEDTLS_PLATFORM_C, MBEDTLS_X509_USE_C, MBEDTLS_PEM_PARSE_C, MBEDTLS_FS_IO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Inc;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\..\..\..\..\..\Drivers\BSP\X-NUCLEO-IDW01M1;..\..\..\..\..\..\Drivers\BSP\STM32F4xx-Nucleo;..\..\..\..\..\..\Middlewares\ST\STM32_SPWF01SA\Inc;..\..\..\..\..\..\Middlewares\ST\STM32_SPWF01SA\Utils;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils;..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\protocol\mqtt;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\protocol\mqtt\aws_iot_embedded_client_wrapper;..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTClient-C\src;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils;..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1;..\..\..\..\..\..\Drivers\BSP\Components\hts221;..\..\..\..\..\..\Drivers\BSP\Components\Common</IncludePath>
+              <IncludePath>..\..\Inc;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\..\..\..\..\..\Drivers\BSP\X-NUCLEO-IDW01M1;..\..\..\..\..\..\Drivers\BSP\STM32F4xx-Nucleo;..\..\..\..\..\..\Middlewares\ST\STM32_SPWF01SA\Inc;..\..\..\..\..\..\Middlewares\ST\STM32_SPWF01SA\Utils;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils;..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\protocol\mqtt;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\protocol\mqtt\aws_iot_embedded_client_wrapper;..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTClient-C\src;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow;..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils;..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1;..\..\..\..\..\..\Drivers\BSP\Components\hts221;..\..\..\..\..\..\Drivers\BSP\Components\lps25h;..\..\..\..\..\..\Drivers\BSP\Components\lps25hb;..\..\..\..\..\..\Drivers\BSP\Components\lis3mdl;..\..\..\..\..\..\Drivers\BSP\Components\lsm6ds0;..\..\..\..\..\..\Drivers\BSP\Components\lsm6ds3;..\..\..\..\..\..\Drivers\BSP\Components\Common</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -3677,6 +3677,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1\x_nucleo_iks01a1.c</FilePath>
             </File>
+            <File>
+              <FileName>x_nucleo_iks01a1_pressure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1\x_nucleo_iks01a1_pressure.c</FilePath>
+            </File>
+            <File>
+              <FileName>x_nucleo_iks01a1_imu_6axes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1\x_nucleo_iks01a1_imu_6axes.c</FilePath>
+            </File>
+            <File>
+              <FileName>x_nucleo_iks01a1_magneto.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\X_NUCLEO_IKS01A1\x_nucleo_iks01a1_magneto.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3686,6 +3701,31 @@
               <FileName>hts221.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\hts221\hts221.c</FilePath>
+            </File>
+            <File>
+              <FileName>lps25h.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lps25h\lps25h.c</FilePath>
+            </File>
+            <File>
+              <FileName>lps25hb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lps25hb\lps25hb.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis3mdl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lis3mdl\lis3mdl.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6ds0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6ds0\lsm6ds0.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6ds3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6ds3\lsm6ds3.c</FilePath>
             </File>
           </Files>
         </Group>
