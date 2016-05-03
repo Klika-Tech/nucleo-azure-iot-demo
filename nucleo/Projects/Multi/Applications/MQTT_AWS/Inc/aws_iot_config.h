@@ -59,17 +59,25 @@
 #ifndef SRC_SHADOW_IOT_SHADOW_CONFIG_H_
 #define SRC_SHADOW_IOT_SHADOW_CONFIG_H_
 
-// Get from console
-// =================================================
-#define AWS_IOT_MQTT_HOST              "PAASINSTANCE.iot.some-were-1.amazonaws.com"
+#define AWS_IOT_MQTT_HOST              "A1YBEPOVZYYAZ5.iot.us-east-1.amazonaws.com"
 #define AWS_IOT_MQTT_PORT              8883
 #define AWS_IOT_MQTT_CLIENT_ID         "Nucleo"
 #define AWS_IOT_MY_THING_NAME          "Nucleo"
-// NOTE : Not used in this project because target platform have no file system.
-#define AWS_IOT_ROOT_CA_FILENAME	   "</Path/to/root-CA.crt>"
-#define AWS_IOT_CERTIFICATE_FILENAME   "</Path/to/certificate.pem.crt>"
-#define AWS_IOT_PRIVATE_KEY_FILENAME   "</Path/to/private.pem.key>"
-// =================================================
+#define AWS_IOT_ROOT_CA_FILENAME      "root-CA.crt"
+#define AWS_IOT_CERTIFICATE_FILENAME   "132c58eafa-certificate.pem.crt"
+#define AWS_IOT_PRIVATE_KEY_FILENAME   "132c58eafa-private.pem.key"
+
+//// Get from console
+//// =================================================
+//#define AWS_IOT_MQTT_HOST              "PAASINSTANCE.iot.some-were-1.amazonaws.com"
+//#define AWS_IOT_MQTT_PORT              8883
+//#define AWS_IOT_MQTT_CLIENT_ID         "Nucleo"
+//#define AWS_IOT_MY_THING_NAME          "Nucleo"
+//// NOTE : Not used in this project because target platform have no file system.
+//#define AWS_IOT_ROOT_CA_FILENAME	   "</Path/to/root-CA.crt>"
+//#define AWS_IOT_CERTIFICATE_FILENAME   "</Path/to/certificate.pem.crt>"
+//#define AWS_IOT_PRIVATE_KEY_FILENAME   "</Path/to/private.pem.key>"
+//// =================================================
 
 
 

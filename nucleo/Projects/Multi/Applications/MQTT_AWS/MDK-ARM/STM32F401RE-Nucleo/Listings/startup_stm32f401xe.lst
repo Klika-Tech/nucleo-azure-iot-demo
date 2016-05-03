@@ -761,13 +761,13 @@ ARM Macro Assembler    Page 12
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\startup_stm32f401xe.d -o.\objects\startup_stm32f401xe
-.o -IC:\Users\Alexandr\Desktop\X-Cloud-AWS\Projects\Multi\Applications\MQTT_AWS
-\MDK-ARM\STM32F401RE-Nucleo\RTE -IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\
-Drivers\CMSIS\Device\ST\STM32F4xx\Include -IC:\Keil_v5\ARM\CMSIS\Include -IC:\K
-eil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0 --predefine="__MICROLIB SETA 1" --pred
-efine="__UVISION_VERSION SETA 518" --predefine="STM32F401xE SETA 1" --list=.\li
-stings\startup_stm32f401xe.lst ..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F
-4xx\Source\Templates\arm\startup_stm32f401xe.s
+.o -I"C:\Users\Alexandr Cheorny\Desktop\nucleo-metrics\nucleo\Projects\Multi\Ap
+plications\MQTT_AWS\MDK-ARM\STM32F401RE-Nucleo\RTE" -IC:\Keil_v5\ARM\PACK\Keil\
+STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include -IC:\Keil_v5\ARM\
+CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0 --predefine="__MIC
+ROLIB SETA 1" --predefine="__UVISION_VERSION SETA 518" --predefine="STM32F401xE
+ SETA 1" --list=.\listings\startup_stm32f401xe.lst ..\..\..\..\..\..\Drivers\CM
+SIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f401xe.s
 
 
 

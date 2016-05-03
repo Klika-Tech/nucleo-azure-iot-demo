@@ -410,6 +410,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Src\aws_main.c</FilePath>
             </File>
+            <File>
+              <FileName>aws_iot_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Inc\aws_iot_config.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

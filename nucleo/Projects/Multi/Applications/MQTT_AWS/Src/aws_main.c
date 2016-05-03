@@ -119,9 +119,22 @@ uint32_t port = AWS_IOT_MQTT_PORT;
 * @brief This parameter will avoid infinite loop of publish and exit the program after certain number of publishes
 */
 uint32_t publishCount = 0;
+//HUM-TEMP sens
 float TEMPERATURE_Value;
 float HUMIDITY_Value;
+//PRESS-TEMP sens
+float TEMPERATURE_2_Value;
+float PRESSURE_Value;
+//6 axis GYRO-ACCEL
+Axes_TypeDef ACCELEROMETER_Value;
+Axes_TypeDef GYROSCOPE_Value;
+
+
+
+
 int32_t d1 = 0, d2 = 0;
+
+
 
 
 //	char CurrentWD[PATH_MAX + 1];
@@ -169,8 +182,14 @@ int aws_main() {
 	
 	IoT_Error_t rc = NONE_ERROR;
 	int32_t i = 0;
-	bool infinitePublishFlag = true;
 
+
+	INFO("HUMID sens %d", (int)BSP_HUM_TEMP_Init());
+	INFO("PRESS sens %d", (int)BSP_PRESSURE_Init());
+	INFO("GYRO|ACCEL sens %d", (int)BSP_IMU_6AXES_Init());
+	INFO("MAGNETO sens %d", (int)BSP_MAGNETO_Init());
+	
+	BSP_IMU_6AXES_Enable_Free_Fall_Detection_Ext();
 
 	INFO("\nAWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
 
@@ -231,60 +250,79 @@ int aws_main() {
 	//Params.pTopic = "Nucleo/shadow/update";
 
 
-	if(publishCount != 0){
-		infinitePublishFlag = false;
-	}
-
-	while (NONE_ERROR == rc && (publishCount > 0 || infinitePublishFlag)) {
-
+#define BUTTONDELAY 100 //Delay in ms to check the button state
+#define DELAYRATIO 5		//Multiplyer for autopublish/buttonpress
+int delays = DELAYRATIO;
+bool Publish = false;
+	while (NONE_ERROR == rc) {
+	delays--;
 		//Max time the yield function will wait for read messages
 		rc = aws_iot_mqtt_yield(2000); //100
 		DEBUG("-->sleep");
-		fsleep(100);
 		
-		if(BpushButtonState)
+		fsleep(BUTTONDELAY); //Sleeping for BUTTONDELAY ms
+		
+		if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
+		ERROR("[TEMP0|HUMID] Sensor TEMP0 reading error\r\n");
+			
+		if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
+		ERROR("[TEMP0|HUMID] Sensor HUMID reading error\r\n");
+		
+		if(BSP_PRESSURE_GetTemperature((float *)&TEMPERATURE_2_Value) != PRESSURE_OK)
+		ERROR("[PRESS|TEMP1] Sensor TEMP1 reading error\r\n");
+		
+		if(BSP_PRESSURE_GetPressure((float *)&PRESSURE_Value) != PRESSURE_OK)
+		ERROR("[PRESS|TEMP1] Sensor PRESS reading error\r\n");
+		
+		if(BSP_IMU_6AXES_X_GetAxes((Axes_TypeDef *)&ACCELEROMETER_Value) != IMU_6AXES_OK)
+		ERROR("[ACCEL|GYROS] Sensor ACCEL reading error\r\n");
+		
+		if(BSP_IMU_6AXES_G_GetAxes((Axes_TypeDef *)&GYROSCOPE_Value) != IMU_6AXES_OK)
+		ERROR("[ACCEL|GYROS] Sensor GYROS reading error\r\n");
+						
+		if(BpushButtonState) //Polling button state each BUTTONDELAY ms
 		{
 			BpushButtonState = 0;
-			
-			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
-			ERROR("Temperature reading error\r\n");
-			
-			if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
-			ERROR("Humidity rreading error\r\n");
-			
+			Publish = true;
+						
 			// Here is subscription topic.
 			Params.pTopic = "Nucleo/data";
 			
-			sprintf(cPayload, "{\"temperature\": %f, \"marker\": true}", TEMPERATURE_Value);
-			Msg.PayloadLen = strlen(cPayload);
-			Params.MessageParams = Msg;
-			
-			INFO("Button pressed - Publishing Temperature:%f", TEMPERATURE_Value);
-			rc = aws_iot_mqtt_publish(&Params);
-						
-			if(publishCount > 0){
-				publishCount--;
-			}
+			sprintf(cPayload, "{\"temperature\": %f, \"humidity\": %f, \"pressure\": %f,\"marker\": true}",
+													  TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value);
+			INFO("[BTTN] Publishing\
+			[TEMP0] : %f\
+			[TEMP1] : %f\
+			[HUMID] : %f\
+			[PRESS] : %f\
+			", TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value);
 		}
 		else
 		{
-			fsleep(4900);
-			if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
-			ERROR("Temperature reading error\r\n");
-			
-			if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
-			ERROR("Humidity rreading error\r\n");
-			
-			// Here is subscription topic for shadow.
-			Params.pTopic = "$aws/things/Nucleo/shadow/update";
-			
-			sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f}}}", TEMPERATURE_Value);
+			if(delays == 0){
+				Publish = true;
+				// Here is subscription topic for shadow.
+				Params.pTopic = "$aws/things/Nucleo/shadow/update";
+				
+				sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f, \"humidity\": %f, \"pressure\": %f}}}",
+																											   TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value);
+				INFO("[AUTO] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)",
+				TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
+				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
+				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000);
+				
+				delays = DELAYRATIO;
+			}
+			else if (delays < 0) delays = DELAYRATIO;
+		}
+		if(Publish)
+		{
+			Publish = false;
 			Msg.PayloadLen = strlen(cPayload);
 			Params.MessageParams = Msg;
-			
-			INFO("___________Publishing Temperature:%f", TEMPERATURE_Value);
 			rc = aws_iot_mqtt_publish(&Params);
 		}
+		
 				
 	}
 

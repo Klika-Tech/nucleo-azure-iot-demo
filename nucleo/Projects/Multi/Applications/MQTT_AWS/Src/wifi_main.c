@@ -47,11 +47,19 @@
 */
 
 
-// Wifi SSID and Password 
-char * ssid = "<SSID>";
-char * seckey = "<SECURE KEY>";
+// Wifi SSID and Password
 
+char * ssid = "FreeHotSpot IDBar";
+char * seckey = "internet";
 
+//char * ssid = "Kafe1";
+//char * seckey = "11111111";
+
+//char * ssid = "iPhone alex";
+//char * seckey = "perasperaadastra";
+
+//char * ssid = "Klika-Tech";
+//char * seckey = "4klikateam";
 
 /**
 * Private typedef -----------------------------------------------------------
