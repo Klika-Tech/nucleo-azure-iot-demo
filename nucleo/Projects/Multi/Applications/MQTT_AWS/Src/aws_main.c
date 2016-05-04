@@ -128,6 +128,7 @@ float PRESSURE_Value;
 //6 axis GYRO-ACCEL
 Axes_TypeDef ACCELEROMETER_Value;
 Axes_TypeDef GYROSCOPE_Value;
+Axes_TypeDef MAGNETOMETER_Value;
 
 
 
@@ -279,6 +280,9 @@ bool Publish = false;
 		
 		if(BSP_IMU_6AXES_G_GetAxes((Axes_TypeDef *)&GYROSCOPE_Value) != IMU_6AXES_OK)
 		ERROR("[ACCEL|GYROS] Sensor GYROS reading error\r\n");
+		
+		if(BSP_MAGNETO_M_GetAxes((Axes_TypeDef *)&MAGNETOMETER_Value) != MAGNETO_OK)
+		ERROR("[MAGNET] Sensor MAGNET reading error\r\n");
 						
 		if(BpushButtonState) //Polling button state each BUTTONDELAY ms
 		{
@@ -288,32 +292,39 @@ bool Publish = false;
 			// Here is subscription topic.
 			Params.pTopic = "Nucleo/data";
 			
-			sprintf(cPayload, "{\"temperature\": %f, \"humidity\": %f, \"pressure\": %f,\"marker\": true}",
-													  TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value);
-			INFO("[BTTN] Publishing\
-			[TEMP0] : %f\
-			[TEMP1] : %f\
-			[HUMID] : %f\
-			[PRESS] : %f\
-			", TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value);
+			sprintf(cPayload, "{\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f], \"marker\": true}",
+				TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value,
+				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
+				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
+				(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
+			INFO("[BTTN] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)[MAGNET] : (%f, %f, %f)",
+				TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
+				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
+				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
+				(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
 		}
 		else
 		{
-			if(delays == 0){
+			if(delays <= 0)
+			{
 				Publish = true;
 				// Here is subscription topic for shadow.
 				Params.pTopic = "$aws/things/Nucleo/shadow/update";
 				
-				sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f, \"humidity\": %f, \"pressure\": %f}}}",
-																											   TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value);
-				INFO("[AUTO] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)",
-				TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
-				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
-				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000);
+				sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f]}}}",
+					TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value,
+					(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
+					(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
+					(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
+				INFO("[AUTO] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)[MAGNET] : (%f, %f, %f)",
+					TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
+					(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
+					(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
+					(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
 				
 				delays = DELAYRATIO;
 			}
-			else if (delays < 0) delays = DELAYRATIO;
+			
 		}
 		if(Publish)
 		{
