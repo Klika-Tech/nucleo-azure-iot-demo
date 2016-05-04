@@ -118,25 +118,29 @@ uint32_t port = AWS_IOT_MQTT_PORT;
 /**
 * @brief This parameter will avoid infinite loop of publish and exit the program after certain number of publishes
 */
-uint32_t publishCount = 0;
+typedef struct
+{
+	float x;
+	float y;
+	float z;
+}Vector3;
+
+int Axes_Vector3(Axes_TypeDef *pSrcData, Vector3 *pDesData)
+{
+	pDesData->x = pSrcData->AXIS_X * 0.001f;
+	pDesData->y = pSrcData->AXIS_Y * 0.001f;
+	pDesData->z = pSrcData->AXIS_Z * 0.001f;
+}
+
 //HUM-TEMP sens
-float TEMPERATURE_Value;
-float HUMIDITY_Value;
+float Temperature;
+float Humidity;
 //PRESS-TEMP sens
-float TEMPERATURE_2_Value;
-float PRESSURE_Value;
+float Pressure;
 //6 axis GYRO-ACCEL
-Axes_TypeDef ACCELEROMETER_Value;
-Axes_TypeDef GYROSCOPE_Value;
-Axes_TypeDef MAGNETOMETER_Value;
-
-
-
-
-int32_t d1 = 0, d2 = 0;
-
-
-
+Vector3 Accelerometer;
+Vector3 Gyroscope;
+Vector3 Magnetometer;
 
 //	char CurrentWD[PATH_MAX + 1];
 char cafileName[] = AWS_IOT_ROOT_CA_FILENAME;
@@ -242,7 +246,7 @@ int aws_main() {
 
 	MQTTMessageParams Msg = MQTTMessageParamsDefault;
 	Msg.qos = QOS_0;
-	char cPayload[100];
+	char cPayload[2000];
 	sprintf(cPayload, "%s : %d ", "hello from STM", i);
 	Msg.pPayload = (void *) cPayload;
 
@@ -251,10 +255,13 @@ int aws_main() {
 	//Params.pTopic = "Nucleo/shadow/update";
 
 
-#define BUTTONDELAY 100 //Delay in ms to check the button state
-#define DELAYRATIO 5		//Multiplyer for autopublish/buttonpress
-int delays = DELAYRATIO;
-bool Publish = false;
+	#define BUTTONDELAY 100 //Delay in ms to check the button state
+	#define DELAYRATIO 5		//Multiplyer for autopublish/buttonpress
+	int delays = DELAYRATIO;
+	bool Publish = false;
+	
+	Axes_TypeDef temp_axes;
+	
 	while (NONE_ERROR == rc) {
 	delays--;
 		//Max time the yield function will wait for read messages
@@ -263,27 +270,27 @@ bool Publish = false;
 		
 		fsleep(BUTTONDELAY); //Sleeping for BUTTONDELAY ms
 		
-		if(BSP_HUM_TEMP_GetTemperature((float *)&TEMPERATURE_Value) != HUM_TEMP_OK)
-		ERROR("[TEMP0|HUMID] Sensor TEMP0 reading error\r\n");
-			
-		if(BSP_HUM_TEMP_GetHumidity((float *)&HUMIDITY_Value) != HUM_TEMP_OK)
-		ERROR("[TEMP0|HUMID] Sensor HUMID reading error\r\n");
+		if(BSP_HUM_TEMP_GetTemperature((float *)&Temperature) != HUM_TEMP_OK)
+		ERROR("Sensor TEMP0 reading error\r\n");
 		
-		if(BSP_PRESSURE_GetTemperature((float *)&TEMPERATURE_2_Value) != PRESSURE_OK)
-		ERROR("[PRESS|TEMP1] Sensor TEMP1 reading error\r\n");
+		if(BSP_HUM_TEMP_GetHumidity((float *)&Humidity) != HUM_TEMP_OK)
+		ERROR("Sensor HUMID reading error\r\n");
 		
-		if(BSP_PRESSURE_GetPressure((float *)&PRESSURE_Value) != PRESSURE_OK)
-		ERROR("[PRESS|TEMP1] Sensor PRESS reading error\r\n");
+		if(BSP_PRESSURE_GetPressure((float *)&Pressure) != PRESSURE_OK)
+		ERROR("Sensor PRESS reading error\r\n");
 		
-		if(BSP_IMU_6AXES_X_GetAxes((Axes_TypeDef *)&ACCELEROMETER_Value) != IMU_6AXES_OK)
-		ERROR("[ACCEL|GYROS] Sensor ACCEL reading error\r\n");
+		if(BSP_IMU_6AXES_X_GetAxes((Axes_TypeDef *)&temp_axes) != IMU_6AXES_OK)
+		ERROR("Sensor ACCEL reading error\r\n");
+		Axes_Vector3(&temp_axes, &Accelerometer);
 		
-		if(BSP_IMU_6AXES_G_GetAxes((Axes_TypeDef *)&GYROSCOPE_Value) != IMU_6AXES_OK)
-		ERROR("[ACCEL|GYROS] Sensor GYROS reading error\r\n");
+		if(BSP_IMU_6AXES_G_GetAxes((Axes_TypeDef *)&temp_axes) != IMU_6AXES_OK)
+		ERROR("Sensor GYROS reading error\r\n");
+		Axes_Vector3(&temp_axes, &Gyroscope);
 		
-		if(BSP_MAGNETO_M_GetAxes((Axes_TypeDef *)&MAGNETOMETER_Value) != MAGNETO_OK)
-		ERROR("[MAGNET] Sensor MAGNET reading error\r\n");
-						
+		if(BSP_MAGNETO_M_GetAxes((Axes_TypeDef *)&temp_axes) != MAGNETO_OK)
+		ERROR("Sensor MAGNET reading error\r\n");
+		Axes_Vector3(&temp_axes, &Magnetometer);
+
 		if(BpushButtonState) //Polling button state each BUTTONDELAY ms
 		{
 			BpushButtonState = 0;
@@ -293,15 +300,15 @@ bool Publish = false;
 			Params.pTopic = "Nucleo/data";
 			
 			sprintf(cPayload, "{\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f], \"marker\": true}",
-				TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value,
-				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
-				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
-				(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
-			INFO("[BTTN] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)[MAGNET] : (%f, %f, %f)",
-				TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
-				(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
-				(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
-				(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
+				Temperature, Humidity, Pressure, Accelerometer.x, Accelerometer.y, Accelerometer.z, Gyroscope.x, Gyroscope.y, Gyroscope.z, Magnetometer.x, Magnetometer.y, Magnetometer.z);
+			
+			INFO("[BTTN] Publishing...");
+			INFO("       [TEMPE]: %f", Temperature);
+			INFO("       [HUMID]: %f", Humidity);
+			INFO("       [PRESS]: %f", Pressure);
+			INFO("       [ACCEL]: (%f, %f, %f)", Accelerometer.x, Accelerometer.y, Accelerometer.z);
+			INFO("       [GYROS]: (%f, %f, %f)", Gyroscope.x, Gyroscope.y, Gyroscope.z);
+			INFO("       [MAGNE]: (%f, %f, %f)", Magnetometer.x, Magnetometer.y, Magnetometer.z);
 		}
 		else
 		{
@@ -312,15 +319,15 @@ bool Publish = false;
 				Params.pTopic = "$aws/things/Nucleo/shadow/update";
 				
 				sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f]}}}",
-					TEMPERATURE_Value, HUMIDITY_Value, PRESSURE_Value,
-					(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
-					(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
-					(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
-				INFO("[AUTO] Publishing\r\n[TEMP0] : %f\r\n[TEMP1] : %f\r\n[HUMID] : %f\r\n[PRESS] : %f\r\n[ACCEL] : (%f, %f, %f)\r\n[GYROS] : (%f, %f, %f)[MAGNET] : (%f, %f, %f)",
-					TEMPERATURE_Value, TEMPERATURE_2_Value, HUMIDITY_Value, PRESSURE_Value,
-					(float)ACCELEROMETER_Value.AXIS_X/1000, (float)ACCELEROMETER_Value.AXIS_Y/1000, (float)ACCELEROMETER_Value.AXIS_Z/1000,
-					(float)GYROSCOPE_Value.AXIS_X/1000, (float)GYROSCOPE_Value.AXIS_Y/1000, (float)GYROSCOPE_Value.AXIS_Z/1000,
-					(float)MAGNETOMETER_Value.AXIS_X/1000, (float)MAGNETOMETER_Value.AXIS_Y/1000, (float)MAGNETOMETER_Value.AXIS_Z/1000);
+					Temperature, Humidity, Pressure, Accelerometer.x, Accelerometer.y, Accelerometer.z, Gyroscope.x, Gyroscope.y, Gyroscope.z, Magnetometer.x, Magnetometer.y, Magnetometer.z);
+				
+				INFO("[AUTO] Publishing...");
+				INFO("       [TEMPE]: %f", Temperature);
+				INFO("       [HUMID]: %f", Humidity);
+				INFO("       [PRESS]: %f", Pressure);
+				INFO("       [ACCEL]: (%f, %f, %f)", Accelerometer.x, Accelerometer.y, Accelerometer.z);
+				INFO("       [GYROS]: (%f, %f, %f)", Gyroscope.x, Gyroscope.y, Gyroscope.z);
+				INFO("       [MAGNE]: (%f, %f, %f)", Magnetometer.x, Magnetometer.y, Magnetometer.z);
 				
 				delays = DELAYRATIO;
 			}
