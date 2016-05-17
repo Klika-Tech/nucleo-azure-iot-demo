@@ -271,7 +271,7 @@ public class GraphFragment extends Fragment {
                         NucleoApplication.getInstance().setNames(nameCity);
                     }
                 }
-                zoomOut = (nameCity != null);
+                zoomOut = (nameCity != null) && SENSOR == Constants.S_TEMP;
                 if (mStartDataResponse.sensorData != null) {
                     if (!isStartChartAnimation)
                         setChart(mStartDataResponse);
@@ -297,9 +297,9 @@ public class GraphFragment extends Fragment {
     }
 
     private void reInitData() {
-
+        // TODO: 12.05.2016 refactor this
         if (mStartDataResponse == null) return;
-        setData(mStartDataResponse, false);
+        setData(mStartDataResponse, true);
 
         switch (SENSOR) {
             case Constants.S_TEMP:
@@ -322,7 +322,7 @@ public class GraphFragment extends Fragment {
     private void reInitView() {
         Resources resources = getResources();
         YAxis leftAxis = mChart.getAxisLeft();
-
+        // TODO: 13.05.2016
         switch (SENSOR) {
             case Constants.S_TEMP:
                 updateTitle(resources.getString(R.string.x_sensor, resources.getString(R.string.title_temperature)));
@@ -357,6 +357,33 @@ public class GraphFragment extends Fragment {
             default:
                 break;
         }
+    }
+
+    private boolean isValueNull(StartDataResponse startDataResponse, int i) {
+        boolean result = false;
+        switch (SENSOR) {
+            case Constants.S_TEMP:
+                result = startDataResponse.sensorData.get(i).temperature == 0f;
+                break;
+            case Constants.S_HUM:
+                result = startDataResponse.sensorData.get(i).humidity == 0f;
+                break;
+            case Constants.S_BAR:
+                result = startDataResponse.sensorData.get(i).pressure == 0f;
+                break;
+            case Constants.S_MAGN:
+                result = startDataResponse.sensorData.get(i).magnetometer == null;
+                break;
+            case Constants.S_G:
+                result = startDataResponse.sensorData.get(i).gyroscope == null;
+                break;
+            case Constants.S_A:
+                result = startDataResponse.sensorData.get(i).accelerometer == null;
+                break;
+            default:
+                break;
+        }
+        return result;
     }
 
     private float getValueBySensor(StartDataResponse startDataResponse, int i) {
@@ -411,13 +438,15 @@ public class GraphFragment extends Fragment {
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
             ArrayList<Entry> yVals = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                yVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
+                if (!isValueNull(startDataResponse, i))
+                    yVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
             }
             ArrayList<Entry> yCircleVals = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                if (startDataResponse.sensorData.get(i).marker && (getValueBySensor(startDataResponse, i) != 0f)) {
-                    yCircleVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
-                }
+                if (!isValueNull(startDataResponse, i))
+                    if (startDataResponse.sensorData.get(i).marker && (getValueBySensor(startDataResponse, i) != 0f)) {
+                        yCircleVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
+                    }
             }
 
             dataSets.add(getLineDataSet(yVals, R.color.bg_city1));
@@ -480,22 +509,26 @@ public class GraphFragment extends Fragment {
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
             ArrayList<Entry> yValsX = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                yValsX.add(new Entry(getValueBySensor(startDataResponse, i, 0), i));
+                if (!isValueNull(startDataResponse, i))
+                    yValsX.add(new Entry(getValueBySensor(startDataResponse, i, 0), i));
             }
             ArrayList<Entry> yValsY = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                yValsY.add(new Entry(getValueBySensor(startDataResponse, i, 1), i));
+                if (!isValueNull(startDataResponse, i))
+                    yValsY.add(new Entry(getValueBySensor(startDataResponse, i, 1), i));
             }
             ArrayList<Entry> yValsZ = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                yValsZ.add(new Entry(getValueBySensor(startDataResponse, i, 2), i));
+                if (!isValueNull(startDataResponse, i))
+                    yValsZ.add(new Entry(getValueBySensor(startDataResponse, i, 2), i));
             }
 
             ArrayList<Entry> yCircleVals = new ArrayList<Entry>();
             for (int i = 0; i < startDataResponse.sensorData.size(); i++) {
-                if (startDataResponse.sensorData.get(i).marker && (getValueBySensor(startDataResponse, i) != 0f)) {
-                    yCircleVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
-                }
+                if (!isValueNull(startDataResponse, i))
+                    if (startDataResponse.sensorData.get(i).marker && (getValueBySensor(startDataResponse, i) != 0f)) {
+                        yCircleVals.add(new Entry(getValueBySensor(startDataResponse, i), i));
+                    }
             }
 
             dataSets.add(getLineDataSet(yValsX, R.color.text_home_x));
