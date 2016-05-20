@@ -15,6 +15,7 @@ import com.klikatech.nucleo.R;
 import com.klikatech.nucleo.net.response.StartDataResponse;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class MyMarkerView extends MarkerView {
@@ -65,24 +66,24 @@ public class MyMarkerView extends MarkerView {
             switch (NucleoApplication.getInstance().sensor_type) {
                 case Constants.S_TEMP:
                     if (!NucleoApplication.getInstance().isFarengate)
-                        tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " \u2103" + " @" + time);
+                        tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " \u2103" + " @" + time);
                     else
-                        tvContent.setText(Utils.formatNumber(9 * e.getVal() / 5 + 32, 2, true) + " \u2109" + " @" + time);
+                        tvContent.setText(String.format(Locale.ENGLISH, "%.2f", 9 * e.getVal() / 5 + 32) + " \u2109" + " @" + time);
                     break;
                 case Constants.S_HUM:
-                    tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " %" + " @" + time);
+                    tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " %" + " @" + time);
                     break;
                 case Constants.S_MAGN:
-                    tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " \u00B5T" + " @" + time);
+                    tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " \u00B5T" + " @" + time);
                     break;
                 case Constants.S_BAR:
-                    tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " hPa" + " @" + time);
+                    tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " hPa" + " @" + time);
                     break;
                 case Constants.S_G:
-                    tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " \u00B0" + " @" + time);
+                    tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " \u00B0" + " @" + time);
                     break;
                 case Constants.S_A:
-                    tvContent.setText(Utils.formatNumber(e.getVal(), 2, true) + " g" + " @" + time);
+                    tvContent.setText(String.format(Locale.ENGLISH, "%.2f", e.getVal()) + " g" + " @" + time);
                     break;
                 default:
                     break;

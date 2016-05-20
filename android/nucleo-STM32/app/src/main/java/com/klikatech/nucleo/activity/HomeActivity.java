@@ -316,7 +316,6 @@ public class HomeActivity extends AppCompatActivity {
                                         Log.d(LOG_TAG, "Message arrived:");
                                         Log.d(LOG_TAG, "   Topic: " + topic);
                                         Log.d(LOG_TAG, " Message: " + message);
-
                                         try {
                                             JSONObject tJson = new JSONObject(message);
                                             float temperature = (float) tJson.getDouble("temperature");

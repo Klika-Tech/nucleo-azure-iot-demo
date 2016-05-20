@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.utils.Utils;
 import com.klikatech.nucleo.Constants;
 import com.klikatech.nucleo.R;
 import com.klikatech.nucleo.activity.HomeActivity;
@@ -15,6 +14,7 @@ import com.klikatech.nucleo.custom.AccelerometerView;
 import com.klikatech.nucleo.custom.GyroscopeView;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.Bind;
@@ -119,44 +119,44 @@ public class HomeFragment extends Fragment {
 
     public void updateTemperature(float t) {
         if (tvTemperatureF == null || tvTemperatureC == null) return;
-        tvTemperatureF.setText(Utils.formatNumber(9 * t / 5 + 32, 2, true) + " \u00B0");
-        tvTemperatureC.setText(Utils.formatNumber(t, 2, true) + " \u00B0");
+        tvTemperatureF.setText(String.format(Locale.ENGLISH, "%.2f", 9 * t / 5 + 32) + " \u00B0");
+        tvTemperatureC.setText(String.format(Locale.ENGLISH, "%.2f", t) + " \u00B0");
     }
 
     public void updateHumidity(float h) {
         if (tvHumidityVal == null) return;
-        tvHumidityVal.setText(Utils.formatNumber(h, 2, true) + " ");
+        tvHumidityVal.setText(String.format(Locale.ENGLISH, "%.2f", h)+" ");
     }
 
     public void updateMagnetometer(float x, float y, float z) {
         if (tvMagnetometerVal == null) return;
-        tvMagnetometerVal.setText(Utils.formatNumber((float) Math.sqrt(x * x + y * y + z * z), 2, true) + " ");
+        tvMagnetometerVal.setText(String.format(Locale.ENGLISH, "%.2f", (float) Math.sqrt(x * x + y * y + z * z))+" ");
         if (tvMagnetometerValX == null) return;
-        tvMagnetometerValX.setText(Utils.formatNumber(x, 2, true) + " ");
+        tvMagnetometerValX.setText(String.format(Locale.ENGLISH, "%.2f", x));
         if (tvMagnetometerValY == null) return;
-        tvMagnetometerValY.setText(Utils.formatNumber(y, 2, true) + " ");
+        tvMagnetometerValY.setText(String.format(Locale.ENGLISH, "%.2f", y));
         if (tvMagnetometerValZ == null) return;
-        tvMagnetometerValZ.setText(Utils.formatNumber(z, 2, true) + " ");
+        tvMagnetometerValZ.setText(String.format(Locale.ENGLISH, "%.2f", z));
     }
 
     public void updateBarometer(float p) {
         if (tvBarometerVal == null) return;
-        tvBarometerVal.setText(Utils.formatNumber(p, 2, true) + " ");
+        tvBarometerVal.setText(String.format(Locale.ENGLISH, "%.2f", p)+" ");
     }
 
     public void updateGyroscope(float x, float y, float z) {
         if (gyroX == null || tvGyroX == null) return;
 
         gyroX.setAngle(x);
-        tvGyroX.setText(getResources().getString(R.string.angle, String.format("%.3f", x)));
+        tvGyroX.setText(getResources().getString(R.string.angle, String.format(Locale.ENGLISH, "%.2f", x)));
 
         if (gyroY == null || tvGyroY == null) return;
         gyroY.setAngle(y);
-        tvGyroY.setText(getResources().getString(R.string.angle, String.format("%.3f", y)));
+        tvGyroY.setText(getResources().getString(R.string.angle, String.format(Locale.ENGLISH, "%.2f", y)));
 
         if (gyroZ == null || tvGyroZ == null) return;
         gyroZ.setAngle(z);
-        tvGyroZ.setText(getResources().getString(R.string.angle, String.format("%.3f", z)));
+        tvGyroZ.setText(getResources().getString(R.string.angle, String.format(Locale.ENGLISH, "%.2f", z)));
     }
 
     public void updateAccelerometer(float x, float y, float z) {
@@ -164,15 +164,15 @@ public class HomeFragment extends Fragment {
 
         accX.setValue(x);
         accX.setType(0);
-        tvAccX.setText(String.format("%.3f", x));
+        tvAccX.setText(String.format(Locale.ENGLISH, "%.2f", x));
         if (accY == null || tvAccY == null) return;
         accY.setValue(y);
         accY.setType(1);
-        tvAccY.setText(String.format("%.3f", y));
+        tvAccY.setText(String.format(Locale.ENGLISH, "%.2f", y));
         if (accZ == null || tvAccZ == null) return;
         accZ.setValue(z);
         accZ.setType(2);
-        tvAccZ.setText(String.format("%.3f", z));
+        tvAccZ.setText(String.format(Locale.ENGLISH, "%.2f", z));
     }
 
     public void updateLastPushedDate(long timestamp) {
@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat dateFormatTime2 = new SimpleDateFormat("HH:mm");
         dateFormatTime1.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        tvLastPushDate.setText(dateFormatTime1.format(timestamp*1000) + " at " + dateFormatTime2.format(timestamp*1000));
+        tvLastPushDate.setText(dateFormatTime1.format(timestamp) + " at " + dateFormatTime2.format(timestamp));
     }
 
     @OnClick({R.id.vTemperature, R.id.vHumidity, R.id.vMagnetometer, R.id.vBarometer,

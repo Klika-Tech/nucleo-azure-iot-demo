@@ -26,6 +26,7 @@ import com.klikatech.nucleo.R;
 import com.klikatech.nucleo.activity.HomeActivity;
 import com.klikatech.nucleo.custom.MyMarkerView;
 import com.klikatech.nucleo.custom.XAxisValueFormat;
+import com.klikatech.nucleo.custom.YAxisValueFormat;
 import com.klikatech.nucleo.event.StartDataEvent;
 import com.klikatech.nucleo.net.response.StartDataResponse;
 
@@ -88,6 +89,12 @@ public class GraphFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
         ButterKnife.unbind(this);
+    }
+
+    public void clearCities() {
+        fragmentView.findViewById(R.id.l_city2).setVisibility(View.GONE);
+        fragmentView.findViewById(R.id.tv_city2).setVisibility(View.GONE);
+        fragmentView.findViewById(R.id.tv_city3).setVisibility(View.GONE);
     }
 
     public void setCity() {
@@ -189,10 +196,11 @@ public class GraphFragment extends Fragment {
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawLimitLinesBehindData(true);
+        leftAxis.setValueFormatter(new YAxisValueFormat());
         mChart.getAxisRight().setEnabled(false);
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChart.getXAxis().setValueFormatter(new XAxisValueFormat());
-
+        mChart.getLegend().setEnabled(false);
         if (!isStartChartAnimation) {
             setData(startDataResponse, true);
             isStartChartAnimation = true;
@@ -271,7 +279,7 @@ public class GraphFragment extends Fragment {
                         NucleoApplication.getInstance().setNames(nameCity);
                     }
                 }
-                zoomOut = (nameCity != null) && SENSOR == Constants.S_TEMP;
+                zoomOut = false;
                 if (mStartDataResponse.sensorData != null) {
                     if (!isStartChartAnimation)
                         setChart(mStartDataResponse);
@@ -297,37 +305,42 @@ public class GraphFragment extends Fragment {
     }
 
     private void reInitData() {
-        // TODO: 12.05.2016 refactor this
-        if (mStartDataResponse == null) return;
-        setData(mStartDataResponse, true);
-
         switch (SENSOR) {
             case Constants.S_TEMP:
+                setCity();
                 break;
             case Constants.S_HUM:
+                clearCities();
                 break;
             case Constants.S_MAGN:
+                clearCities();
                 break;
             case Constants.S_BAR:
+                clearCities();
                 break;
             case Constants.S_G:
+                clearCities();
                 break;
             case Constants.S_A:
+                clearCities();
                 break;
             default:
                 break;
         }
+
+        if (mStartDataResponse == null) return;
+        setData(mStartDataResponse, true);
     }
 
     private void reInitView() {
         Resources resources = getResources();
         YAxis leftAxis = mChart.getAxisLeft();
-        // TODO: 13.05.2016
         switch (SENSOR) {
             case Constants.S_TEMP:
                 updateTitle(resources.getString(R.string.x_sensor, resources.getString(R.string.title_temperature)));
                 leftAxis.setAxisMaxValue(50f);
                 leftAxis.setAxisMinValue(-0f);
+                setCity();
                 break;
             case Constants.S_HUM:
                 updateTitle(resources.getString(R.string.x_sensor, resources.getString(R.string.title_humidity)));
@@ -491,7 +504,7 @@ public class GraphFragment extends Fragment {
             mChart.notifyDataSetChanged();
             mChart.invalidate();
             if (isZoom)
-                mChart.zoomAndCenterAnimated(24f, 24f, xVals.size() - 1, yVals.get(yVals.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 3000);
+                mChart.zoomAndCenterAnimated(24f, 24f, xVals.size() - 1, yVals.get(yVals.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 0);
             if (zoomOut)
                 do {
                     mChart.zoomOut();
@@ -540,8 +553,9 @@ public class GraphFragment extends Fragment {
             mChart.setData(data);
             mChart.notifyDataSetChanged();
             mChart.invalidate();
-            if (isZoom)
-                mChart.zoomAndCenterAnimated(24f, 24f, xVals.size() - 1, yValsX.get(yValsX.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 3000);
+            if (isZoom){
+                float scaleY=1f;
+                mChart.zoomAndCenterAnimated(24f, scaleY, xVals.size() - 1, yValsX.get(yValsX.size() - 1).getVal(), YAxis.AxisDependency.LEFT, 0);}
             if (zoomOut)
                 do {
                     mChart.zoomOut();
