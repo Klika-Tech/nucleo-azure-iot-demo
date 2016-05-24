@@ -92,12 +92,16 @@ public class GraphFragment extends Fragment {
     }
 
     public void clearCities() {
-        fragmentView.findViewById(R.id.l_city2).setVisibility(View.GONE);
         fragmentView.findViewById(R.id.tv_city2).setVisibility(View.GONE);
         fragmentView.findViewById(R.id.tv_city3).setVisibility(View.GONE);
+        fragmentView.findViewById(R.id.tv_city4).setVisibility(View.GONE);
+        fragmentView.findViewById(R.id.tv_city5).setVisibility(View.GONE);
+        fragmentView.findViewById(R.id.tv_city6).setVisibility(View.GONE);
     }
 
     public void setCity() {
+
+        clearCities();
 
         List<String> s = NucleoApplication.getInstance().getSelectedCity();
 

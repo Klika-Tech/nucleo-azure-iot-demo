@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat dateFormatTime2 = new SimpleDateFormat("HH:mm");
         dateFormatTime1.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        tvLastPushDate.setText(dateFormatTime1.format(timestamp) + " at " + dateFormatTime2.format(timestamp));
+        tvLastPushDate.setText(dateFormatTime1.format(timestamp*1000) + " at " + dateFormatTime2.format(timestamp*1000));
     }
 
     @OnClick({R.id.vTemperature, R.id.vHumidity, R.id.vMagnetometer, R.id.vBarometer,
