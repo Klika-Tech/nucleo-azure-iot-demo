@@ -75,30 +75,29 @@
                         android:drawableLeft="@mipmap/temperature"
                         android:drawablePadding="@dimen/home_button_title_drawable_padding"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/home_button_title_padding_left"
                         android:paddingTop="@dimen/home_button_title_padding_top"
                         android:text="@string/title_temperature"
                         android:textColor="@color/text_home_title"
                         android:textIsSelectable="false"
-                        android:textSize="@dimen/home_button_text_size" />
+                        android:textSize="@dimen/home_button_text_size"
+                        android:paddingLeft="@dimen/home_text_padding_left_1" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/large_padding"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/small_padding"
                         android:paddingRight="@dimen/small_padding">
 
                         <TextView
                             android:id="@+id/tvTemperatureF"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/home_button_value_padding_left"
                             android:text="0 \u00B0"
                             android:textColor="@color/text_home_value"
                             android:textSize="@dimen/xx_large_text_size"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:paddingLeft="@dimen/home_text_padding_left_1" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -113,18 +112,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/small_padding"
                         android:paddingRight="@dimen/small_padding">
 
                         <TextView
                             android:id="@+id/tvTemperatureC"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/home_button_value_padding_left"
                             android:text="0 \u00B0"
                             android:textColor="@color/text_home_value"
                             android:textSize="@dimen/default_text_size"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:paddingLeft="@dimen/home_text_padding_left_2" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -153,7 +151,7 @@
                         android:drawableLeft="@mipmap/humidity"
                         android:drawablePadding="@dimen/home_button_title_drawable_padding"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/home_button_title_padding_left"
+                        android:paddingLeft="@dimen/home_text_padding_left_1"
                         android:paddingTop="@dimen/home_button_title_padding_top"
                         android:text="@string/title_humidity"
                         android:textColor="@color/text_home_title"
@@ -164,14 +162,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/medium_padding"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/small_padding"
                         android:paddingRight="@dimen/small_padding">
 
                         <TextView
                             android:id="@+id/tvHumidityVal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/home_button_value_padding_left"
+                            android:paddingLeft="@dimen/home_text_padding_left_1"
                             android:text="0"
                             android:textColor="@color/text_home_value"
                             android:textSize="@dimen/xx_large_text_size"
@@ -211,7 +208,7 @@
                         android:drawableLeft="@mipmap/magnetometer"
                         android:drawablePadding="@dimen/home_button_title_drawable_padding"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/home_button_title_padding_left"
+                        android:paddingLeft="@dimen/home_text_padding_left_1"
                         android:paddingTop="@dimen/home_button_title_padding_top"
                         android:text="@string/title_magnetometer"
                         android:textColor="@color/text_home_title"
@@ -222,14 +219,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/medium_padding"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/small_padding"
                         android:paddingRight="@dimen/small_padding">
 
                         <TextView
                             android:id="@+id/tvMagnetometerVal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/home_button_value_padding_left"
+                            android:paddingLeft="@dimen/home_text_padding_left_1"
                             android:text="0"
                             android:textColor="@color/text_home_value"
                             android:textSize="@dimen/x_large_text_size"
@@ -247,136 +243,173 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_padding"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
+                        android:paddingLeft="@dimen/home_text_padding_left_2">
 
-                        <TextView
-                            android:id="@+id/tvMagnetometerValX"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/text_home_value"
-                            android:textSize="@dimen/default_text_size"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/tvMagnetometerValY"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/text_home_value"
-                            android:textSize="@dimen/default_text_size"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/tvMagnetometerValZ"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/text_home_value"
-                            android:textSize="@dimen/default_text_size"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
 
-                            <TextView
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvMagnetometerValX"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="0.0"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_x"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="X"
-                                android:layout_weight="1"
-                                android:id="@+id/tv_mx"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_weight="1">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_value"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="@string/setting_magnet_x"
-                                android:layout_weight="1"
-                                android:id="@+id/textView4"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/tv_mx"
-                                android:layout_toEndOf="@+id/tv_mx" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_x"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="X"
+                                    android:layout_weight="1"
+                                    android:id="@+id/tv_mx"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true" />
 
-                        </RelativeLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="@string/setting_magnet_x"
+                                    android:layout_weight="1"
+                                    android:id="@+id/textView4"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_toRightOf="@+id/tv_mx"
+                                    android:layout_toEndOf="@+id/tv_mx" />
 
-                        <RelativeLayout
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1">
 
-                            <TextView
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvMagnetometerValY"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:layout_weight="1"
+                                    android:text="0.0" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_value"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="@string/setting_magnet_y"
-                                android:layout_weight="1"
-                                android:id="@+id/textView5"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_weight="1">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_y"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="Y"
-                                android:layout_weight="1"
-                                android:id="@+id/tv_my"
-                                android:layout_alignBaseline="@+id/textView5"
-                                android:layout_alignBottom="@+id/textView5"
-                                android:layout_toLeftOf="@+id/textView5"
-                                android:layout_toStartOf="@+id/textView5" />
-                        </RelativeLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="@string/setting_magnet_y"
+                                    android:layout_weight="1"
+                                    android:id="@+id/textView5"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_toRightOf="@+id/tv_my"
+                                    android:layout_toEndOf="@+id/tv_my" />
 
-                        <RelativeLayout
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_y"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="Y"
+                                    android:layout_weight="1"
+                                    android:id="@+id/tv_my"
+                                    android:layout_alignParentTop="true" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_value"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="@string/setting_magnet_z"
-                                android:layout_weight="1"
-                                android:id="@+id/tv_mz"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                            <TextView
+                                <TextView
+                                    android:id="@+id/tvMagnetometerValZ"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:layout_weight="1"
+                                    android:text="0.0" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/text_home_z"
-                                android:textSize="@dimen/default_text_size"
-                                android:text="Z"
-                                android:layout_weight="1"
-                                android:id="@+id/textView6"
-                                android:layout_alignParentTop="true"
-                                android:layout_toLeftOf="@+id/tv_mz"
-                                android:layout_toStartOf="@+id/tv_mz" />
-                        </RelativeLayout>
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_value"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="@string/setting_magnet_z"
+                                    android:layout_weight="1"
+                                    android:id="@+id/tv_mz"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_toRightOf="@+id/textView6"
+                                    android:layout_toEndOf="@+id/textView6" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/text_home_z"
+                                    android:textSize="@dimen/default_text_size"
+                                    android:text="Z"
+                                    android:layout_weight="1"
+                                    android:id="@+id/textView6"
+                                    android:layout_alignParentTop="true" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -399,7 +432,7 @@
                         android:drawableLeft="@mipmap/barometer"
                         android:drawablePadding="@dimen/home_button_title_drawable_padding"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/home_button_title_padding_left"
+                        android:paddingLeft="@dimen/home_text_padding_left_1"
                         android:paddingTop="@dimen/home_button_title_padding_top"
                         android:text="@string/title_barometer"
                         android:textColor="@color/text_home_title"
@@ -410,14 +443,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/medium_padding"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/small_padding"
                         android:paddingRight="@dimen/small_padding">
 
                         <TextView
                             android:id="@+id/tvBarometerVal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/home_button_value_padding_left"
+                            android:paddingLeft="@dimen/home_text_padding_left_1"
                             android:text="0"
                             android:textColor="@color/text_home_value"
                             android:textSize="@dimen/x_large_text_size"
@@ -572,7 +604,7 @@
                         android:drawableLeft="@mipmap/accelerometer"
                         android:drawablePadding="@dimen/home_button_title_drawable_padding"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/home_button_title_padding_left"
+                        android:paddingLeft="@dimen/home_text_padding_left_1"
                         android:paddingTop="@dimen/home_button_title_padding_top"
                         android:text="@string/title_accelerometer"
                         android:textColor="@color/text_home_title"
