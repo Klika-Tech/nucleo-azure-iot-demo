@@ -141,7 +141,7 @@ public class NucleoApplication extends Application {
 
         String json = null;
         try {
-            InputStream is = getAssets().open("settings.dist.json");
+            InputStream is = getAssets().open("settings.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
