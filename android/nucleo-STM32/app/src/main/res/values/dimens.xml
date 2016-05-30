@@ -14,7 +14,7 @@
     <dimen name="x_large_text_size">28sp</dimen>
     <dimen name="large_text_size">24sp</dimen>
 
-    <dimen name="sensor_plate_default_height">166dp</dimen>
+    <dimen name="sensor_plate_default_height">155dp</dimen>
 
     <dimen name="home_button_title_padding_left">15dp</dimen>
     <dimen name="home_button_title_padding_top">10dp</dimen>

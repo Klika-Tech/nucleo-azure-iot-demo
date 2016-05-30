@@ -244,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:paddingLeft="@dimen/home_text_padding_left_2">
 
                         <LinearLayout
@@ -499,7 +499,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="5dp">
+                        android:layout_marginTop="10dp">
 
                         <LinearLayout
                             android:id="@+id/vGyroX"
@@ -779,13 +779,15 @@
     <LinearLayout
         android:id="@+id/lFooterView"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/bg_home_button"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_above="@+id/textView15"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -815,7 +817,7 @@
         android:layout_alignParentStart="true"
         android:textColor="@color/text_home_value"
         android:layout_alignParentRight="true"
-        android:padding="10dp"
+        android:padding="7dp"
         android:gravity="center"
         android:textSize="11sp" />
 </RelativeLayout>

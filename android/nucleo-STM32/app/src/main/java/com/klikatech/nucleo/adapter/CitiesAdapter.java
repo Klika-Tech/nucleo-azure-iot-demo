@@ -55,7 +55,8 @@ public class CitiesAdapter extends ArrayAdapter<String> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    selectedNames.add(names.get(position));
+                    if(names.size()!=0)
+                        selectedNames.add(names.get(position));
                 }
                 else{
                     if(selectedNames.contains(names.get(position)))
