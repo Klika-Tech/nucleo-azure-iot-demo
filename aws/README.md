@@ -41,7 +41,7 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 1. **Rules**. We will need two rules:
   1. A rule to store **sensor data** to DynamoDB. Click "Create a rule" and set the following parameters:
     - Name: any, i.e. `store_temperature`
-	- Attribute: `state.reported.temperature, timestamp`
+	- Attribute: `state.reported.temperature, state.reported.humidity, state.reported.pressure, state.reported.accelerometer, state.reported.gyroscope, state.reported.magnetometer, timestamp`
 	- Topic filter: `$aws/things/Nucleo/shadow/update/accepted`
 	- Choose an Action: Insert message into a database table (DynamoDB)
 	- Table name: select the sensor data table created earlier
@@ -133,11 +133,10 @@ This lambda requires more privileges in order to publish to IoT data streams. Pe
             {
                 "Effect": "Allow",
                 "Action": [
-                    "iot:Publish"
+                    "iot:*"
                 ],
                 "Resource": [
-                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/$aws/things/Nucleo/shadow/update",
-                    "arn:aws:iot:us-east-1:<AWS-ACCOUNT-ID-WITHOUT-HYPHENS>:topic/Nucleo/data"
+                    "*"
                 ]
             }
         ]

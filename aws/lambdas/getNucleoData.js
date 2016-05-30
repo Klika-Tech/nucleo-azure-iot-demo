@@ -1,5 +1,5 @@
-var aws = require('aws-sdk')
-var dynamo = new aws.DynamoDB()
+var aws = require('aws-sdk');
+var dynamo = new aws.DynamoDB();
 
 exports.handler = function(event, context) {
     
@@ -10,7 +10,7 @@ exports.handler = function(event, context) {
             "#ts": "timestamp"
         },
         ExpressionAttributeValues: {
-            ":m": {"S": event.metric},
+            ":m": {"S": "temperature"},
             ":ts": {"S": event.since}
         },
         ScanIndexForward: false,
@@ -23,9 +23,23 @@ exports.handler = function(event, context) {
         
         sensorData = data.Items.reverse().map(function(x) {
             var result = {
-                temperature: parseFloat(x.payload.M.temperature.N),
                 timestamp: parseInt(x.timestamp.S)
             }
+            
+            var metrics = ['temperature', 'humidity', 'pressure', 'accelerometer', 'gyroscope', 'magnetometer']
+            
+            metrics.forEach(function(metric) {
+                if (x.payload.M[metric] !== undefined)
+                    if (x.payload.M[metric].N !== undefined)
+                        result[metric] = parseFloat(x.payload.M[metric].N)
+                    else if (x.payload.M[metric].L !== undefined) {
+                        result[metric] = [
+                                parseFloat(x.payload.M[metric].L[0].N),
+                                parseFloat(x.payload.M[metric].L[1].N),
+                                parseFloat(x.payload.M[metric].L[2].N)
+                            ]
+                    }
+            })
             
             if (x.payload.M.marker !== undefined && x.payload.M.marker.BOOL)
                 result.marker = true
@@ -95,4 +109,4 @@ exports.handler = function(event, context) {
         
         goThroughCities()
     })
-}
+};
