@@ -85,9 +85,7 @@ FzyQkqFOFSDX9HoLPKsEdao7WNq\
 ***********************************************************************************************/
 
 /****************************************
-ECDSA Algo
-ECDSA Private Key generated @ User Windows 7 Desktop, using openssl-1.0.2d-x64_86-win64/openssl.exe tool
-Device Identity Certificate is Generated @ AWS IOT consoile by submitting a CSR. The CSR is generated @ User Windows 7 Desktop, using openssl-1.0.2d-x64_86-win64/openssl.exe tool
+(somecode)-certificate.pem.crt - Amazon signed PEM sertificate.
 *****************************************/
 uint8_t clientCRT[] = "\
 -----BEGIN CERTIFICATE-----\n\
@@ -117,9 +115,7 @@ sBbmuNEO/th7VFwT\
 
 
 /********************************************************************8****************************************
-ECDSA Algo
-ECDSA Private Key generated @ User Windows 7 Desktop, using openssl-1.0.2d-x64_86-win64/openssl.exe tool
-ECDSA-SEC1.PEM
+nucleo.key.pem - client key generated according to readme.
 **************************************************************************************************************/
 
 uint8_t clientKey[] ="\

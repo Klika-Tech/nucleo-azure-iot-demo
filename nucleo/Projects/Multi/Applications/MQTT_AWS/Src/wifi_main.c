@@ -49,8 +49,8 @@
 
 // Wifi SSID and Password
 
-char * ssid = "Keenetic";
-char * seckey = "Al3x@ndr";
+char * ssid = "<WI_FI_AP>";
+char * seckey = "<security_key>";
 
 /**
 * Private typedef -----------------------------------------------------------

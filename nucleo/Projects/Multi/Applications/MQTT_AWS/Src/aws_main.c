@@ -270,6 +270,7 @@ int aws_main() {
 		
 		fsleep(BUTTONDELAY); //Sleeping for BUTTONDELAY ms
 		
+		//Getting values of sensors
 		if(BSP_HUM_TEMP_GetTemperature((float *)&Temperature) != HUM_TEMP_OK)
 		ERROR("Sensor TEMP0 reading error\r\n");
 		
