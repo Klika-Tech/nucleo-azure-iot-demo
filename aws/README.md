@@ -150,12 +150,12 @@ There is one configuration parameter in the lambda code: IoT endpoint host name.
 
 We use Amazon Cognito to provide public read only access to IoT data streams.
 
-The configuration here is pretty simple. Create a new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
+The configuration here is pretty simple. Open Cognito console, go to "Manage Federated Identities" and create new identity pool. Give it any name and set the "Enable access to unauthenticated identities" checkbox. 
 
 Along with the pool, an IAM role will be generated. This role will not grant access to our IoT topics by default. We need to extend it:
 
 1. In Cognito console go to the just created pool and click "Edit identity pool"
-1. Note the authenticated and unauthenticated role name. We will need it on the next step.
+1. Note the authenticated and unauthenticated role names. We will need them on the next step.
 1. Go to IAM console
 1. Go to Roles and find the roles from the previous step, do the following for both:
   1. Click on the role
