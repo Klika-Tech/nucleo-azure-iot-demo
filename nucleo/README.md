@@ -6,7 +6,7 @@
 ### Aws IoT configuration (aws_iot_config.h)
 
 *Projects/Multi/Applications/MQTT_AWS/Inc/aws_iot_config.h* - **configuration for AWS connection**
-```c++
+```c
 #define AWS_IOT_MQTT_HOST               "XXXXXXXXXXXXXX.iot.us-east-1.amazonaws.com"
 #define AWS_IOT_MQTT_PORT               8883
 #define AWS_IOT_MQTT_CLIENT_ID          "Nucleo"
@@ -15,7 +15,7 @@
 Substitute the AWS_IOT_MQTT_HOST value with your AWS IoT endpoint (to find out the endpoint go to AWS IoT console and click small question mark on the right)
 
 ###### NOTE: In this application the settings below aren't used. See next section on how to configure certificates.
-```c++
+```c
 #define AWS_IOT_ROOT_CA_FILENAME        "root-CA.crt"
 #define AWS_IOT_CERTIFICATE_FILENAME    "132c58eafa-certificate.pem.crt"
 #define AWS_IOT_PRIVATE_KEY_FILENAME    "132c58eafa-private.pem.key"
