@@ -78,6 +78,9 @@ Open the AWS Lambda console and create a lambda for each file:
 1. Give a name to the function and select Node.js 0.10 runtime
 1. Copy and paste the corresponding file content
 1. If this is the first lambda, select "Basic with DynamoDB" in the "Role" field. This will generate a default IAM role with DynamoDB access. Select this role for the next lambdas as well.
+1. In "Advanced settings" set:
+  - Memory: 256 MB
+  - Timeout: 10 sec
 1. Click "Next" then "Create function"
 
 The `getNucleoData` lambda provides initial data set for client applications. We need to assign an API endpoint to it so the clients will be able to call it remotely:
