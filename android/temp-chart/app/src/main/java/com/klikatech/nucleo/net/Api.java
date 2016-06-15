@@ -14,7 +14,7 @@ public class Api {
     //public static final String HOST_0 ="https://v7yns2sew7.execute-api.us-east-1.amazonaws.com";
 
     public interface DataService {
-        @GET("/prod/getNucleoMetrics")
+        @GET("/prod/getNucleoData")
         StartDataResponse startData(@QueryMap Map<String, String> options);
     }
 }
