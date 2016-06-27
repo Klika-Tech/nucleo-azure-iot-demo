@@ -52,7 +52,15 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 	- Payload field: `payload`
 	- Role name: click "Create new role" then click "Allow". This will generate a AWS IAM role which allows writing to the table.
 
-    Click "Add action" to create the action. For this rule we will need to create another action. Select "Republish this item to another topic" and set `Nucleo/data` as the target topic then create a role and click "Add action" again. After that submit the rule by clicking "Create" button.
+    Click "Add action" to create the action.
+    
+    For this rule we will need to create another action:
+      1. Select "Republish this item to another topic"
+      1. Set `Nucleo/data` as the target topic
+      1. Click "Create a new role" then "Allow"
+      1. Click "Add action"
+      
+    After that submit the rule by clicking "Create" button.
   1. A rule to store **markers**. Click "Create a rule" and set the following parameters:
     - Name: any, i.e. `store_markers`
 	- Attribute: `*`
