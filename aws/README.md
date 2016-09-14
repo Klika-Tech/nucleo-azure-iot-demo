@@ -77,16 +77,26 @@ Open the AWS IoT console and create the following resources (click on "Create a 
 
 ## AWS Lambda
 
-**<span style="color: red">Outdated!</span> Please wait for the instructions update!**
-
 There are three Lambdas to set up. See the [lambdas folder](lambdas/) for their sources.
 
-Open the AWS Lambda console and create a lambda for each file:
+First we need to build the lambdas:
+1. [Install Node.js](https://nodejs.org/en/download/package-manager/)
+1. Copy the `config.dist.js` file as `config.js`:
+    ```
+    cp config.dist.js config.js
+    ```
+1. Edit the `config.js` file. There is one configuration parameter: IoT endpoint host name. It is unique for every AWS account. You can get it in IoT console. Go to the console and click the small button with a question mark on the right then copy any paste the host name to the `iotEndpoint` config parameter.
+1. Build the lambdas:
+    ```
+    npm i && npm run build && npm run zip
+    ```
+    
+Now there is a ZIP file for each lambda in the `dist` folder. Open the AWS Lambda console and create a lambda for each file:
 
 1. Click "Create a Lambda Function"
-1. Click "Skip" on blueprints select page
-1. Give a name to the function and select Node.js 0.10 runtime
-1. Copy and paste the corresponding file content
+1. Click "Skip" on blueprints select page and "Next" on "Configure triggers" page
+1. Give a name to the function and select Node.js 4.3 runtime
+1. Set "Code entry type" to "Upload a .ZIP file", click "Upload" and select the corresponding ZIP file
 1. If this is the first lambda, select "Basic with DynamoDB" in the "Role" field. This will generate a default IAM role with DynamoDB access. Select this role for the next lambdas as well.
 1. In "Advanced settings" set:
   - Memory: 256 MB
@@ -162,8 +172,6 @@ This lambda requires more privileges in order to publish to IoT data streams. Pe
     }
     ```
     
-There is one configuration parameter in the lambda code: IoT endpoint host name. It is unique for every AWS account. You can get it in IoT console. Go to the console and click the small button with a question mark on the right then copy any paste the host name to the `iotEndpoint` variable at the beginning of the lambda code.
-
 ## Amazon Cognito
 
 We use Amazon Cognito to provide public read only access to IoT data streams.
