@@ -1,6 +1,6 @@
-require('file?name=[name].[ext]!./index.html')
+import 'file?name=[name].[ext]!./index.html'
 
-var _ = require('lodash')
+import _ from 'lodash'
 
 var React = require('react')
 var ReactDOM = require('react-dom')
@@ -24,7 +24,7 @@ var Loader = React.createClass({
 
 		return (
 			<svg>
-				<use xlinkHref={require('./oval.svg')} />
+				<use xlinkHref={require('./assets/oval.svg')} />
 			</svg>
 		)
 	}
