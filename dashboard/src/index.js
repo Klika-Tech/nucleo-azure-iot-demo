@@ -13,6 +13,8 @@ import TemperatureChart from './components/temperature-chart'
 import HumidityChart from './components/humidity-chart'
 import PressureChart from './components/pressure-chart'
 import MagnetometerChart from './components/magnetometer-chart'
+import GyroscopeChart from './components/gyroscope-chart'
+import AccelerometerChart from './components/accelerometer-chart'
 
 import './main.scss'
 
@@ -58,7 +60,7 @@ var App = React.createClass({
         var that = this
 
         // getting the data for the last 24h
-        var since = Math.round(Date.now() / 1000) - 7200
+        var since = Math.round(Date.now() / 1000) - 86400
 
         return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
             .then(function (response) {
@@ -198,6 +200,8 @@ var App = React.createClass({
                     <Link to="/humidity" activeClassName="active">Humidity</Link>
                     <Link to="/pressure" activeClassName="active">Pressure</Link>
                     <Link to="/magnetometer" activeClassName="active">Magnetometer</Link>
+                    <Link to="/gyroscope" activeClassName="active">Gyroscope</Link>
+                    <Link to="/accelerometer" activeClassName="active">Accelerometer</Link>
                 </div>
 
                 {React.cloneElement(this.props.children, {
@@ -219,6 +223,8 @@ render((
                 <Route path="humidity" component={HumidityChart}/>
                 <Route path="pressure" component={PressureChart}/>
                 <Route path="magnetometer" component={MagnetometerChart}/>
+                <Route path="gyroscope" component={GyroscopeChart}/>
+                <Route path="accelerometer" component={AccelerometerChart}/>
             </Route>
         </Router>
     ),
