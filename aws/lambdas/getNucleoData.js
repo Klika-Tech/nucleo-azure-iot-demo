@@ -1,7 +1,7 @@
-var aws = require('aws-sdk');
-var dynamo = new aws.DynamoDB();
+import aws from 'aws-sdk'
+const dc = new aws.DynamoDB.DocumentClient();
 
-exports.handler = function(event, context) {
+export function handler(event, context, callback) {
     
     var params = {
         TableName: "nucleo-metrics",
@@ -10,39 +10,30 @@ exports.handler = function(event, context) {
             "#ts": "timestamp"
         },
         ExpressionAttributeValues: {
-            ":m": {"S": "temperature"},
-            ":ts": {"S": event.since}
+            ":m": "temperature",
+            ":ts": event.since.toString()
         },
         ScanIndexForward: false,
         Limit: 20000
     }
 
-    dynamo.query(params, function(err, data) {
+    dc.query(params, function(err, data) {
         
-        if (err) { context.fail(err); return }
+        if (err) { callback(err); return }
         
-        sensorData = data.Items.reverse().map(function(x) {
+        const sensorData = data.Items.reverse().map(function(x) {
             var result = {
-                timestamp: parseInt(x.timestamp.S)
+                timestamp: parseInt(x.timestamp)
             }
             
             var metrics = ['temperature', 'humidity', 'pressure', 'accelerometer', 'gyroscope', 'magnetometer']
             
             metrics.forEach(function(metric) {
-                if (x.payload.M[metric] !== undefined)
-                    if (x.payload.M[metric].N !== undefined)
-                        result[metric] = parseFloat(x.payload.M[metric].N)
-                    else if (x.payload.M[metric].L !== undefined) {
-                        result[metric] = [
-                                parseFloat(x.payload.M[metric].L[0].N),
-                                parseFloat(x.payload.M[metric].L[1].N),
-                                parseFloat(x.payload.M[metric].L[2].N)
-                            ]
-                    }
+                if (x.payload[metric] !== undefined)
+                        result[metric] = x.payload[metric]
             })
             
-            if (x.payload.M.marker !== undefined && x.payload.M.marker.BOOL)
-                result.marker = true
+            if (x.payload.marker !== undefined && x.payload.marker) result.marker = true
             
             return result
         })
@@ -79,30 +70,43 @@ exports.handler = function(event, context) {
                     '#ts': 'timestamp'
                 },
                 ExpressionAttributeValues: {
-                    ':c': {'N': city.id.toString()},
-                    ':ts': {'N': event.since.toString()}
+                    ':c': city.id,
+                    ':ts': parseInt(event.since)
                 },
                 ScanIndexForward: false,
                 Limit: 10000
             }
             
-            dynamo.query(params, function(err, data) {
+            dc.query(params, function(err, data) {
                 
-                if (err) { context.fail(err); return }
+                if (err) { callback(err); return }
                 
                 weatherData.push({
                     cityName: city.name,
                     cityId: city.id,
                     tempData: data.Items.reverse().map(function(x) {
+                        console.log(x)
                         return {
-                            timestamp: parseInt(x.timestamp.N),
-                            temperature: parseFloat(x.temperature.N)
+                            timestamp: x.timestamp,
+                            temperature: x.temperature
+                        }
+                    }),
+                    humidityData: data.Items.filter(x => x.humidity !== undefined).reverse().map(function(x) {
+                        return {
+                            timestamp: x.timestamp,
+                            humidity: x.humidity
+                        }
+                    }),
+                    pressureData: data.Items.filter(x => x.pressure !== undefined).reverse().map(function(x) {
+                        return {
+                            timestamp: x.timestamp,
+                            pressure: x.pressure
                         }
                     })
                 })
               
                 if (!cities.length)
-                    context.succeed({sensorData: sensorData, weatherData: weatherData})
+                    callback(null, {sensorData: sensorData, weatherData: weatherData})
                 else goThroughCities()
             })
         }
