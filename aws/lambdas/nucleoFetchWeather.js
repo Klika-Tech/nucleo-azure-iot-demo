@@ -1,10 +1,10 @@
-var owmApiKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+import config from '../config'
 
-var aws = require('aws-sdk')
-var dynamo = new aws.DynamoDB()
-var http = require('http')
+import aws from 'aws-sdk'
+const dc = new aws.DynamoDB.DocumentClient()
+import http from 'http'
 
-exports.handler = function(event, context) {
+export function handler(event, context, callback) {
     
     var cities = [
             {name: 'Minsk', id: 625144},
@@ -29,7 +29,7 @@ exports.handler = function(event, context) {
         .map(function(d) {return d.id})
         .reduce(function(prev,cur) { return prev + ',' + cur })
 
-    http.get('http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + owmApiKey,
+    http.get('http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + config.owmApiKey,
         function(res) {
             
             var data = ''
@@ -42,7 +42,13 @@ exports.handler = function(event, context) {
                 data = JSON.parse(data)
                 
                 data = data.list.map(function(d) {
-                    return {city: d.id, timestamp: d.dt, temperature: d.main.temp}
+                    return {
+                        city: d.id,
+                        timestamp: d.dt,
+                        temperature: d.main.temp,
+                        humidity: d.main.humidity,
+                        pressure: d.main.pressure
+                    }
                 })
                 
                 data.forEach(function(d) {
@@ -50,19 +56,19 @@ exports.handler = function(event, context) {
                     var params = {
                         TableName: 'nucleo-weather',
                         Item: {
-                            city: {N: d.city.toString()},
-                            timestamp: {N: d.timestamp.toString()},
-                            temperature: {N: d.temperature.toString()}
+                            city: d.city,
+                            timestamp: d.timestamp,
+                            temperature: d.temperature,
+                            humidity: d.humidity,
+                            pressure: d.pressure
                         }
                     }
                     
-                    dynamo.putItem(params, function(err) {
-                      if (err) context.fail(err)
+                    dc.put(params, function(err) {
+                      if (err) callback(err)
                     })
                 })
-                
-                context.succeed()
             })
             
-        }).on('error', function(err) {context.fail(err)})
+        }).on('error', function(err) {callback(err)})
 }
