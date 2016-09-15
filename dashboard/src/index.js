@@ -12,6 +12,7 @@ import SigV4Utils from './sigv4utils'
 import TemperatureChart from './components/temperature-chart'
 import HumidityChart from './components/humidity-chart'
 import PressureChart from './components/pressure-chart'
+import MagnetometerChart from './components/magnetometer-chart'
 
 import './main.scss'
 
@@ -45,6 +46,9 @@ var App = React.createClass({
         if (dataItem.temperature !== undefined) result.temperature = parseFloat(dataItem.temperature)
         if (dataItem.humidity !== undefined) result.humidity = parseFloat(dataItem.humidity)
         if (dataItem.pressure !== undefined) result.pressure = parseFloat(dataItem.pressure)
+        if (dataItem.magnetometer !== undefined) result.magnetometer = dataItem.magnetometer
+        if (dataItem.accelerometer !== undefined) result.accelerometer = dataItem.accelerometer
+        if (dataItem.gyroscope !== undefined) result.gyroscope = dataItem.gyroscope
 
         return result
     },
@@ -54,7 +58,7 @@ var App = React.createClass({
         var that = this
 
         // getting the data for the last 24h
-        var since = Math.round(Date.now() / 1000) - 86400
+        var since = Math.round(Date.now() / 1000) - 7200
 
         return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
             .then(function (response) {
@@ -193,6 +197,7 @@ var App = React.createClass({
                     <Link to="/temperature" activeClassName="active">Temperature</Link>
                     <Link to="/humidity" activeClassName="active">Humidity</Link>
                     <Link to="/pressure" activeClassName="active">Pressure</Link>
+                    <Link to="/magnetometer" activeClassName="active">Magnetometer</Link>
                 </div>
 
                 {React.cloneElement(this.props.children, {
@@ -213,6 +218,7 @@ render((
                 <Route path="temperature" component={TemperatureChart}/>
                 <Route path="humidity" component={HumidityChart}/>
                 <Route path="pressure" component={PressureChart}/>
+                <Route path="magnetometer" component={MagnetometerChart}/>
             </Route>
         </Router>
     ),
