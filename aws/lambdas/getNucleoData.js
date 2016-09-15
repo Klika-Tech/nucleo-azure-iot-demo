@@ -80,24 +80,25 @@ export function handler(event, context, callback) {
             dc.query(params, function(err, data) {
                 
                 if (err) { callback(err); return }
+
+                data.Items.reverse()
                 
                 weatherData.push({
                     cityName: city.name,
                     cityId: city.id,
-                    tempData: data.Items.reverse().map(function(x) {
-                        console.log(x)
+                    tempData: data.Items.map(function(x) {
                         return {
                             timestamp: x.timestamp,
                             temperature: x.temperature
                         }
                     }),
-                    humidityData: data.Items.filter(x => x.humidity !== undefined).reverse().map(function(x) {
+                    humidityData: data.Items.filter(x => x.humidity !== undefined).map(function(x) {
                         return {
                             timestamp: x.timestamp,
                             humidity: x.humidity
                         }
                     }),
-                    pressureData: data.Items.filter(x => x.pressure !== undefined).reverse().map(function(x) {
+                    pressureData: data.Items.filter(x => x.pressure !== undefined).map(function(x) {
                         return {
                             timestamp: x.timestamp,
                             pressure: x.pressure
