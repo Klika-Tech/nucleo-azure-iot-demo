@@ -1,5 +1,5 @@
-moment = require('moment')
-CryptoJS = require('crypto-js')
+import moment from 'moment'
+import CryptoJS from 'crypto-js'
 
 
 function SigV4Utils() {}
@@ -53,4 +53,4 @@ SigV4Utils.getSignedUrl = function(protocol, host, uri, service, region, accessK
     return requestUrl;
 }
 
-module.exports = SigV4Utils
+export default SigV4Utils

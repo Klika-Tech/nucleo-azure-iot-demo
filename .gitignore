@@ -1,4 +1,3 @@
-dashboard/.eslintrc.json
 *.swp
 dashboard/node_modules
 dashboard/dist

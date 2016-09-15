@@ -1,196 +1,220 @@
 import 'file?name=[name].[ext]!./index.html'
 
 import _ from 'lodash'
+import React from 'react'
+import { render } from 'react-dom'
+import { Router, Route, Link, IndexRedirect, hashHistory } from 'react-router'
+import AWS from 'exports?AWS!aws-sdk/dist/aws-sdk'
+import mqtt from 'mqtt'
 
-var React = require('react')
-var ReactDOM = require('react-dom')
+import SigV4Utils from './sigv4utils'
 
-var AWS = require('exports?AWS!aws-sdk/dist/aws-sdk')
+import TemperatureChart from './components/temperature-chart'
+import HumidityChart from './components/humidity-chart'
+import PressureChart from './components/pressure-chart'
 
-var SigV4Utils = require('./sigv4utils')
+import './main.scss'
 
-var mqtt = require('mqtt')
-
-var TemperatureChart = require('./components/temperature-chart')
-
-require('./main.scss')
-
-var config = require('./config')
+import config from './config'
 
 
 var Loader = React.createClass({
 
-	render: function() {
+    render: function () {
 
-		return (
-			<svg>
-				<use xlinkHref={require('./assets/oval.svg')} />
-			</svg>
-		)
-	}
+        return (
+            <svg>
+                <use xlinkHref={require('./assets/oval.svg')}/>
+            </svg>
+        )
+    }
 })
 
 var App = React.createClass({
 
-	getInitialState: function() { return {} },
+    getInitialState: function () { return {} },
 
-	prepareData: function(dataItem) {
-		return {
-			temperature: parseFloat(dataItem.temperature),
-			timestamp:
-				dataItem.timestamp === undefined
-					? Math.round(Date.now() / 1000)
-					: parseInt(dataItem.timestamp),
-			marker: dataItem.marker
-		}
-	},
+    prepareData: function (dataItem) {
+        const result = {
+            timestamp: dataItem.timestamp === undefined
+                ? Math.round(Date.now() / 1000)
+                : parseInt(dataItem.timestamp),
+            marker: dataItem.marker
+        }
 
-	fetchData: function() {
+        if (dataItem.temperature !== undefined) result.temperature = parseFloat(dataItem.temperature)
+        if (dataItem.humidity !== undefined) result.humidity = parseFloat(dataItem.humidity)
+        if (dataItem.pressure !== undefined) result.pressure = parseFloat(dataItem.pressure)
 
-		var that = this
+        return result
+    },
 
-		// getting the data for the last 24h
-		var since = Math.round(Date.now() / 1000) - 86400
+    fetchData: function () {
 
-		return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
-		  .then(function(response) {
-		  	return response.json()
-		  })
-		  .then(function(data) {
+        var that = this
 
-		  	var metricData = data.sensorData
+        // getting the data for the last 24h
+        var since = Math.round(Date.now() / 1000) - 86400
 
-		  	if (_.isEmpty(metricData)) return
+        return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (data) {
 
-			_.forEach(data.weatherData, function(d) {
-				d.tempData = _.map(d.tempData, that.prepareData)
-			})
+                var metricData = data.sensorData
 
-			that.setState({
-				temperatureData: _.map(metricData, that.prepareData),
-				weatherData: data.weatherData
-			})
+                if (_.isEmpty(metricData)) return
 
-			that.resetStatusMonitor()
-		  })
+                _.forEach(data.weatherData, function (d) {
+                    d.tempData = _.map(d.tempData, that.prepareData)
+                    d.humidityData = _.map(d.humidityData, that.prepareData)
+                    d.pressureData = _.map(d.pressureData, that.prepareData)
+                })
 
-	},
+                that.setState({
+                    sensorData: _.map(metricData, that.prepareData),
+                    weatherData: data.weatherData
+                })
 
-	initMqttClient: function() {
+                that.resetStatusMonitor()
+            })
 
-		var that = this
+    },
 
-		AWS.config.region = config.awsRegion
-		var awsCreds = new AWS.CognitoIdentityCredentials({
-			IdentityPoolId: config.cognitoIdentityPool,
-		})
+    initMqttClient: function () {
 
-		awsCreds.get(function(err) {
+        var that = this
 
-			if(err) {
-				console.log(err)
-				return
-			}
-			var url = SigV4Utils.getSignedUrl(
-				'wss',
-				config.iotEndpoint,
-				'/mqtt',
-				'iotdevicegateway',
-				config.awsRegion,
-				awsCreds.accessKeyId,
-				awsCreds.secretAccessKey,
-				awsCreds.sessionToken)
+        AWS.config.region = config.awsRegion
+        var awsCreds = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: config.cognitoIdentityPool,
+        })
 
-			// There is no way to disable auto-reconnect in mqtt so setting the
-			// reconnect period to max value
-			var client = mqtt.connect(url, {reconnectPeriod: 2147483647})
+        awsCreds.get(function (err) {
 
-			client.on('connect', function() {
+            if (err) {
+                console.log(err)
+                return
+            }
+            var url = SigV4Utils.getSignedUrl(
+                'wss',
+                config.iotEndpoint,
+                '/mqtt',
+                'iotdevicegateway',
+                config.awsRegion,
+                awsCreds.accessKeyId,
+                awsCreds.secretAccessKey,
+                awsCreds.sessionToken)
 
-				client.subscribe(config.mqttTopic)
+            // There is no way to disable auto-reconnect in mqtt so setting the
+            // reconnect period to max value
+            var client = mqtt.connect(url, { reconnectPeriod: 2147483647 })
 
-				// There is a limit on AWS side on websocket connection duration (5 minutes)
-				// So we're closing the connection in advance
-				setTimeout(function() {
-					client.end()
-				}, 270000) // 4.5 minutes
-			})
+            client.on('connect', function () {
 
-			client.on('message', function(topic, msg) {
-				
-				var msg = msg.toString()
+                client.subscribe(config.mqttTopic)
 
-				if (config.debug)
-					console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, msg)
+                // There is a limit on AWS side on websocket connection duration (5 minutes)
+                // So we're closing the connection in advance
+                setTimeout(function () {
+                    client.end()
+                }, 270000) // 4.5 minutes
+            })
 
-				if (topic == config.mqttTopic) {
+            client.on('message', function (topic, msg) {
 
-					var dataItem = that.prepareData(JSON.parse(msg.toString()))
+                var msg = msg.toString()
 
-					var newData = _(that.state.temperatureData)
-						.filter(function(item) {
-							return item.timestamp >= Math.round(Date.now() / 1000) - 86400
-						})
-						.push(dataItem)
-						.value()
+                if (config.debug)
+                    console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, msg)
 
-					that.setState({temperatureData: newData, online: true})
-					that.resetStatusMonitor()
-				}
-			})
+                if (topic == config.mqttTopic) {
 
-			client.on('close', function() {
+                    var dataItem = that.prepareData(JSON.parse(msg.toString()))
 
-				console.log('MQTT client disconnected')
+                    var newData = _(that.state.sensorData)
+                        .filter(function (item) {
+                            return item.timestamp >= Math.round(Date.now() / 1000) - 86400
+                        })
+                        .push(dataItem)
+                        .value()
 
-				client.end()
-				
-				setTimeout(function() {
-					console.log('Reconnecting')
-					that.initMqttClient()
-				}, 1000)
-			})
+                    that.setState({ sensorData: newData, online: true })
+                    that.resetStatusMonitor()
+                }
+            })
 
-		})
-	},
+            client.on('close', function () {
 
-	componentDidMount: function() {
+                console.log('MQTT client disconnected')
 
-		var that = this
+                client.end()
 
-		this.fetchData()
-			.then(function() { that.initMqttClient() })
-	},
+                setTimeout(function () {
+                    console.log('Reconnecting')
+                    that.initMqttClient()
+                }, 1000)
+            })
 
-	resetStatusMonitor: function() {
+        })
+    },
 
-		var that = this
+    componentDidMount: function () {
 
-		if (this.statusMonitor) clearTimeout(this.statusMonitor)
+        var that = this
 
-		this.statusMonitor = setTimeout(function() { that.setState({online: false}) }, 15000)
-	},
+        this.fetchData()
+            .then(function () { that.initMqttClient() })
+    },
 
-	render: function() {
+    resetStatusMonitor: function () {
 
-		var that = this
+        var that = this
 
-		return (
-			<div className="app">
+        if (this.statusMonitor) clearTimeout(this.statusMonitor)
 
-				{function () {
-					if (that.state.temperatureData === undefined)
-						return <div className="loader"><Loader /></div>
-				}()}
+        this.statusMonitor = setTimeout(function () { that.setState({ online: false }) }, 15000)
+    },
 
-				<TemperatureChart data={this.state.temperatureData} weatherData={this.state.weatherData} boardOnline={this.state.online} />
-			</div>
-		)
-	}
+    render: function () {
+
+        const that = this
+
+        return (
+            <div className="app">
+
+                {function () {
+                    if (that.state.sensorData === undefined)
+                        return <div className="loader"><Loader /></div>
+                }()}
+
+                <div className="tabs">
+                    <Link to="/temperature" activeClassName="active">Temperature</Link>
+                    <Link to="/humidity" activeClassName="active">Humidity</Link>
+                    <Link to="/pressure" activeClassName="active">Pressure</Link>
+                </div>
+
+                {React.cloneElement(this.props.children, {
+                    data: this.state.sensorData,
+                    weatherData: this.state.weatherData,
+                    boardOnline: this.state.online
+                })}
+            </div>
+        )
+    }
 })
 
 
-ReactDOM.render(
-	<App />,
-	document.getElementById('content')
+render((
+        <Router history={hashHistory}>
+            <Route path="/" component={App}>
+                <IndexRedirect to="/temperature"/>
+                <Route path="temperature" component={TemperatureChart}/>
+                <Route path="humidity" component={HumidityChart}/>
+                <Route path="pressure" component={PressureChart}/>
+            </Route>
+        </Router>
+    ),
+    document.getElementById('content')
 )

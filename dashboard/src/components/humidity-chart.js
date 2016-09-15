@@ -2,17 +2,16 @@ import React from 'react'
 import d3 from 'd3'
 import _ from 'lodash'
 
-import TemperatureChartParams from './temperature-chart-params'
+import HumidityChartParams from './humidity-chart-params'
 
 import './temperature-chart.scss'
 
-const TemperatureChart = React.createClass({
+const HumidityChart = React.createClass({
 
 	getInitialState: function() {
 		return {
 			chartParams: {
 				chartType: 'area',
-				units: 'c',
 				showWeatherFor: []
 			}
 		}
@@ -20,16 +19,11 @@ const TemperatureChart = React.createClass({
 
 	prepareData: function(data) {
 
-		var that = this
-
 		return _(data)
 				.map(function(item) {
 
 					return {
-						temperature:
-							that.state.chartParams.units == 'f'
-								? item.temperature * 9/5 + 32
-								: item.temperature,
+						humidity: item.humidity,
 						date: new Date(item.timestamp * 1000),
 						marker: item.marker
 					}
@@ -63,7 +57,7 @@ const TemperatureChart = React.createClass({
 		var area2 = d3.svg.area()
 			.interpolate('linear')
 			.x(function(d) { return x2(d.date) })
-			.y1(function(d) { return y2(d.temperature) })
+			.y1(function(d) { return y2(d.humidity) })
 
 		var svg = d3.select(el).append('svg')
 
@@ -99,13 +93,13 @@ const TemperatureChart = React.createClass({
 
 				focusCursorPoint
 					.attr('cx', xPos)
-					.attr('cy', y(d.temperature))
+					.attr('cy', y(d.humidity))
 					.style('visibility', 'visible')
 
 				markerTooltip
-					.text(Math.round(d.temperature * 100) / 100 + that.state.chartParams.units.toUpperCase() + " @ "
+					.text(Math.round(d.humidity * 100) / 100 + "% @ "
 						+ d3.time.format('%X')(d.date))
-					.style('top', y(d.temperature) - 25 + 'px')
+					.style('top', y(d.humidity) - 25 + 'px')
 					.style('display', 'block')
 					.attr('class', 'tooltip' + (d.marker ? ' marker' : ''))
 
@@ -253,7 +247,7 @@ const TemperatureChart = React.createClass({
 				.scale(y)
 				.tickSize(width)
 				.tickFormat(function(v) {
-					return y.tickFormat()(v) + that.state.chartParams.units.toUpperCase()
+					return y.tickFormat()(v) + '%'
 				})
 
 			brush.x(x2)
@@ -296,12 +290,12 @@ const TemperatureChart = React.createClass({
 
 				var res = {
 					cityId: d.cityId,
-					tempData: that.prepareData(d.tempData)
+					humidityData: that.prepareData(d.humidityData)
 				}
 
-				if (res.tempData.length)
-					res.tempData.push({
-						temperature: _.last(res.tempData).temperature,
+				if (res.humidityData.length)
+					res.humidityData.push({
+						humidity: _.last(res.humidityData).humidity,
 						date: _.last(data).date
 					})
 
@@ -324,22 +318,22 @@ const TemperatureChart = React.createClass({
 			var focusWeatherData = _.map(weatherData, function(d) {
 				var res = {
 					cityId: d.cityId,
-					tempData: d.tempData.slice(
-							Math.max(0, bisector(d.tempData, x.domain()[0]) - 1),
-							Math.min(d.tempData.length, bisector(d.tempData, x.domain()[1]) + 1)
+					humidityData: d.humidityData.slice(
+							Math.max(0, bisector(d.humidityData, x.domain()[0]) - 1),
+							Math.min(d.humidityData.length, bisector(d.humidityData, x.domain()[1]) + 1)
 						)
 					}
 
-				if (res.tempData.length > 1) {
+				if (res.humidityData.length > 1) {
 
-					var last = res.tempData[res.tempData.length - 1]
-					var last1 = res.tempData[res.tempData.length - 2]
-					var dTemp = last.temperature - last1.temperature
+					var last = res.humidityData[res.humidityData.length - 1]
+					var last1 = res.humidityData[res.humidityData.length - 2]
+					var dHumidity = last.humidity - last1.humidity
 					var dTime = last.date - last1.date
 					var dxDomainTime = x.domain()[1] - last1.date
 
 					last.date = x.domain()[1]
-					last.temperature = last1.temperature + (dxDomainTime * dTemp / dTime)
+					last.humidity = last1.humidity + (dxDomainTime * dHumidity / dTime)
 				}
 
 				return res
@@ -347,29 +341,29 @@ const TemperatureChart = React.createClass({
 
 			var dataUnion = _(focusWeatherData)
 					.map(function(d) {
-							return _.includes(that.state.chartParams.showWeatherFor, d.cityId) ? d.tempData : []
+							return _.includes(that.state.chartParams.showWeatherFor, d.cityId) ? d.humidityData : []
 						})
 					.push(focusData)
 					.flatten()
 					.value()
 
 			y.domain([
-					Math.floor((d3.min(dataUnion.map(function(d) { return d.temperature })) - .3) * 30) / 30,
-					Math.ceil((d3.max(dataUnion.map(function(d) { return d.temperature })) + .3) * 30) / 30
+					Math.floor((d3.min(dataUnion.map(function(d) { return d.humidity })) - .3) * 30) / 30,
+					Math.ceil((d3.max(dataUnion.map(function(d) { return d.humidity })) + .3) * 30) / 30
 				])
 
 			x2.domain(xDomain)
 			y2.domain([
-					Math.floor(d3.min(data.map(function(d) { return d.temperature })) - .5),
-					Math.ceil(d3.max(data.map(function(d) { return d.temperature })))
+					Math.floor(d3.min(data.map(function(d) { return d.humidity })) - .5),
+					Math.ceil(d3.max(data.map(function(d) { return d.humidity })))
 				])
 
 			var focusPathGenerator = (this.state.chartParams.chartType == 'area'
 				? d3.svg.area()
 					.y0(height)
-					.y1(function(d) { return y(d.temperature) })
+					.y1(function(d) { return y(d.humidity) })
 				: d3.svg.line()
-					.y(function(d) { return y(d.temperature) })
+					.y(function(d) { return y(d.humidity) })
 				)
 					.interpolate('monotone')
 					.x(function(d) { return x(d.date) })
@@ -392,21 +386,21 @@ const TemperatureChart = React.createClass({
 			_.forEach(focusWeatherData, function(d) {
 
 				focusWeatherPaths[d.cityId]
-					.datum(d.tempData)
+					.datum(d.humidityData)
 					.attr('d',
 						d3.svg.line()
 							.x(function(d) { return x(d.date) })
-							.y(function(d) { return y(d.temperature) })
+							.y(function(d) { return y(d.humidity) })
 							.interpolate('basis')
 						)
 					.attr('visibility',
 						_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'visible' : 'hidden')
 
-				if (d.tempData.length)
+				if (d.humidityData.length)
 					cityLabels[d.cityId]
 						.style('display',
 							_.includes(that.state.chartParams.showWeatherFor, d.cityId) ? 'block' : 'none')
-						.style('top', y(_.last(d.tempData).temperature) + 'px')
+						.style('top', y(_.last(d.humidityData).humidity) + 'px')
 			})
 
 			if (!brush.empty())
@@ -429,7 +423,7 @@ const TemperatureChart = React.createClass({
 
 			markers
 				.attr('cx', function(d) { return x(d.date) })
-				.attr('cy', function(d) { return y(d.temperature) })
+				.attr('cy', function(d) { return y(d.humidity) })
 
 			markers.exit().remove()
 
@@ -443,7 +437,7 @@ const TemperatureChart = React.createClass({
 				.attr('x1', function(d) { return x2(d.date) })
 				.attr('y1', height2)
 				.attr('x2', function(d) { return x2(d.date) })
-				.attr('y2', function(d) { return Math.round(y2(d.temperature)) })
+				.attr('y2', function(d) { return Math.round(y2(d.humidity)) })
 
 			contextMarkers.exit().remove()
 		}
@@ -479,8 +473,8 @@ const TemperatureChart = React.createClass({
 
 			return (
 				<div className="temperature-chart-container">
-					<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
-					<h1>Temperature Sensor {boardStatus}</h1>
+					<HumidityChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
+					<h1>Humidity Sensor {boardStatus}</h1>
 					<div className="temperature-chart" ref={this.initChart} />
 				</div>
 			)
@@ -488,4 +482,4 @@ const TemperatureChart = React.createClass({
 	}
 })
 
-export default TemperatureChart
+export default HumidityChart
