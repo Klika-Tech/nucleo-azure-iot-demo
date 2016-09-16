@@ -91,7 +91,7 @@ const MagnetometerChart = React.createClass({
                 })
 
                 _.forEach(markerTooltip, (tooltip, axis) => {
-                    tooltip.text(`${axis}: ${Math.round(d.magnetometer[axis] * 100) / 100} µT @ ${d3.time.format('%X')(d.date)}`)
+                    tooltip.text(`${axis.toUpperCase()}: ${Math.round(d.magnetometer[axis] * 100) / 100} µT @ ${d3.time.format('%X')(d.date)}`)
                         .style('top', y(d.magnetometer[axis]) - 25 + 'px')
                         .style('display', 'block')
                         .attr('class', 'tooltip' + (d.marker ? ' marker' : ''))

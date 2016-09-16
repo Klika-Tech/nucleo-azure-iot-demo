@@ -45,9 +45,9 @@ module.exports = React.createClass({
 
 						Units<br />
 						<input type="radio" name="chart-units" id="chart-units-c" value="c" checked={chartParams.units == 'c' ? 'checked' : ''} onChange={this.setUnits} />
-						<label htmlFor="chart-units-c">C</label>
+						<label htmlFor="chart-units-c">°C</label>
 						<input type="radio" name="chart-units" id="chart-units-f" value="f" checked={chartParams.units == 'f' ? 'checked' : ''} onChange={this.setUnits} />
-						<label htmlFor="chart-units-f">F</label>
+						<label htmlFor="chart-units-f">°F</label>
 						<hr />
 
 						Show weather data for:

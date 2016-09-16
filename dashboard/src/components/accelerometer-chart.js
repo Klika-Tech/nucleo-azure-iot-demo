@@ -91,7 +91,7 @@ const AccelerometerChart = React.createClass({
                 })
 
                 _.forEach(markerTooltip, (tooltip, axis) => {
-                    tooltip.text(`${axis}: ${Math.round(d.accelerometer[axis] * 100) / 100}g @ ${d3.time.format('%X')(d.date)}`)
+                    tooltip.text(`${axis.toUpperCase()}: ${Math.round(d.accelerometer[axis] * 100) / 100}g @ ${d3.time.format('%X')(d.date)}`)
                         .style('top', y(d.accelerometer[axis]) - 25 + 'px')
                         .style('display', 'block')
                         .attr('class', 'tooltip' + (d.marker ? ' marker' : ''))

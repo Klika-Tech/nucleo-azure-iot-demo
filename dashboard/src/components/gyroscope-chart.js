@@ -91,7 +91,14 @@ const GyroscopeChart = React.createClass({
                 })
 
                 _.forEach(markerTooltip, (tooltip, axis) => {
-                    tooltip.text(`${axis}: ${Math.round(d.gyroscope[axis] * 100) / 100}° @ ${d3.time.format('%X')(d.date)}`)
+
+                    const axes = {
+                        x: 'Roll',
+                        y: 'Pitch',
+                        z: 'Yaw'
+                    }
+
+                    tooltip.text(`${axes[axis]}: ${Math.round(d.gyroscope[axis] * 100) / 100}° @ ${d3.time.format('%X')(d.date)}`)
                         .style('top', y(d.gyroscope[axis]) - 25 + 'px')
                         .style('display', 'block')
                         .attr('class', 'tooltip' + (d.marker ? ' marker' : ''))

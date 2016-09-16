@@ -476,7 +476,7 @@ const PressureChart = React.createClass({
 			return (
 				<div className="temperature-chart-container">
 					<ChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
-					<h1>Pressure Sensor {boardStatus}</h1>
+					<h1>Barometer Sensor {boardStatus}</h1>
 					<div className="temperature-chart" ref={this.initChart} />
 				</div>
 			)

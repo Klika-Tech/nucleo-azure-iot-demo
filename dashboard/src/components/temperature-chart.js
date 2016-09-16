@@ -103,8 +103,7 @@ const TemperatureChart = React.createClass({
 					.style('visibility', 'visible')
 
 				markerTooltip
-					.text(Math.round(d.temperature * 100) / 100 + that.state.chartParams.units.toUpperCase() + " @ "
-						+ d3.time.format('%X')(d.date))
+					.text(`${Math.round(d.temperature * 100) / 100}°${that.state.chartParams.units.toUpperCase()} @ ${d3.time.format('%X')(d.date)}`)
 					.style('top', y(d.temperature) - 25 + 'px')
 					.style('display', 'block')
 					.attr('class', 'tooltip' + (d.marker ? ' marker' : ''))
@@ -253,7 +252,7 @@ const TemperatureChart = React.createClass({
 				.scale(y)
 				.tickSize(width)
 				.tickFormat(function(v) {
-					return y.tickFormat()(v) + that.state.chartParams.units.toUpperCase()
+					return y.tickFormat()(v) + `°${that.state.chartParams.units.toUpperCase()}`
 				})
 
 			brush.x(x2)

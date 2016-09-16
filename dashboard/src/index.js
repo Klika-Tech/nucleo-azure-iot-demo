@@ -59,8 +59,8 @@ var App = React.createClass({
 
         var that = this
 
-        // getting the data for the last 24h
-        var since = Math.round(Date.now() / 1000) - 86400
+        // getting the data for the last 48h
+        var since = Math.round(Date.now() / 1000) - 172800
 
         return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
             .then(function (response) {
@@ -198,7 +198,7 @@ var App = React.createClass({
                 <div className="tabs">
                     <Link to="/temperature" activeClassName="active">Temperature</Link>
                     <Link to="/humidity" activeClassName="active">Humidity</Link>
-                    <Link to="/pressure" activeClassName="active">Pressure</Link>
+                    <Link to="/barometer" activeClassName="active">Barometer</Link>
                     <Link to="/magnetometer" activeClassName="active">Magnetometer</Link>
                     <Link to="/gyroscope" activeClassName="active">Gyroscope</Link>
                     <Link to="/accelerometer" activeClassName="active">Accelerometer</Link>
@@ -221,7 +221,7 @@ render((
                 <IndexRedirect to="/temperature"/>
                 <Route path="temperature" component={TemperatureChart}/>
                 <Route path="humidity" component={HumidityChart}/>
-                <Route path="pressure" component={PressureChart}/>
+                <Route path="barometer" component={PressureChart}/>
                 <Route path="magnetometer" component={MagnetometerChart}/>
                 <Route path="gyroscope" component={GyroscopeChart}/>
                 <Route path="accelerometer" component={AccelerometerChart}/>
