@@ -59,8 +59,8 @@ var App = React.createClass({
 
         var that = this
 
-        // getting the data for the last 48h
-        var since = Math.round(Date.now() / 1000) - 172800
+        // getting the data for the last 24h
+        var since = Math.round(Date.now() / 1000) - 86400
 
         return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
             .then(function (response) {
