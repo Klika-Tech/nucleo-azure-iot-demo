@@ -3,25 +3,53 @@ const dc = new aws.DynamoDB.DocumentClient();
 
 export function handler(event, context, callback) {
     
-    var params = {
-        TableName: "nucleo-metrics",
-        KeyConditionExpression: "metric = :m AND #ts >= :ts",
+    const params = {
+        TableName: 'nucleo-metrics',
+        KeyConditionExpression: 'metric = :m AND #ts >= :since',
         ExpressionAttributeNames: {
-            "#ts": "timestamp"
+            '#ts': 'timestamp'
         },
         ExpressionAttributeValues: {
-            ":m": "temperature",
-            ":ts": event.since.toString()
+            ':m': 'temperature',
+            ':since': event.since.toString()
         },
         ScanIndexForward: false,
-        Limit: 20000
+        Limit: 40000
     }
 
-    dc.query(params, function(err, data) {
-        
-        if (err) { callback(err); return }
-        
-        const sensorData = data.Items.reverse().map(function(x) {
+    queryDb(params, [])
+
+
+    function queryDb(params, acc) {
+
+        dc.query(params, function (err, data) {
+
+            if (err) {
+                callback(err);
+                return
+            }
+
+            acc = acc.concat(data.Items)
+
+            if (data.LastEvaluatedKey) {
+
+                params.KeyConditionExpression = 'metric = :m AND #ts BETWEEN :since AND :lastts'
+                params.ExpressionAttributeValues = {
+                    ':m': 'temperature',
+                    ':since': event.since.toString(),
+                    ':lastts': (acc[acc.length - 1].timestamp - 1).toString()
+                }
+
+                queryDb(params, acc)
+
+            } else processResult(acc)
+        })
+    }
+
+
+    function processResult(items) {
+
+        const sensorData = items.reverse().map(function(x) {
             var result = {
                 timestamp: parseInt(x.timestamp)
             }
@@ -113,5 +141,5 @@ export function handler(event, context, callback) {
         }
         
         goThroughCities()
-    })
-};
+    }
+}
