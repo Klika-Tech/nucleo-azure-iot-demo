@@ -1,0 +1,23 @@
+{
+  "name": "nucleo-demo-lambdas",
+  "version": "0.0.1",
+  "description": "Nucleo Demo AWS Lambdas",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/webpack/bin/webpack.js -p",
+    "zip": "cd dist && (for f in *.js; do cp $f index.js && chmod a+r index.js && zip $f.zip index.js && rm index.js; done)"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "clean-webpack-plugin": "^0.1.10",
+    "webpack": "^1.13.2",
+    "webpack-shell-plugin": "^0.4.3"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.6.1",
+    "lodash": "^4.15.0"
+  }
+}

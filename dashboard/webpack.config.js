@@ -1,27 +1,36 @@
-var webpack = require('webpack')
+const WebpackShellPlugin = require('webpack-shell-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: "./main.jsx",
-  output: { path: __dirname + "/dist", filename: "bundle.js" },
-  module: {
-    loaders: [
-      {
-        test: /.jsx?$/,
-        loader: "babel-loader",
-        exclude: /node_modules/,
-        query: {
-          presets: ["react"]
-        }
-      }
-    ],
-	noParse: [
-		/aws\-sdk/
-	]
-  },
-  plugins: [
-  	new webpack.ProvidePlugin({
-		'Promise': 'exports?global.Promise!es6-promise',
-		'fetch': 'exports?self.fetch!whatwg-fetch'
-		})
-  ]
+    entry: ['whatwg-fetch', './src/'],
+    output: { path: __dirname + '/dist', filename: 'bundle.js' },
+    module: {
+        loaders: [
+            {
+                test: /\.js?$/,
+                loader: 'babel',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['es2015', 'react']
+                }
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
+            },
+            {
+                test: /\.svg$/,
+                loader: 'svg-sprite'
+            }
+        ],
+        noParse: [
+            /aws\-sdk/
+        ]
+    },
+    plugins: [
+        new WebpackShellPlugin({
+            onBuildStart: ['npm install; npm prune']
+        }),
+        new CleanWebpackPlugin(['dist'])
+    ]
 }
