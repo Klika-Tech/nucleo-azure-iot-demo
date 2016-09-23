@@ -1,5 +1,2 @@
 *.swp
-dashboard/node_modules
-dashboard/dist
-dashboard/src/config.js
 .idea
