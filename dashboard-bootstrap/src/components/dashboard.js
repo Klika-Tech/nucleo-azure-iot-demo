@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { Link } from 'react-router'
+import _ from 'lodash'
 import { Grid, Row, Col, PanelContainer, Panel, PanelHeader, PanelBody } from '@sketchpixy/rubix'
 
 import TemperatureChart from './temperature-chart-simple'
@@ -13,7 +14,10 @@ import AccelerometerChart from './accelerometer-chart-simple'
 import './dashboard.scss'
 
 
-const Dashboard = ({ data, weatherData }) => {
+const Dashboard = ({ data }) => {
+
+    // Showing last 5 minutes
+    data = _.takeRight(data, 300)
 
     return (
         <Grid className="dashboard">
