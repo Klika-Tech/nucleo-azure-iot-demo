@@ -10,6 +10,7 @@ import classNames from 'classnames'
 
 import SigV4Utils from './sigv4utils'
 
+import Dashboard from './components/dashboard'
 import TemperatureChart from './components/temperature-chart'
 import HumidityChart from './components/humidity-chart'
 import PressureChart from './components/pressure-chart'
@@ -65,7 +66,7 @@ var App = React.createClass({
 
         var that = this
 
-        // getting the data for the last 24h
+        // getting the data for the last 4h
         var since = Math.round(Date.now() / 1000) - 14400
 
         return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
@@ -201,6 +202,24 @@ var App = React.createClass({
             </Tooltip>
         )
 
+        const wrapInPanel = children => {
+
+            if (this.props.location.pathname == '/dashboard') return children
+            else return (
+                <Grid>
+                    <Row>
+                        <Col xs={12}>
+                            <PanelContainer className="full-screen">
+                                <Panel>
+                                    <PanelBody>{children}</PanelBody>
+                                </Panel>
+                            </PanelContainer>
+                        </Col>
+                    </Row>
+                </Grid>
+            )
+        }
+
         return (
             <MainContainerWR>
 
@@ -212,6 +231,8 @@ var App = React.createClass({
                                     <Col xs={12}>
                                         <div className="sidebar-nav-container">
                                             <SidebarNav>
+                                                <SidebarNavItem name="Dashboard" href="/dashboard"
+                                                                glyph="icon-fontello-th-large"/>
                                                 <SidebarNavItem name="Temperature" href="/temperature"
                                                                 glyph="icon-fontello-temperatire"/>
                                                 <SidebarNavItem name="Humidity" href="/humidity"
@@ -272,25 +293,12 @@ var App = React.createClass({
                 </Grid>
 
                 <div id="body">
-                    <Grid>
-                        <Row>
-                            <Col xs={12}>
-                                <PanelContainer className="full-screen">
-                                    <Panel>
-                                        <PanelBody>
-                                            {React.cloneElement(
-                                                this.props.children,
-                                                {
-                                                    data: this.state.sensorData,
-                                                    weatherData: this.state.weatherData,
-                                                    boardOnline: this.state.online
-                                                })}
-                                        </PanelBody>
-                                    </Panel>
-                                </PanelContainer>
-                            </Col>
-                        </Row>
-                    </Grid>
+                    {wrapInPanel(React.cloneElement(
+                        this.props.children,
+                        {
+                            data: this.state.sensorData,
+                            weatherData: this.state.weatherData
+                        }))}
                 </div>
 
             </MainContainerWR>
@@ -302,7 +310,8 @@ var App = React.createClass({
 render((
         <Router history={hashHistory}>
             <Route path="/" component={App}>
-                <IndexRedirect to="/temperature"/>
+                <IndexRedirect to="/dashboard"/>
+                <Route path="dashboard" component={Dashboard}/>
                 <Route path="temperature" component={TemperatureChart}/>
                 <Route path="humidity" component={HumidityChart}/>
                 <Route path="barometer" component={PressureChart}/>

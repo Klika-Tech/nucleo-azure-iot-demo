@@ -21,6 +21,10 @@
     bottom: 0;
     left: 0;
 
+    &.simple {
+      right: 0;
+    }
+
     svg {
       font: 10px sans-serif;
     }
@@ -74,6 +78,10 @@
 
       .tick line, .domain {
         opacity: .15;
+      }
+
+      &.y .domain {
+        stroke-width: 2px;
       }
     }
 
