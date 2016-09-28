@@ -110,7 +110,7 @@ const TemperatureChart = React.createClass({
 
 				var rectBBox = focusBg.node().getBBox()
 
-				if (xPos - rectBBox.width < - 140)
+				if (xPos - rectBBox.width < - 200)
 					markerTooltip
 						.style('left', xPos + margin.left + 5 + 'px')
 						.style('right', 'initial')
