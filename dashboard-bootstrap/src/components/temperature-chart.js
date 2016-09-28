@@ -106,11 +106,11 @@ const TemperatureChart = React.createClass({
 					.text(`${Math.round(d.temperature * 100) / 100}°${that.state.chartParams.units.toUpperCase()} @ ${d3.time.format('%X')(d.date)}`)
 					.style('top', y(d.temperature) - 25 + 'px')
 					.style('display', 'block')
-					.attr('class', 'tooltip' + (d.marker ? ' marker' : ''))
+					.attr('class', 'cursor-tooltip' + (d.marker ? ' marker' : ''))
 
 				var rectBBox = focusBg.node().getBBox()
 
-				if (xPos - rectBBox.width < -200)
+				if (xPos - rectBBox.width < - 140)
 					markerTooltip
 						.style('left', xPos + margin.left + 5 + 'px')
 						.style('right', 'initial')
@@ -463,27 +463,12 @@ const TemperatureChart = React.createClass({
 
 	render: function() {
 		if (this.props.data === undefined) return <div />
-		else {
-
-			var boardStatus = ''
-
-			if (this.props.boardOnline !== undefined) {
-
-				var statusStr = this.props.boardOnline
-						? <span className="online">online</span>
-						: <span className="offline">offline</span>
-
-				boardStatus = <span className="status">(Nucleo Board is {statusStr})</span>
-			}
-
-			return (
+		else return (
 				<div className="temperature-chart-container">
 					<TemperatureChartParams setChartParam={this.setChartParam} chartParams={this.state.chartParams} weatherData={this.props.weatherData} />
-					<h1>Temperature Sensor {boardStatus}</h1>
 					<div className="temperature-chart" ref={this.initChart} />
 				</div>
 			)
-		}
 	}
 })
 

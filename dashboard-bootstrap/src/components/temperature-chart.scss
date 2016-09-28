@@ -3,36 +3,21 @@
 
   position: absolute;
   top: 20px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  h1 {
-    font-size: 1.7em;
-
-    .status {
-
-      .online {
-        color: green;
-      }
-
-      .offline {
-        color: red;
-      }
-    }
-  }
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
 
   .temperature-chart-params {
     float: right;
-    width: 200px;
+    width: 130px;
     font-size: small;
   }
 
   .temperature-chart, .magnetometer-chart {
 
     position: absolute;
-    top: 70px;
-    right: 200px;
+    top: 0;
+    right: 140px;
     bottom: 0;
     left: 0;
 
@@ -41,12 +26,12 @@
     }
 
     .area {
-      fill: steelblue;
+      fill: #6dcab7;
       clip-path: url(#clip);
     }
 
     .line {
-      stroke: steelblue;
+      stroke: #2eb398;
       stroke-width: 3px;
       fill: none;
       clip-path: url(#clip);
@@ -69,20 +54,22 @@
       stroke-width: 2px;
     }
 
-    .axis path,
-    .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
+    .axis {
 
-    .y.axis {
-      .tick line, .domain {
-        opacity: .2;
+      path, line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
       }
 
       .tick text {
-        font-size: medium;
+        font-family: Lato, "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        fill: #666666;
+      }
+
+      .tick line, .domain {
+        opacity: .15;
       }
     }
 
@@ -93,32 +80,32 @@
     }
 
     circle.marker {
-      fill: #B93535;
+      fill: #E76049;
       stroke: #E69090;
     }
 
-    .tooltip, .city-label {
+    .cursor-tooltip, .city-label {
       position: absolute;
       display: none;
       font-size: small;
-      background-color: #4682B4;
-      padding: 4px 6px;
+      font-family: Lato, "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+      background-color: #2eb398;
+      padding: 1px 6px 0px;
       color: white;
       border: 1px solid white;
       border-radius: 4px;
       pointer-events: none;
     }
 
-    .tooltip.marker {
-      background-color: #B93535;
-      border-color: #B93535;
+    .cursor-tooltip.marker {
+      background-color: #E76049;
+      border-color: #E76049;
     }
 
     .city-label {
       background-color: #8BC34A;
       right: 15px;
       border-radius: 2px;
-      padding: 0 3px;
     }
 
     .focus-bg {
@@ -135,12 +122,12 @@
 
     .cursor-point {
       visibility: hidden;
-      stroke: #325D81;
-      fill: #91B6D4;
+      stroke: #2eb398;
+      fill: #b6e5db;
     }
 
     .context-marker {
-      stroke: #B93535;
+      stroke: #E76049;
       shape-rendering: crispEdges;
     }
   }
