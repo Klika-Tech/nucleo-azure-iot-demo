@@ -32,16 +32,20 @@
 
     .line {
       stroke: #2eb398;
-      stroke-width: 3px;
+      stroke-width: 2px;
       fill: none;
       clip-path: url(#clip);
 
       &.x {
-        stroke: #f44336;
+        stroke: #E76049;
       }
 
       &.y {
         stroke: #4caf50;
+      }
+
+      &.z {
+        stroke: #4c9af1;
       }
     }
 
