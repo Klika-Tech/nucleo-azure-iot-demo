@@ -59,6 +59,10 @@ body {
   color: white ! important;
 }
 
+.navbar-right {
+  float: right ! important;
+}
+
 .online-status {
   color: #89949B;
   padding: 14px 0;
@@ -68,4 +72,8 @@ body {
   &.online {
     color: #2EB398;
   }
+}
+
+* {
+  transition: initial ! important;
 }

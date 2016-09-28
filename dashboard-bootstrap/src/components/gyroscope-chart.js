@@ -233,7 +233,7 @@ const GyroscopeChart = React.createClass({
                 .scale(y)
                 .tickSize(width)
                 .tickFormat(function (v) {
-                    return y.tickFormat()(v) + '°'
+                    return `${y.tickFormat()(v)}°`
                 })
 
             brush.x(x2)
