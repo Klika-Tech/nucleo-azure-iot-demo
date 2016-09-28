@@ -3,9 +3,10 @@ import 'file?name=[name].[ext]!./index.html'
 import _ from 'lodash'
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, Link, IndexRedirect, hashHistory, withRouter } from 'react-router'
+import { Router, Route, IndexRedirect, hashHistory, withRouter } from 'react-router'
 import AWS from 'exports?AWS!aws-sdk/dist/aws-sdk'
 import mqtt from 'mqtt'
+import classNames from 'classnames'
 
 import SigV4Utils from './sigv4utils'
 
@@ -16,7 +17,9 @@ import MagnetometerChart from './components/magnetometer-chart'
 import GyroscopeChart from './components/gyroscope-chart'
 import AccelerometerChart from './components/accelerometer-chart'
 
-import { Sidebar, SidebarNav, SidebarNavItem } from '@sketchpixy/rubix'
+import { Sidebar, SidebarNav, SidebarNavItem, SidebarBtn, Grid, Col, Row, MainContainer, PanelContainer, Panel,
+    PanelBody, Navbar, NavbarHeader, NavbarBrand, Nav, NavItem, Icon, Tooltip, OverlayTrigger } from '@sketchpixy/rubix'
+const MainContainerWR = withRouter(MainContainer)
 
 import './main.scss'
 import './rubix/sass/main.scss'
@@ -171,10 +174,8 @@ var App = React.createClass({
 
     componentDidMount: function () {
 
-        var that = this
-
         this.fetchData()
-            .then(function () { that.initMqttClient() })
+            .then(() => { this.initMqttClient() })
     },
 
     resetStatusMonitor: function () {
@@ -188,41 +189,111 @@ var App = React.createClass({
 
     render: function () {
 
-        const that = this
+        if (this.state.sensorData === undefined) return (
+            <div className="app">
+                <div className="loader"><Loader /></div>
+            </div>
+        )
 
-        const SidebarNavItemWR = withRouter(SidebarNavItem)
+        const onlineTooltip = (
+            <Tooltip id="online-tooltip">
+                The board is {this.state.online ? 'online' : 'offline'}
+            </Tooltip>
+        )
 
         return (
-            <div className="app">
-
-                {function () {
-                    if (that.state.sensorData === undefined)
-                        return <div className="loader"><Loader /></div>
-                }()}
+            <MainContainerWR>
 
                 <div id="sidebar">
                     <div id="sidebar-container">
-                        <Sidebar active={true}>
-                            <div className="sidebar-nav-container">
-                                <SidebarNav>
-                                    <SidebarNavItemWR name="Temperature" href="/temperature" glyph="icon-fontello-temperatire" />
-                                    <SidebarNavItemWR name="Humidity" href="/humidity" glyph="icon-fontello-water" />
-                                    <SidebarNavItemWR name="Barometer" href="/barometer" glyph="icon-fontello-gauge" />
-                                    <SidebarNavItemWR name="Magnetometer" href="/magnetometer" glyph="icon-fontello-magnet" />
-                                    <SidebarNavItemWR name="Gyroscope" href="/gyroscope" glyph="icon-fontello-direction" />
-                                    <SidebarNavItemWR name="Accelerometer" href="/accelerometer" glyph="icon-fontello-chart-line" />
-                                </SidebarNav>
-                            </div>
+                        <Sidebar sidebar={0}>
+                            <Grid>
+                                <Row>
+                                    <Col xs={12}>
+                                        <div className="sidebar-nav-container">
+                                            <SidebarNav>
+                                                <SidebarNavItem name="Temperature" href="/temperature"
+                                                                glyph="icon-fontello-temperatire"/>
+                                                <SidebarNavItem name="Humidity" href="/humidity"
+                                                                glyph="icon-fontello-water"/>
+                                                <SidebarNavItem name="Barometer" href="/barometer"
+                                                                glyph="icon-fontello-gauge"/>
+                                                <SidebarNavItem name="Magnetometer" href="/magnetometer"
+                                                                glyph="icon-fontello-magnet"/>
+                                                <SidebarNavItem name="Gyroscope" href="/gyroscope"
+                                                                glyph="icon-fontello-direction"/>
+                                                <SidebarNavItem name="Accelerometer" href="/accelerometer"
+                                                                glyph="icon-fontello-chart-line"/>
+                                            </SidebarNav>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Grid>
                         </Sidebar>
                     </div>
                 </div>
 
-                {React.cloneElement(this.props.children, {
-                    data: this.state.sensorData,
-                    weatherData: this.state.weatherData,
-                    boardOnline: this.state.online
-                })}
-            </div>
+                <Grid id="navbar">
+                    <Row>
+                        <Col xs={12}>
+                            <Navbar fixedTop={true} fluid={true} id="rubix-nav-header">
+                                <Grid fluid={true}>
+                                    <Row>
+                                        <Col xs={3} visible="xs">
+                                            <SidebarBtn>
+                                                <Nav className="pull-left visible-xs-inline-block">
+                                                    <NavItem className="sidebar-btn" href="/">
+                                                        <Icon bundle="fontello" glyph="th-list-5" />
+                                                    </NavItem>
+                                                </Nav>
+                                            </SidebarBtn>
+                                        </Col>
+                                        <Col xs={6} sm={4}>
+                                            <NavbarHeader>
+                                                <NavbarBrand>
+                                                    Nucleo Board
+                                                </NavbarBrand>
+                                            </NavbarHeader>
+                                        </Col>
+                                        <Col xs={3} sm={8}>
+                                            <Nav pullRight>
+                                                <div className={classNames('online-status', {online: this.state.online})}>
+                                                    <OverlayTrigger placement="left" overlay={onlineTooltip}>
+                                                        <Icon bundle="fontello" glyph="circle" />
+                                                    </OverlayTrigger>
+                                                </div>
+                                            </Nav>
+                                        </Col>
+                                    </Row>
+                                </Grid>
+                            </Navbar>
+                        </Col>
+                    </Row>
+                </Grid>
+
+                <div id="body">
+                    <Grid>
+                        <Row>
+                            <Col xs={12}>
+                                <PanelContainer className="full-screen">
+                                    <Panel>
+                                        <PanelBody>
+                                            {React.cloneElement(
+                                                this.props.children,
+                                                {
+                                                    data: this.state.sensorData,
+                                                    weatherData: this.state.weatherData,
+                                                    boardOnline: this.state.online
+                                                })}
+                                        </PanelBody>
+                                    </Panel>
+                                </PanelContainer>
+                            </Col>
+                        </Row>
+                    </Grid>
+                </div>
+
+            </MainContainerWR>
         )
     }
 })

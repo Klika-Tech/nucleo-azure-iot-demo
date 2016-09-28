@@ -22,19 +22,50 @@ body {
 		transform: translate(-50%, -50%);
 
 		svg {
-			stroke: #7598B6;
+			stroke: #2EB398;
 			width: 20vh;
 			height: 20vh;
 		}
 	}
+}
 
-	.tabs a {
-      display: inline-block;
-      margin-right: 10px;
+.sidebar-nav .rubix-icon {
+  text-align: center ! important;
+}
 
-      &.active {
-        font-weight: bold;
-      }
+.rubix-panel-container-with-controls.full-screen {
+
+  .rubix-panel-container {
+
+    margin-bottom: 0;
+
+    .rubix-panel-body {
+      height: calc(100vh - 125px);
     }
+  }
+}
 
+#sidebar-container {
+  top: 80px ! important;
+}
+
+#rubix-nav-header > .container-fluid {
+  padding: 0 ! important;
+}
+
+.navbar-brand {
+  font-size: 30px ! important;
+  white-space: nowrap;
+  color: white ! important;
+}
+
+.online-status {
+  color: #89949B;
+  padding: 14px 0;
+  font-size: 27px;
+  height: 75px;
+
+  &.online {
+    color: #2EB398;
+  }
 }
