@@ -1,4 +1,6 @@
-var React = require('react')
+import React from 'react'
+
+import { Form, FormGroup, ControlLabel, Radio, Checkbox } from '@sketchpixy/rubix'
 
 module.exports = React.createClass({
 
@@ -28,28 +30,22 @@ module.exports = React.createClass({
 
 		return (
 			<div className="temperature-chart-params">
-				<form>
-					<fieldset>
-						<legend>Chart Parameters</legend>
+				<Form>
+                        <FormGroup>
+                            <ControlLabel>Chart Type</ControlLabel>
+                            <Radio checked={chartParams.chartType == 'area'} value="area" onChange={this.setChartType} inline>Area</Radio>
+                            <Radio checked={chartParams.chartType == 'line'} value="line" onChange={this.setChartType} inline>Line</Radio>
+                        </FormGroup>
 
-						Chart Type<br />
-						<input type="radio" name="chart-type" id="chart-type-area" value="area" checked={chartParams.chartType == 'area' ? 'checked' : ''} onChange={this.setChartType} />
-						<label htmlFor="chart-type-area">Area</label>
-						<input type="radio" name="chart-type" id="chart-type-line" value="line" checked={chartParams.chartType == 'line' ? 'checked' : ''} onChange={this.setChartType} />
-						<label htmlFor="chart-type-line">Line</label>
-						<hr />
-
-						Show weather data for:
+                        <FormGroup>
+                            <ControlLabel>Weather Data</ControlLabel>
 						{_(this.props.weatherData)
 							.sortBy(function(d) { return d.cityName })
 							.map(function(d) {
-								return <div key={d.cityId}>
-									<input type="checkbox" id={'show-weather-for-' + d.cityId} value={d.cityId} onChange={that.setShowWeatherFor} checked={_.includes(chartParams.showWeatherFor, d.cityId) ? 'checked' : ''} />
-									<label htmlFor={'show-weather-for-' + d.cityId}>{d.cityName}</label>
-								</div>
+								return <Checkbox key={d.cityId} checked={_.includes(chartParams.showWeatherFor, d.cityId)} value={d.cityId} onChange={that.setShowWeatherFor} >{d.cityName}</Checkbox>
 							}).value()}
-					</fieldset>
-				</form>
+                        </FormGroup>
+				</Form>
 			</div>
 		)
 	}
