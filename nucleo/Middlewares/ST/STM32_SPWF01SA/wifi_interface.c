@@ -1278,6 +1278,26 @@ WiFi_Status_t wifi_enable(wifi_bool enable)
         
 }
 
+/**
+* @brief  wifi_mac_get
+*         Obtaining Module MAC address
+* @param  Pointer to 6 bytes char array
+* @retval WiFi_Status_t : status of AT cmd
+*/
+WiFi_Status_t wifi_mac_get(uint32_t * mac)
+{
+  WiFi_Status_t status = WiFi_MODULE_SUCCESS;
+   
+  /* Check the MAC Address AT+S.GCFG=nv_wifi_macaddr*/
+ 
+	if (mac)
+		status = GET_Configuration_Value(WIFI_MAC_ADDRESS, mac);
+  
+  if(status != WiFi_MODULE_SUCCESS)
+    return WiFi_AT_CMD_RESP_ERROR;
+
+  return status; 
+}
 
 
 /**

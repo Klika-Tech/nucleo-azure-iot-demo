@@ -48,6 +48,7 @@
 /************************************************************************
 Downloaded from https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
 *************************************************************************/
+//This root CA can be used.
 uint8_t rootCA[] = "\
 -----BEGIN CERTIFICATE-----\n\
 MIIE0zCCA7ugAwIBAgIQGNrRniZ96LtKIVjNzGs7SjANBgkqhkiG9w0BAQUFADCBy\
@@ -87,25 +88,27 @@ FzyQkqFOFSDX9HoLPKsEdao7WNq\
 /****************************************
 (somecode)-certificate.pem.crt - Amazon signed PEM sertificate.
 *****************************************/
+
+//This Client cert is example. Use own instead.
 uint8_t clientCRT[] = "\
 -----BEGIN CERTIFICATE-----\n\
-MIIC2DCCAcCgAwIBAgIUXSHIZDWwpiHYhvBGB5bBVQyw/wcwDQYJKoZIhvcNAQEL\
-BQAwTTFLMEkGA1UECwxCQW1hem9uIFdlYiBTZXJ2aWNlcyBPPUFtYXpvbi5jb20g\
-SW5jLiBMPVNlYXR0bGUgU1Q9V2FzaGluZ3RvbiBDPVVTMB4XDTE2MDMyNTE3MDQx\
-M1oXDTQ5MTIzMTIzNTk1OVowaDELMAkGA1UEBhMCQlkxDjAMBgNVBAgMBU1pbnNr\
-MQ4wDAYDVQQHDAVNaW5zazEXMBUGA1UECgwOS2xpa2EgVGVjaCBMTEMxIDAeBgNV\
-BAMMF2V2b2xjaGVrQGtsaWthLXRlY2guY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0D\
-AQcDQgAEpGc2OQb1xfje6RXd9hFcknCVqFKvNIEVGmgvA42AzzyBZ/hP7/DwLqPk\
-Osgp2gdYOHgYWE9G+e8i3uv+kPOaj6NgMF4wHwYDVR0jBBgwFoAUsxrtfMr24lmr\
-WxXHtmSrXoyMiKIwHQYDVR0OBBYEFLcywHxSb0eoE3a5YA9/SmX+7EiqMAwGA1Ud\
-EwEB/wQCMAAwDgYDVR0PAQH/BAQDAgeAMA0GCSqGSIb3DQEBCwUAA4IBAQATJQ95\
-QHWZnSA2z17S6y7Ap6LZfKqNWm4AUtqhKsloXliORNXpj2J+vjTqj7XwM+CUsu/G\
-FJmb015Yv0MDvWG/xsB50Yj0PSq4z2/shIzgX8C2/hh65ghvNDGfN9W4YJoN6FCa\
-JmUvKaCOaZEUWWtSwOGPB393G6t/AlbzK1SoBlGzu35ON6W72pfqdjATt502rVw5\
-lbDctKwgWj7nEdlDqAe48KzzT8nNp80u1jfZjf2ayARzlSAeLvRWN9UTZzH8MuAq\
-mWSPDnmLrTA0pIYd+vpKv4OVTzGhKzItkbO7xtPJmw2qd/CvaJvMYzoqsl8iA4Dx\
-sBbmuNEO/th7VFwT\
+MIICtjCCAZ6gAwIBAgIVAINKgHvS+hgoo9IQ8xu7xdDcRoTfMA0GCSqGSIb3DQEB\
+CwUAME0xSzBJBgNVBAsMQkFtYXpvbiBXZWIgU2VydmljZXMgTz1BbWF6b24uY29t\
+IEluYy4gTD1TZWF0dGxlIFNUPVdhc2hpbmd0b24gQz1VUzAeFw0xNjA2MDgxMTUx\
+NTJaFw00OTEyMzEyMzU5NTlaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21l\
+LVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwWTATBgcq\
+hkjOPQIBBggqhkjOPQMBBwNCAARUAkuTJ3E2Ka3eKNMmTQm4geuzPlnwj4nfMQV0\
+m5ZumMLY8YTv7ylIEmgIGGJT6Z/WsFYSM9k9AB6P61VVneIwo2AwXjAfBgNVHSME\
+GDAWgBT9+uFfyvhEYs8U1jTljtBQLc15+TAdBgNVHQ4EFgQUX8tH2AQL2zbgEBw8\
+qMDkcbgPxi4wDAYDVR0TAQH/BAIwADAOBgNVHQ8BAf8EBAMCB4AwDQYJKoZIhvcN\
+AQELBQADggEBAAzE/X7Gp7dgR0TwVfVtTacdm2z3apBAe2CUtQjUglXNkwW73wQm\
+EDpFXEPHb2qu2GcnWLGre4OtRp0xrGfRdWuelk6QpHqPkbaIYtZtA4rg9dGjMEv0\
+dtjTv3p//eOYWjTeW0czLG5Fj2MgDcOm1Q11Dji8ThgdnuJ1ouWa6ysM55tKSebv\
+/KBBMzhgdCKxzS1U32dekvhU0Kg02LTBlO8NJ6WZ8x7444RU45hwE7wTkqX5Mk8L\
++AQUk6UyKrhyWH6/THbDLoJKiLn8Z0dG//7xk1aS5PXIDkn6c578gMieXPK91qrw\
+nNmJLq5lvfriHKgUYgG7HsQI/XdoS6/0X0s=\
 \n-----END CERTIFICATE-----\n";
+
 
 /**********************************************************************************************
 ***********************************************************************************************
@@ -118,12 +121,13 @@ sBbmuNEO/th7VFwT\
 nucleo.key.pem - client key generated according to readme.
 **************************************************************************************************************/
 
+//This Client Key is example. Use own instead.
 uint8_t clientKey[] ="\
 -----BEGIN EC PARAMETERS-----\n\
 BggqhkjOPQMBBw==\
 -----END EC PARAMETERS-----\n\
 -----BEGIN EC PRIVATE KEY-----\n\
-MHcCAQEEII1PoUy3/MpwQ0S1vsmAkDj/YfyT4bQNYAFmOSrHER3zoAoGCCqGSM49\
-AwEHoUQDQgAEpGc2OQb1xfje6RXd9hFcknCVqFKvNIEVGmgvA42AzzyBZ/hP7/Dw\
-LqPkOsgp2gdYOHgYWE9G+e8i3uv+kPOajw==\
-\n-----END EC PRIVATE KEY-----\n";
+MHcCAQEEIPrtE2cCZURyr3Ud5jzSe1L1gGAqtLvBMfGYtgepGXmxoAoGCCqGSM49\
+AwEHoUQDQgAEVAJLkydxNimt3ijTJk0JuIHrsz5Z8I+J3zEFdJuWbpjC2PGE7+8p\
+SBJoCBhiU+mf1rBWEjPZPQAej+tVVZ3iMA==\n\
+-----END EC PRIVATE KEY-----\n";

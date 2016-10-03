@@ -107,6 +107,7 @@
 #define WIFI_IP_APREDIRECT                      "ip_apredirect"
 #define WIFI_IP_HTTP_TIMEOUT                    "ip_http_get_recv_timeout"
 #define WIFI_IP_DHCP_TIMEOUT                    "ip_dhcp_timeout"
+#define WIFI_MAC_ADDRESS												"nv_wifi_macaddr"
     
 #define WIFI_SLEEP_ENABLED                      "sleep_enabled"
 #define WIFI_HT_MODE                            "wifi_ht_mode"

@@ -236,6 +236,7 @@ void wifi_vcom(void);
 #endif
 
 WiFi_Status_t   wifi_init(wifi_config* config);
+WiFi_Status_t		wifi_mac_get(uint32_t * mac);
 WiFi_Status_t   wifi_restore(void);
 WiFi_Status_t   wifi_enable(wifi_bool enable);
 WiFi_Status_t   wifi_disconnect(void);
