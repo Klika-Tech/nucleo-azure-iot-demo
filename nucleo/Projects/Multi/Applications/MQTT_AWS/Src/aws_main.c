@@ -99,6 +99,13 @@ extern volatile uint32_t BpushButtonState;
 //int getopt(int argc, char** argv, const char *optstring) {return 0;}
 //char* getcwd( char* buffer, size_t size ) {return 0;}
 
+//Debug levels
+#define	LOG_NO_DEBUG 0
+#define LOG_BRIEF 2
+#define LOG_FULL 4
+
+
+#define APPLICATION_DEBUG LOG_BRIEF
 
 /**
 * @brief Default cert location
@@ -188,12 +195,12 @@ int aws_main() {
 	IoT_Error_t rc = NONE_ERROR;
 	int32_t i = 0;
 
-
-	INFO("HUMID sens %d", (int)BSP_HUM_TEMP_Init());
-	INFO("PRESS sens %d", (int)BSP_PRESSURE_Init());
-	INFO("GYRO|ACCEL sens %d", (int)BSP_IMU_6AXES_Init());
-	INFO("MAGNETO sens %d", (int)BSP_MAGNETO_Init());
-	
+#if APPLICATION_DEBUG != LOG_NO_DEBUG
+	INFO("HUMID sens      %s", ((int)BSP_HUM_TEMP_Init()== 0)? "OK" : "ERROR");
+	INFO("PRESS sens      %s", ((int)BSP_PRESSURE_Init() == 0)? "OK" : "ERROR");
+	INFO("GYRO|ACCEL sens %s", ((int)BSP_IMU_6AXES_Init() == 0)? "OK" : "ERROR");
+	INFO("MAGNETO sens    %s", ((int)BSP_MAGNETO_Init() == 0)? "OK" : "ERROR");
+#endif	
 	BSP_IMU_6AXES_Enable_Free_Fall_Detection_Ext();
 
 	INFO("\nAWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
@@ -255,8 +262,8 @@ int aws_main() {
 	//Params.pTopic = "Nucleo/shadow/update";
 
 
-	#define BUTTONDELAY 100 //Delay in ms to check the button state
-	#define DELAYRATIO 5		//Multiplyer for autopublish/buttonpress
+	#define BUTTONDELAY 50 //Delay in ms to check the button state
+	#define DELAYRATIO 1		//Multiplyer for autopublish/buttonpress
 	int delays = DELAYRATIO;
 	bool Publish = false;
 	
@@ -302,14 +309,17 @@ int aws_main() {
 			
 			sprintf(cPayload, "{\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f], \"marker\": true}",
 				Temperature, Humidity, Pressure, Accelerometer.x, Accelerometer.y, Accelerometer.z, Gyroscope.x, Gyroscope.y, Gyroscope.z, Magnetometer.x, Magnetometer.y, Magnetometer.z);
-			
+#if APPLICATION_DEBUG != LOG_NO_DEBUG
 			INFO("[BTTN] Publishing...");
+			#if APPLICATION_DEBUG == LOG_FULL
 			INFO("       [TEMPE]: %f", Temperature);
 			INFO("       [HUMID]: %f", Humidity);
 			INFO("       [PRESS]: %f", Pressure);
 			INFO("       [ACCEL]: (%f, %f, %f)", Accelerometer.x, Accelerometer.y, Accelerometer.z);
 			INFO("       [GYROS]: (%f, %f, %f)", Gyroscope.x, Gyroscope.y, Gyroscope.z);
 			INFO("       [MAGNE]: (%f, %f, %f)", Magnetometer.x, Magnetometer.y, Magnetometer.z);
+			#endif
+#endif
 		}
 		else
 		{
@@ -321,15 +331,18 @@ int aws_main() {
 				
 				sprintf(cPayload, "{\"state\": {\"reported\": {\"temperature\": %f, \"humidity\": %f, \"pressure\": %f, \"accelerometer\": [%f, %f, %f], \"gyroscope\": [%f, %f, %f], \"magnetometer\": [%f, %f, %f]}}}",
 					Temperature, Humidity, Pressure, Accelerometer.x, Accelerometer.y, Accelerometer.z, Gyroscope.x, Gyroscope.y, Gyroscope.z, Magnetometer.x, Magnetometer.y, Magnetometer.z);
-				
-				INFO("[AUTO] Publishing...");
+
+#if APPLICATION_DEBUG != LOG_NO_DEBUG
+			INFO("[AUTO] Publishing...");
+			#if APPLICATION_DEBUG == LOG_FULL				
 				INFO("       [TEMPE]: %f", Temperature);
 				INFO("       [HUMID]: %f", Humidity);
 				INFO("       [PRESS]: %f", Pressure);
 				INFO("       [ACCEL]: (%f, %f, %f)", Accelerometer.x, Accelerometer.y, Accelerometer.z);
 				INFO("       [GYROS]: (%f, %f, %f)", Gyroscope.x, Gyroscope.y, Gyroscope.z);
 				INFO("       [MAGNE]: (%f, %f, %f)", Magnetometer.x, Magnetometer.y, Magnetometer.z);
-				
+				#endif
+#endif
 				delays = DELAYRATIO;
 			}
 			

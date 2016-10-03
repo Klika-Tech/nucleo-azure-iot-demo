@@ -47,10 +47,8 @@
 */
 
 
-// Wifi SSID and Password
-
-char * ssid = "<WI_FI_AP>";
-char * seckey = "<security_key>";
+char * ssid = "<SSID>";
+char * seckey = "<KEY>";
 
 /**
 * Private typedef -----------------------------------------------------------
@@ -92,7 +90,7 @@ void (*p_ind_wifi_socket_client_remote_server_closed)(uint8_t * socket_closed_id
 void time_ind_wifi_socket_data_received(uint8_t * data_ptr, uint32_t message_size, uint32_t chunck_size);
 void time_ind_wifi_socket_client_remote_server_closed(uint8_t * socket_closed_id);
 
-
+void wifi_print_satatus(WiFi_Status_t status);
 /**
 * Global Variables ---------------------------------------------------------
 */
@@ -109,7 +107,6 @@ volatile uint32_t data_arrived_on_socket = 0;
 /**
 * Private functions ---------------------------------------------------------
 */
-
 
 
 
@@ -137,24 +134,43 @@ int wifi_main(void)
 	config.web_server=WIFI_TRUE;
 
 	wifi_state = wifi_state_idle;
-
+	
+		
 	/* Init the wi-fi module */  
 	status = wifi_init(&config);
-
+	
 	if(status!=WiFi_MODULE_SUCCESS)
 	{
 		printf("\r\rError in WIFI  Initialization\r\n");
+		#if APPLICATION_DEBUG_MSG
+			wifi_print_satatus(status);
+		#endif
 		return status;
 	}
 	printf("\r\nWiFi is initialized.\r\n");
 
+//	char mac[6];
+//	status = wifi_mac_get((uint32_t*)mac);
+//	if(status != WiFi_MODULE_SUCCESS)
+//	{
+//		printf("\r\rError of getting MAC address\r\n");
+//		#if APPLICATION_DEBUG_MSG
+//			wifi_print_satatus(status);
+//		#endif
+//		return status;
+//	}
+//	printf("Current MAC Adress: %s", mac);
+	
 #if APPLICATION_DEBUG_MSG
-	printf("\r\nconnecting to AP: %s\r\n", ssid);
+	printf("\r\nConnecting to AP: %s\r\n", ssid);
 #endif
 	
 	if((status = wifi_connect(ssid, seckey, mode))!= WiFi_MODULE_SUCCESS)
 	{
 		printf("\r\nError in AP Connection");
+		#if APPLICATION_DEBUG_MSG
+			wifi_print_satatus(status);
+		#endif
 		return status;
 	}
 	
@@ -190,6 +206,9 @@ int wifi_main(void)
 		if(status!=WiFi_MODULE_SUCCESS)
 		{
 			printf("\r\rError in Closer of NTP Server Socket\r\n");
+			#if APPLICATION_DEBUG_MSG
+				wifi_print_satatus(status);
+			#endif
 			return status;
 		}
 	}
@@ -235,6 +254,9 @@ uint8_t time_get_time_from_time_server()
 	else
 	{
 		printf("\r\nNTP Server connection Error\r\n");
+		#if APPLICATION_DEBUG_MSG
+			wifi_print_satatus(status);
+		#endif
 	}
 	return status;
 
@@ -314,6 +336,28 @@ void ind_wifi_resuming()
 	printf("\r\nwifi resuming from sleep user callback... \r\n");
 	//Change the state to connect to socket if not connected
 	wifi_state = wifi_state_socket;
+}
+
+void ind_wifi_warning(WiFi_Status_t warning_code)
+{
+	#if APPLICATION_DEBUG_MSG
+			wifi_print_satatus(warning_code);
+	#endif
+}
+void ind_wifi_error(WiFi_Status_t error_code)
+{
+	#if APPLICATION_DEBUG_MSG
+			wifi_print_satatus(error_code);
+	#endif
+}
+void ind_wifi_connection_error(WiFi_Status_t status_code)
+{
+	#if APPLICATION_DEBUG_MSG
+	printf("\r\n Connection Error");
+			wifi_print_satatus(status_code);
+	#endif
+//	wifi_state = wifi_state_disconnected;
+//	wifi_main();
 }
 
 ///
@@ -401,5 +445,84 @@ void assert_failed(uint8_t* file, uint32_t line)
 * @}
 */
 
+#if APPLICATION_DEBUG_MSG
+
+void wifi_print_satatus(WiFi_Status_t status)
+{
+	switch ((int)status)
+	{
+		case WiFi_MODULE_SUCCESS				: printf("\r\n WiFi_MODULE_SUCCESS\r\n");
+		break;
+		case WiFi_TIME_OUT_ERROR				: printf("\r\n WiFi_TIME_OUT_ERROR\r\n");
+		break;
+		case WiFi_MODULE_ERROR					: printf("\r\n WiFi_MODULE_ERROR\r\n");
+		break;
+		case WiFi_HAL_OK								: printf("\r\n WiFi_HAL_OK\r\n");
+		break;
+		case WiFi_NOT_SUPPORTED					: printf("\r\n WiFi_NOT_SUPPORTED\r\n");
+		break;
+		case WiFi_NOT_READY							: printf("\r\n WiFi_NOT_READY\r\n");
+		break;
+		case WiFi_SCAN_FAILED						: printf("\r\n WiFi_SCAN_FAILED\r\n");;
+		break;
+		case WiFi_AT_CMD_BUSY 					: printf("\r\n WiFi_AT_CMD_BUSY\r\n");;
+		break;
+		case WiFi_SSID_ERROR						: printf("\r\n WiFi_SSID_ERROR\r\n");;
+		break;
+		case WiFi_SecKey_ERROR					: printf("\r\n WiFi_SecKey_ERROR\r\n");;
+		break;
+		case WiFi_CONFIG_ERROR					: printf("\r\n WiFi_CONFIG_ERROR\r\n");;
+		break;
+		case WiFi_STA_MODE_ERROR				: printf("\r\n WiFi_STA_MODE_ERROR\r\n");;
+		break;
+		case WiFi_AP_MODE_ERROR					: printf("\r\n WiFi_AP_MODE_ERROR\r\n");;
+		break;
+		case WiFi_AT_CMD_RESP_ERROR			: printf("\r\n WiFi_AT_CMD_RESP_ERROR\r\n");;
+		break;
+		case WiFi_AT_FILE_LENGTH_ERROR	: printf("\r\n WiFi_AT_FILE_LENGTH_ERROR\r\n");;
+		break;
+		case WiFi_HAL_UART_ERROR 				: printf("\r\n WiFi_HAL_UART_ERROR\r\n");;
+		break;
+		case WiFi_IN_LOW_POWER_ERROR		: printf("\r\n WiFi_IN_LOW_POWER_ERROR\r\n");;
+		break;
+		case WiFi_HW_FAILURE_ERROR			: printf("\r\n WiFi_HW_FAILURE_ERROR\r\n");;
+		break;
+		case WiFi_HEAP_TOO_SMALL_WARNING: printf("\r\n WiFi_HEAP_TOO_SMALL_WARNING\r\n");;
+		break;
+		case WiFi_STACK_OVERFLOW_ERROR	: printf("\r\n WiFi_STACK_OVERFLOW_ERROR\r\n");;
+		break;
+		case WiFi_HARD_FAULT_ERROR			: printf("\r\n WiFi_HARD_FAULT_ERROR\r\n");;
+		break;
+		case WiFi_MALLOC_FAILED_ERROR		: printf("\r\n WiFi_MALLOC_FAILED_ERROR\r\n");;
+		break;
+		case WiFi_INIT_ERROR						: printf("\r\n WiFi_INIT_ERROR\r\n");;
+		break;
+		case WiFi_POWER_SAVE_WARNING		: printf("\r\n WiFi_POWER_SAVE_WARNING\r\n");;
+		break;
+		case WiFi_SIGNAL_LOW_WARNING		: printf("\r\n WiFi_SIGNAL_LOW_WARNING\r\n");;
+		break;
+		case WiFi_JOIN_FAILED						: printf("\r\n WiFi_JOIN_FAILED\r\n");;
+		break;
+		case WiFi_SCAN_BLEWUP						: printf("\r\n WiFi_SCAN_BLEWUP\r\n");;
+		break;
+		case WiFi_START_FAILED_ERROR		: printf("\r\n WiFi_START_FAILED_ERROR\r\n");;
+		break;
+		case WiFi_EXCEPTION_ERROR				: printf("\r\n WiFi_EXCEPTION_ERROR\r\n");;
+		break;
+		case WiFi_DE_AUTH								: printf("\r\n WiFi_DE_AUTH\r\n");;
+		break;
+		case WiFi_DISASSOCIATION				: printf("\r\n WiFi_DISASSOCIATION\r\n");;
+		break;
+		case WiFi_UNHANDLED_IND_ERROR		: printf("\r\n WiFi_UNHANDLED_IND_ERROR\r\n");;
+		break;
+		case WiFi_RX_MGMT								: printf("\r\n WiFi_RX_MGMT\r\n");;
+		break;
+		case WiFi_RX_DATA								: printf("\r\n WiFi_RX_DATA\r\n");;
+		break;
+		case WiFi_RX_UNK								: printf("\r\n WiFi_RX_UNK\r\n");;
+		break;
+	}
+}
+#endif
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -61,10 +61,10 @@
 
 // Get from console
 // =================================================
-#define AWS_IOT_MQTT_HOST              "PAASINSTANCE.iot.some-were-1.amazonaws.com"
+#define AWS_IOT_MQTT_HOST              "PAASINSTANCE.iot.some-were-1.amazonaws.com" //Use your own host.
 #define AWS_IOT_MQTT_PORT              8883
-#define AWS_IOT_MQTT_CLIENT_ID         "Nucleo"
-#define AWS_IOT_MY_THING_NAME          "Nucleo"
+#define AWS_IOT_MQTT_CLIENT_ID         "Nucleo" //Should be kept if you are using same device clent.
+#define AWS_IOT_MY_THING_NAME          "Nucleo" //Should be kept if you are using same device thing name.
 // NOTE : Not used in this project because target platform have no file system.
 #define AWS_IOT_ROOT_CA_FILENAME	  	 "</Path/to/root-CA.crt>"
 #define AWS_IOT_CERTIFICATE_FILENAME   "</Path/to/certificate.pem.crt>"
