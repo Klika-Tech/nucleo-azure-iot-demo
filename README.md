@@ -2,7 +2,7 @@
 
 The platform demonstrates a Nucleo board with AWS IoT integration use case. The major platform components are:
 
-1. [**STM32 Nucleo-64 board**](http://www2.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-eval-tools/stm32-mcu-eval-tools/stm32-mcu-nucleo.html?querycriteria=productId=LN1847) with [WiFi](http://www2.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-connect-hw/x-nucleo-idw01m1.html) and [sensors](http://www2.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks01a1.html) expansions. The board is a "thing" for the AWS IoT service. It updates its shadow with the sensors data every 5 seconds. 
+1. [**STM32 Nucleo-64 board**](http://www2.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-eval-tools/stm32-mcu-eval-tools/stm32-mcu-nucleo.html?querycriteria=productId=LN1847) with [WiFi](http://www2.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-connect-hw/x-nucleo-idw01m1.html) and [sensors](http://www2.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks01a1.html) expansions. The board is a "thing" for the AWS IoT service. It updates its shadow with the sensors data every second. 
 1. **AWS-powered back-end** receives the data, stores it in a DB and provides an API for the data retrieval.
 1. **Web dashboard** uses the API to fetch and visualize the data
 1. **Android app** is another front-end. It fetches and displays the sensors data as well.
