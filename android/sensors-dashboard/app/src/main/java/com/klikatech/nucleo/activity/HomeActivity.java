@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             NucleoApplication.getInstance().isStart = true;
         } else {
 
-            long time = System.currentTimeMillis() - 86400000;
+            long time = System.currentTimeMillis() - 14400000;
             StartDataJob startDataJob = new StartDataJob(String.valueOf(time / 1000));
             jobManager.addJob(startDataJob);
         }
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
 
-                long time = System.currentTimeMillis() - 86400000;
+                long time = System.currentTimeMillis() - 14400000;
                 StartDataJob startDataJob = new StartDataJob(String.valueOf(time / 1000));
                 jobManager.addJob(startDataJob);
             }
@@ -435,7 +435,7 @@ public class HomeActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.start:
-                    long time = System.currentTimeMillis() - 86400000;
+                    long time = System.currentTimeMillis() - 14400000;
                     StartDataJob startDataJob = new StartDataJob(String.valueOf(time / 1000));
                     jobManager.addJob(startDataJob);
                     dismiss();
