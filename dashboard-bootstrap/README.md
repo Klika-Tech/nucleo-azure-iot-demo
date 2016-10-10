@@ -9,7 +9,7 @@ In order to build the application perform the following:
 1. [Install Node.js](https://docs.npmjs.com/getting-started/installing-node)
 1. Run `npm install`. This will install the dependencies.
 1. Rename `src/config.dist.js` to `src/config.js` and update the configuration parameters. See [AWS Setup Guide](../aws/README.md) for AWS parameters details.
-1. Run `node_modules/webpack/bin/webpack.js -p`. This will build the application. The application files are now in the `dist` folder.
+1. Run `npm run build`. This will build the application. The application files are now in the `dist` folder.
 
 ## (optional) Deployment
 
