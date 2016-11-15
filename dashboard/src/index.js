@@ -6,16 +6,20 @@ import { render } from 'react-dom'
 import { Router, Route, IndexRedirect, hashHistory, withRouter } from 'react-router'
 import AWS from 'exports?AWS!aws-sdk/dist/aws-sdk'
 import mqtt from 'mqtt'
+import * as dataService from './services/iotData'
 import classNames from 'classnames'
 
 import SigV4Utils from './sigv4utils'
 
+/*
 import Dashboard from './components/dashboard'
 import TemperatureChart from './components/temperature-chart'
 import HumidityChart from './components/humidity-chart'
 import PressureChart from './components/pressure-chart'
 import MagnetometerChart from './components/magnetometer-chart'
 import GyroscopeChart from './components/gyroscope-chart'
+*/
+
 import AccelerometerChart from './components/accelerometer-chart'
 
 import { Sidebar, SidebarNav, SidebarNavItem, SidebarBtn, Grid, Col, Row, MainContainer, PanelContainer, Panel,
@@ -43,57 +47,6 @@ var Loader = React.createClass({
 var App = React.createClass({
 
     getInitialState: function () { return {} },
-
-    prepareData: function (dataItem) {
-        const result = {
-            timestamp: dataItem.timestamp === undefined
-                ? Math.round(Date.now() / 1000)
-                : parseInt(dataItem.timestamp),
-            marker: dataItem.marker
-        }
-
-        if (dataItem.temperature !== undefined) result.temperature = parseFloat(dataItem.temperature)
-        if (dataItem.humidity !== undefined) result.humidity = parseFloat(dataItem.humidity)
-        if (dataItem.pressure !== undefined) result.pressure = parseFloat(dataItem.pressure)
-        if (dataItem.magnetometer !== undefined) result.magnetometer = dataItem.magnetometer
-        if (dataItem.accelerometer !== undefined) result.accelerometer = dataItem.accelerometer
-        if (dataItem.gyroscope !== undefined) result.gyroscope = dataItem.gyroscope
-
-        return result
-    },
-
-    fetchData: function () {
-
-        var that = this
-
-        // getting the data for the last 4h
-        var since = Math.round(Date.now() / 1000) - 14400
-
-        return fetch(config.apiUrl + 'getNucleoMetrics?metric=temperature&since=' + since)
-            .then(function (response) {
-                return response.json()
-            })
-            .then(function (data) {
-
-                var metricData = data.sensorData
-
-                if (_.isEmpty(metricData)) return
-
-                _.forEach(data.weatherData, function (d) {
-                    d.tempData = _.map(d.tempData, that.prepareData)
-                    d.humidityData = _.map(d.humidityData, that.prepareData)
-                    d.pressureData = _.map(d.pressureData, that.prepareData)
-                })
-
-                that.setState({
-                    sensorData: _.map(metricData, that.prepareData),
-                    weatherData: data.weatherData
-                })
-
-                that.resetStatusMonitor()
-            })
-
-    },
 
     initMqttClient: function () {
 
@@ -133,30 +86,23 @@ var App = React.createClass({
                 setTimeout(function () {
                     client.end()
                 }, 270000) // 4.5 minutes
-            })
+            });
 
-            client.on('message', function (topic, msg) {
+            client.on('message', function (topic, m) {
 
-                var msg = msg.toString()
+                let msg = m.toString();
 
-                if (config.debug)
-                    console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, msg)
+                // if (config.debug)
+                //     console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, msg);
 
                 if (topic == config.mqttTopic) {
 
-                    var dataItem = that.prepareData(JSON.parse(msg.toString()))
+                    dataService.pushSensorData(JSON.parse(msg));
 
-                    var newData = _(that.state.sensorData)
-                        .filter(function (item) {
-                            return item.timestamp >= Math.round(Date.now() / 1000) - 86400
-                        })
-                        .push(dataItem)
-                        .value()
+                    //that.resetStatusMonitor()
 
-                    that.setState({ sensorData: newData, online: true })
-                    that.resetStatusMonitor()
                 }
-            })
+            });
 
             client.on('close', function () {
 
@@ -175,8 +121,12 @@ var App = React.createClass({
 
     componentDidMount: function () {
 
-        this.fetchData()
-            .then(() => { this.initMqttClient() })
+        dataService.init()
+            .then(() => {
+            this.initMqttClient();
+            // ----------------- // hide loader
+            this.setState({sensorData: []});
+        })
     },
 
     resetStatusMonitor: function () {
@@ -231,6 +181,7 @@ var App = React.createClass({
                                     <Col xs={12}>
                                         <div className="sidebar-nav-container">
                                             <SidebarNav>
+                                                {/*
                                                 <SidebarNavItem name="Dashboard" href="/dashboard"
                                                                 glyph="icon-fontello-th-large"/>
                                                 <SidebarNavItem name="Temperature" href="/temperature"
@@ -243,6 +194,7 @@ var App = React.createClass({
                                                                 glyph="icon-fontello-magnet"/>
                                                 <SidebarNavItem name="Gyroscope" href="/gyroscope"
                                                                 glyph="icon-fontello-direction"/>
+                                                */}
                                                 <SidebarNavItem name="Accelerometer" href="/accelerometer"
                                                                 glyph="icon-fontello-chart-line"/>
                                             </SidebarNav>
@@ -304,22 +256,24 @@ var App = React.createClass({
             </MainContainerWR>
         )
     }
-})
+});
 
 
 render((
         <Router history={hashHistory}>
             <Route path="/" component={App}>
-                <IndexRedirect to="/dashboard"/>
+                <IndexRedirect to="/accelerometer"/>
+                {/*
                 <Route path="dashboard" component={Dashboard}/>
                 <Route path="temperature" component={TemperatureChart}/>
                 <Route path="humidity" component={HumidityChart}/>
                 <Route path="barometer" component={PressureChart}/>
                 <Route path="magnetometer" component={MagnetometerChart}/>
                 <Route path="gyroscope" component={GyroscopeChart}/>
+                */}
                 <Route path="accelerometer" component={AccelerometerChart}/>
             </Route>
         </Router>
     ),
     document.getElementById('root')
-)
+);

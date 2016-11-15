@@ -147,4 +147,23 @@
   .magnetometer-chart {
     right: 0;
   }
+
+  .chart-lens {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  .jq-focus-cursor {
+    position: absolute;
+    width: 2px;
+    background: red;
+    top: 0;
+    bottom: 0;
+    left: 100px;
+    z-index: 200;
+  }
 }

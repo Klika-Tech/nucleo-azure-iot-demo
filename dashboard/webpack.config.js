@@ -4,6 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
     entry: ['whatwg-fetch', './src/'],
     output: { path: __dirname + '/dist', filename: 'bundle.js' },
+    devtool: 'source-map', // TODO: remove on merge
     module: {
         loaders: [
             {
@@ -36,4 +37,4 @@ module.exports = {
         }),
         new CleanWebpackPlugin(['dist'])
     ]
-}
+};
