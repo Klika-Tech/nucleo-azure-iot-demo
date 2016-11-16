@@ -36,7 +36,7 @@
 
     .line {
       stroke: #2eb398;
-      stroke-width: 2px;
+      stroke-width: 1px; // XXX: Perfomance fix for chrome-only, see https://bugs.chromium.org/p/chromium/issues/detail?id=455429
       fill: none;
       clip-path: url(#clip);
 
