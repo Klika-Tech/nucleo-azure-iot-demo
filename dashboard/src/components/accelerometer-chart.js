@@ -2,10 +2,8 @@ import React from 'react'
 import * as d3 from 'd3'
 import {scaleTime, scaleLinear} from 'd3-scale';
 import {axisBottom, axisRight} from 'd3-axis';
-import $ from 'jquery'
 import _ from 'lodash'
 import * as dataService from '../services/iotData'
-import {debounce} from '../d3utils'
 import './temperature-chart.scss'
 
 const AccelerometerChart = React.createClass({
@@ -46,15 +44,13 @@ const AccelerometerChart = React.createClass({
             yAxis = axisRight();
 
 
-        const focusPathGenerator = _.mapValues({ x: null /*, y: null , z: null*/ }, (v, axis) =>
-            d3.area()
-                .y0(height)
+        const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
+            d3.line()
                 .y(function (d) { return y(d.accelerometer[axis]) })
                 .x(function (d) { return x(d.date) }));
 
-        const contextPathGenerator = _.mapValues({ x: null /*, y: null , z: null*/ }, (v, axis) =>
-            d3.area()
-                .y0(height2)
+        const contextPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
+            d3.line()
                 .y(function (d) { return y2(d.accelerometer[axis]) })
                 .x(function (d) { return x2(d.date) }));
 
@@ -70,8 +66,8 @@ const AccelerometerChart = React.createClass({
 
         const focusPath = {
             x: focus.append('path').attr('class', 'line x') // line x
-            // , y: focus.append('path').attr('class', 'line y')
-            // , z: focus.append('path').attr('class', 'line z')
+            , y: focus.append('path').attr('class', 'line y')
+            , z: focus.append('path').attr('class', 'line z')
         };
 
         const focusCursor = focus.append('line')
@@ -80,8 +76,8 @@ const AccelerometerChart = React.createClass({
 
         const focusCursorPoints = {
             x: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
-            // , y: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
-            // , z: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
+            , y: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
+            , z: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
         };
 
         const focusBg = focus.append('rect')
@@ -145,9 +141,6 @@ const AccelerometerChart = React.createClass({
         focus
             .on('mousemove', mousemove)
             .on('mouseout', mouseout);
-
-            // .on('mousemove', debounce(mousemove, 50))
-            // .on('mouseout', debounce(mouseout, 50));
 
 
         this.setDimensions = function () {
@@ -260,11 +253,11 @@ const AccelerometerChart = React.createClass({
 
         console.timeEnd('initChart');
 
-    },
+        // Async animation loop
+        d3.interval(() => { // start safety update
+            this.updateChart();
+        }, 1000);
 
-    componentDidUpdate: function () {
-        console.log('------------------');
-        this.updateChart();
     },
 
     render: function () {
