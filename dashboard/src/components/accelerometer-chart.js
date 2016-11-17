@@ -43,7 +43,8 @@ const AccelerometerChart = React.createClass({
             yAxis = axisRight();
 
         let xDomain = [],
-            chartData = [];
+            contextData = [],
+            focusData = [];
 
         const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
             //d3.line()
@@ -59,6 +60,7 @@ const AccelerometerChart = React.createClass({
                 .x((d) => x2(d.date))
         );
 
+        const brush = d3.brushX();
 
         const svg = d3.select(el).append('svg');
 
@@ -69,10 +71,13 @@ const AccelerometerChart = React.createClass({
         const focus = svg.append('g')
             .attr('class', 'focus');
 
+        const zoomContainer = focus.append('g')
+            .attr('class', 'zoom');
+
         const focusPath = {
-            x: focus.append('path').attr('class', 'line x') // line x
-            , y: focus.append('path').attr('class', 'line y')
-            , z: focus.append('path').attr('class', 'line z')
+            x: zoomContainer.append('path').attr('class', 'line x') // line x
+            , y: zoomContainer.append('path').attr('class', 'line y')
+            , z: zoomContainer.append('path').attr('class', 'line z')
         };
 
         // -------------------- //
@@ -107,20 +112,40 @@ const AccelerometerChart = React.createClass({
         const context = svg.append('g')
             .attr('class', 'context');
 
+        const brushContainer = context.append('g')
+            .attr('class', 'brush');
+
         const contextPath = {
-            x: context.append('path').attr('class', 'line x'),
-            y: context.append('path').attr('class', 'line y'),
-            z: context.append('path').attr('class', 'line z')
+            x: brushContainer.append('path').attr('class', 'line x'),
+            y: brushContainer.append('path').attr('class', 'line y'),
+            z: brushContainer.append('path').attr('class', 'line z')
         };
 
         const contextXAxis = context.append('g')
             .attr('class', 'x axis');
 
+        const brushed = () => {
+            if (!d3.event.sourceEvent) return; // Only transition after input.
+            if (!d3.event.selection) return; // Ignore empty selections.
+            let brushDomain = d3.event.selection
+                .map(x.invert);
+
+            console.log(brushDomain);
+            this.updateData(brushDomain);
+            //this.updateBrush();
+            this.updateFocusChart();
+        };
+
+        const zoomed = () => {
+            //if (d3.event.sourceEvent && d3.event.sourceEvent.type === 'brush') return; // ignore zoom-by-brush
+            console.log('log zooming!');
+        };
+
         const mousemove = () => {
             const xPos = d3.mouse(el)[0] - margin.left;
             const datePos = x.invert(xPos);
-            const i = d3.bisector((d) => d.date).right(chartData, datePos);
-            const d = chartData[i];
+            const i = d3.bisector((d) => d.date).right(contextData, datePos);
+            const d = contextData[i];
 
             const rectBBox = focusBg.node().getBBox();
 
@@ -179,8 +204,6 @@ const AccelerometerChart = React.createClass({
 
         this.setDimensions = () => {
 
-            console.time('setDimensions');
-
             let container = el.getBoundingClientRect();
 
             margin = { top: 10, right: 10, bottom: 100, left: 0 };
@@ -201,6 +224,9 @@ const AccelerometerChart = React.createClass({
                 .tickSize(width)
                 .tickFormat((v) => (y.tickFormat()(v) + 'g'));
 
+            brush.extent([[0, 0], [width, height2]])
+                .on("brush end", brushed); // TODO: Refactoring
+
             svg
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom);
@@ -220,45 +246,51 @@ const AccelerometerChart = React.createClass({
             focusXAxis.attr('transform', 'translate(0,' + height + ')');
             contextXAxis.attr('transform', 'translate(0,' + height2 + ')');
 
-            console.timeEnd('setDimensions');
-
         };
 
         this.updateChart = () => {
 
-            console.time('updateChart');
-
             this.updateData();
 
-            console.time('renderFocus');
+            // this.updateBrush();
 
             this.updateFocusChart();
 
-            console.timeEnd('renderFocus');
-
-            console.time('renderContext');
-
             this.updateContextChart();
 
-            console.timeEnd('renderContext');
-
-            console.timeEnd('updateChart');
+            brushContainer.call(brush);
 
         };
 
-        this.updateData = () => {
-            chartData = this.prepareData(dataService.get().sensorData);
-            xDomain = d3.extent(chartData.map((d) => d.date));
+        this.updateData = (brushDomain) => {
+            contextData = this.prepareData(dataService.get().sensorData);
+            xDomain = d3.extent(contextData.map((d) => d.date));
+            let bisector = d3.bisector(function (d) { return d.date }).right;
+            let [min, max] = x.domain();
+            focusData = contextData.slice(
+                Math.max(0, bisector(contextData, min) - 1),
+                Math.min(contextData.length, bisector(contextData, max) + 1)
+            )
+        };
+
+        this.updateBrush = () => {
+            console.log(d3.event);
+            const isBrushEmpty = (d3.event) ? !d3.event.selection : true;
+            if (isBrushEmpty) {
+                x.domain([xDomain[1] - 300000, xDomain[1]])
+            } else x.domain(brush.extent());
+            if (!isBrushEmpty)
+                brush.extent(x.domain())(context.select('.brush'))
         };
 
         this.updateFocusChart = () => {
             y.domain([
-                Math.floor((d3.min(chartData.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
-                Math.ceil((d3.max(chartData.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
+                Math.floor((d3.min(contextData.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
+                Math.ceil((d3.max(contextData.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
             ]);
             x.domain([xDomain[1] - 300000, xDomain[1]]);
             _.forEach(focusPath, (path, axis) => {
-                path.datum(chartData)
+                path.datum(focusData)
                     .attr('d', focusPathGenerator[axis])
             });
             focusXAxis.call(xAxis);
@@ -273,7 +305,7 @@ const AccelerometerChart = React.createClass({
             x2.domain(xDomain);
             y2.domain(y.domain());
             _.forEach(contextPath, (path, axis) => {
-                path.datum(chartData)
+                path.datum(contextData)
                     .attr('d', contextPathGenerator[axis])
             });
             contextXAxis.call(xAxis2);
@@ -311,8 +343,8 @@ const AccelerometerChart = React.createClass({
 
     render: function() {
         return (
-            <div className="temperature-chart-container">
-                <div className="magnetometer-chart" ref={this.initChart}/>
+            <div className='temperature-chart-container'>
+                <div className='magnetometer-chart' ref={this.initChart}/>
             </div>
         );
     }

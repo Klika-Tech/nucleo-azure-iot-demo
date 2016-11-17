@@ -29,6 +29,12 @@
       font: 10px sans-serif;
     }
 
+    .zoom {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
+
     .area {
       fill: #6dcab7;
       clip-path: url(#clip);
