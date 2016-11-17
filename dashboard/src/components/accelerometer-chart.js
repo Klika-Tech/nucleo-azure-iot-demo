@@ -8,12 +8,10 @@ import './temperature-chart.scss'
 
 const AccelerometerChart = React.createClass({
 
-    prepareData: function (data) {
+    prepareData: (data) => {
 
         return _(data)
-            .map(function (item) {
-
-                return {
+            .map((item) => ({
                     accelerometer: {
                         x: item.accelerometer[0],
                         y: item.accelerometer[1],
@@ -21,8 +19,8 @@ const AccelerometerChart = React.createClass({
                     },
                     date: new Date(item.timestamp * 1000),
                     marker: item.marker
-                }
-            })
+                })
+            )
             .value()
     },
 
@@ -43,16 +41,20 @@ const AccelerometerChart = React.createClass({
             xAxis2 = axisBottom(),
             yAxis = axisRight();
 
+        let xDomain = [],
+            chartData = [];
 
         const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
             d3.line()
-                .y(function (d) { return y(d.accelerometer[axis]) })
-                .x(function (d) { return x(d.date) }));
+                .y((d) => y(d.accelerometer[axis]))
+                .x((d) => x(d.date))
+        );
 
         const contextPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
             d3.line()
-                .y(function (d) { return y2(d.accelerometer[axis]) })
-                .x(function (d) { return x2(d.date) }));
+                .y((d) => y2(d.accelerometer[axis]))
+                .x((d) => x2(d.date))
+        );
 
 
         const svg = d3.select(el).append('svg');
@@ -70,15 +72,20 @@ const AccelerometerChart = React.createClass({
             , z: focus.append('path').attr('class', 'line z')
         };
 
-        const focusCursor = focus.append('line')
-            .attr('class', 'focus-cursor')
-            .attr('y1', 0);
-
+        // -------------------- //
+        const focusCursor = d3.select(el).append('div')
+            .attr('class', 'cursor-focus');
+        // -------------------- //
+        const markerTooltip = _.mapValues({ x: null, y: null, z: null }, v =>
+            d3.select(el).append('div').attr('class', 'tooltip')
+        );
+        // -------------------- //
         const focusCursorPoints = {
-            x: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
-            , y: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
-            , z: focus.append('circle').attr('class', 'cursor-point').attr('r', 5)
+            x: d3.select(el).append('div').attr('class', 'cursor-point')
+            , y: d3.select(el).append('div').attr('class', 'cursor-point')
+            , z: d3.select(el).append('div').attr('class', 'cursor-point')
         };
+        // -------------------- //
 
         const focusBg = focus.append('rect')
             .attr('class', 'focus-bg')
@@ -108,32 +115,56 @@ const AccelerometerChart = React.createClass({
 
         const mousemove = () => {
             const xPos = d3.mouse(el)[0] - margin.left;
-            focusCursor
-                .attr('x1', xPos)
-                .attr('x2', xPos)
-                .style('visibility', 'visible');
+            const datePos = x.invert(xPos);
+            const i = d3.bisector((d) => d.date).right(chartData, datePos);
+            const d = chartData[i];
 
-            let datePos = x.invert(xPos);
+            const rectBBox = focusBg.node().getBBox();
 
-            let i = d3.bisector(function(d) { return d.date }).right(this.data, datePos);
-
-            let d = this.data[i];
-
-            _.forEach(focusCursorPoints, (cpoint, axis) => {
-                cpoint.attr('cx', xPos)
-                    .attr('cy', y(d.accelerometer[axis]))
-                    .style('visibility', 'visible')
+            // ---------------------------- //
+            const focusOverlayOffset = 2;
+            focusCursor.style('visibility', 'visible');
+            focusCursor.style('left', xPos + margin.left + focusOverlayOffset + 'px');
+            // ---------------------------- //
+            const pointSize = 12;
+            _.forEach(focusCursorPoints, (point, axis) => {
+                point.style('visibility', 'visible')
+                    //.style('left', x(d.date) - pointSize/2 + 'px')
+                    .style('left',  xPos + margin.left - pointSize/2 + focusOverlayOffset + 'px')
+                    .style('top', y(d.accelerometer[axis]) + margin.top - pointSize/2 + focusOverlayOffset + 'px');
             });
-
-            // console.log(d);
+            // ---------------------------- //
+            _.forEach(markerTooltip, (tooltip, axis) => {
+                tooltip.text(`${axis.toUpperCase()}: ${Math.round(d.accelerometer[axis] * 100) / 100}g @ ${d3.timeFormat('%X')(d.date)}`)
+                    .style('top', y(d.accelerometer[axis]) - 25 + 'px')
+                    .style('visibility', 'visible')
+                    .attr('class', 'cursor-tooltip' + (d.marker ? ' marker' : ''))
+            });
+            if (xPos - rectBBox.width < -200) {
+                _.forEach(markerTooltip, tooltip => {
+                    tooltip.style('left', xPos + margin.left + 5 + 'px')
+                        .style('right', 'initial')
+                })
+            } else {
+                _.forEach(markerTooltip, tooltip => {
+                    tooltip.style('right', rectBBox.width - xPos + margin.right + 5 + 'px')
+                        .style('left', 'initial')
+                })
+            }
+            // ---------------------------- //
         };
 
         const mouseout = () => {
+            // ---------------------------- //
             focusCursor
                 .style('visibility', 'hidden');
+            // ---------------------------- //
+            _.forEach(markerTooltip, tooltip => {
+                tooltip.style('visibility', 'hidden');
+            });
 
-            _.forEach(focusCursorPoints, (cpoint, axis) => {
-                cpoint.style('visibility', 'hidden')
+            _.forEach(focusCursorPoints, (point, axis) => {
+                point.style('visibility', 'hidden');
             });
         };
 
@@ -143,7 +174,7 @@ const AccelerometerChart = React.createClass({
             .on('mouseout', mouseout);
 
 
-        this.setDimensions = function () {
+        this.setDimensions = () => {
 
             console.time('setDimensions');
 
@@ -165,9 +196,7 @@ const AccelerometerChart = React.createClass({
 
             yAxis.scale(y)
                 .tickSize(width)
-                .tickFormat(function (v) {
-                    return y.tickFormat()(v) + 'g'
-                });
+                .tickFormat((v) => (y.tickFormat()(v) + 'g'));
 
             svg
                 .attr('width', width + margin.left + margin.right)
@@ -177,7 +206,9 @@ const AccelerometerChart = React.createClass({
                 .attr('width', width)
                 .attr('height', height);
 
-            focusCursor.attr('y2', height);
+            focusCursor
+                .style('top', margin.top+'px')
+                .style('height', height+'px');
 
             focus.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             focusBg.attr('width', width)
@@ -194,73 +225,88 @@ const AccelerometerChart = React.createClass({
 
             console.time('updateChart');
 
-            let data = this.prepareData(dataService.get().sensorData);
-            this.data = data;
+            this.updateData();
 
-            let xDomain = d3.extent(data.map(function (d) { return d.date }));
-
-            y.domain([
-                Math.floor((d3.min(data.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
-                Math.ceil((d3.max(data.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
-            ]);
-            x.domain([xDomain[1] - 300000, xDomain[1]]);
-
-            // -------------------------------- //
             console.time('renderFocus');
-            _.forEach(focusPath, (path, axis) => {
-                path.datum(data)
-                    .attr('d', focusPathGenerator[axis])
-            });
+
+            this.updateFocusChart();
+
             console.timeEnd('renderFocus');
-            // -------------------------------- //
-
-            x2.domain(xDomain);
-            y2.domain(y.domain());
-
-            // -------------------------------- //
 
             console.time('renderContext');
-            _.forEach(contextPath, (path, axis) => {
 
-                console.time('genContextPath');
-                if (contextPathGenerator[axis])
-                    contextPathGenerator[axis](data);
-                console.timeEnd('genContextPath');
+            this.updateContextChart();
 
-                path.datum(data)
-                    .attr('d', contextPathGenerator[axis])
-            });
             console.timeEnd('renderContext');
 
-            // -------------------------------- //
+            console.timeEnd('updateChart');
 
+        };
+
+        this.updateData = () => {
+            chartData = this.prepareData(dataService.get().sensorData);
+            xDomain = d3.extent(chartData.map((d) => d.date));
+        };
+
+        this.updateFocusChart = () => {
+            y.domain([
+                Math.floor((d3.min(chartData.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
+                Math.ceil((d3.max(chartData.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
+            ]);
+            x.domain([xDomain[1] - 300000, xDomain[1]]);
+            _.forEach(focusPath, (path, axis) => {
+                path.datum(chartData)
+                    .attr('d', focusPathGenerator[axis])
+            });
             focusXAxis.call(xAxis);
-
             focusYAxis
                 .call(yAxis)
                 .selectAll('text')
                 .attr('x', 4)
                 .attr('dy', -4);
-
-            contextXAxis.call(xAxis2);
-
-            console.timeEnd('updateChart');
-
         };
+
+        this.updateContextChart = () => {
+            x2.domain(xDomain);
+            y2.domain(y.domain());
+            _.forEach(contextPath, (path, axis) => {
+                path.datum(chartData)
+                    .attr('d', contextPathGenerator[axis])
+            });
+            contextXAxis.call(xAxis2);
+        };
+
+        // ============================== //
+        // ============================== //
 
         this.setDimensions();
         this.updateChart();
 
         console.timeEnd('initChart');
 
-        // Async animation loop
-        d3.interval(() => { // start safety update
-            this.updateChart();
+        // ============================== //
+        // ============================== //
+
+        // Safe animation loop
+        d3.interval(() => {
+            this.updateData();
+            this.updateFocusChart();
         }, 1000);
+        d3.interval(() => {
+            this.updateContextChart();
+        }, 10500);
+
+        // ============================== //
+        // ============================== //
+
+        d3.select(window).on('resize.accelerometer', () => {
+            this.setDimensions();
+            this.updateChart();
+        })
 
     },
 
-    render: function () {
+    render: function() {
         return (
             <div className="temperature-chart-container">
                 <div className="magnetometer-chart" ref={this.initChart}/>
