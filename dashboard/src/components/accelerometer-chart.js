@@ -4,6 +4,7 @@ import {scaleTime, scaleLinear} from 'd3-scale';
 import {axisBottom, axisRight} from 'd3-axis';
 import _ from 'lodash'
 import * as dataService from '../services/iotData'
+import {lineOptimized} from '../d3utils'
 import './temperature-chart.scss'
 
 const AccelerometerChart = React.createClass({
@@ -45,13 +46,15 @@ const AccelerometerChart = React.createClass({
             chartData = [];
 
         const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
-            d3.line()
+            //d3.line()
+            lineOptimized()
                 .y((d) => y(d.accelerometer[axis]))
                 .x((d) => x(d.date))
         );
 
         const contextPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
-            d3.line()
+            //d3.line()
+            lineOptimized()
                 .y((d) => y2(d.accelerometer[axis]))
                 .x((d) => x2(d.date))
         );
