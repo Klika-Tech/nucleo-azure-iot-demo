@@ -29,8 +29,6 @@ const AccelerometerChart = React.createClass({
 
         if (!el) return;
 
-        console.time('initChart');
-
         let margin, margin2, width, height, height2;
 
         const x = scaleTime(),
@@ -42,9 +40,10 @@ const AccelerometerChart = React.createClass({
             xAxis2 = axisBottom(),
             yAxis = axisRight();
 
-        let xDomain = [],
-            contextData = [],
-            focusData = [];
+        let contextData = [],
+            contextDomain = null,
+            focusData = [],
+            focusDomain = null;
 
         const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
             //d3.line()
@@ -128,11 +127,9 @@ const AccelerometerChart = React.createClass({
             if (!d3.event.sourceEvent) return; // Only transition after input.
             if (!d3.event.selection) return; // Ignore empty selections.
             let brushDomain = d3.event.selection
-                .map(x.invert);
+                .map(x2.invert);
 
-            console.log(brushDomain);
             this.updateData(brushDomain);
-            //this.updateBrush();
             this.updateFocusChart();
         };
 
@@ -252,35 +249,27 @@ const AccelerometerChart = React.createClass({
 
             this.updateData();
 
-            // this.updateBrush();
-
             this.updateFocusChart();
 
             this.updateContextChart();
 
-            brushContainer.call(brush);
-
         };
 
-        this.updateData = (brushDomain) => {
+        this.updateData = (brushDomain = null) => {
             contextData = this.prepareData(dataService.get().sensorData);
-            xDomain = d3.extent(contextData.map((d) => d.date));
-            let bisector = d3.bisector(function (d) { return d.date }).right;
-            let [min, max] = x.domain();
+            contextDomain = d3.extent(contextData.map((d) => d.date));
+            const bisector = d3.bisector(function (d) { return d.date }).right;
+
+            let fd = focusDomain; // TODO: refactoring
+            fd = (!fd) ? [contextDomain[1] - 300000, contextDomain[1]] : fd;
+            fd = (brushDomain) ? brushDomain : fd;
+
+            const [min, max] = fd;
             focusData = contextData.slice(
                 Math.max(0, bisector(contextData, min) - 1),
                 Math.min(contextData.length, bisector(contextData, max) + 1)
-            )
-        };
-
-        this.updateBrush = () => {
-            console.log(d3.event);
-            const isBrushEmpty = (d3.event) ? !d3.event.selection : true;
-            if (isBrushEmpty) {
-                x.domain([xDomain[1] - 300000, xDomain[1]])
-            } else x.domain(brush.extent());
-            if (!isBrushEmpty)
-                brush.extent(x.domain())(context.select('.brush'))
+            );
+            focusDomain = d3.extent(focusData.map((d) => d.date));
         };
 
         this.updateFocusChart = () => {
@@ -288,7 +277,7 @@ const AccelerometerChart = React.createClass({
                 Math.floor((d3.min(contextData.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
                 Math.ceil((d3.max(contextData.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
             ]);
-            x.domain([xDomain[1] - 300000, xDomain[1]]);
+            x.domain(focusDomain);
             _.forEach(focusPath, (path, axis) => {
                 path.datum(focusData)
                     .attr('d', focusPathGenerator[axis])
@@ -302,7 +291,7 @@ const AccelerometerChart = React.createClass({
         };
 
         this.updateContextChart = () => {
-            x2.domain(xDomain);
+            x2.domain(contextDomain);
             y2.domain(y.domain());
             _.forEach(contextPath, (path, axis) => {
                 path.datum(contextData)
@@ -316,8 +305,7 @@ const AccelerometerChart = React.createClass({
 
         this.setDimensions();
         this.updateChart();
-
-        console.timeEnd('initChart');
+        brushContainer.call(brush);
 
         // ============================== //
         // ============================== //
