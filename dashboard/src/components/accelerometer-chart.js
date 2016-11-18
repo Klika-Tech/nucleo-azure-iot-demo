@@ -46,14 +46,12 @@ const AccelerometerChart = React.createClass({
             focusDomain = null;
 
         const focusPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
-            //d3.line()
             lineOptimized()
                 .y((d) => y(d.accelerometer[axis]))
                 .x((d) => x(d.date))
         );
 
         const contextPathGenerator = _.mapValues({ x: null , y: null , z: null }, (v, axis) =>
-            //d3.line()
             lineOptimized()
                 .y((d) => y2(d.accelerometer[axis]))
                 .x((d) => x2(d.date))
@@ -70,13 +68,13 @@ const AccelerometerChart = React.createClass({
         const focus = svg.append('g')
             .attr('class', 'focus');
 
-        const zoomContainer = focus.append('g')
+        const focusPathsContainer = focus.append('g')
             .attr('class', 'zoom');
 
         const focusPath = {
-            x: zoomContainer.append('path').attr('class', 'line x') // line x
-            , y: zoomContainer.append('path').attr('class', 'line y')
-            , z: zoomContainer.append('path').attr('class', 'line z')
+            x: focusPathsContainer.append('path').attr('class', 'line x') // line x
+            , y: focusPathsContainer.append('path').attr('class', 'line y')
+            , z: focusPathsContainer.append('path').attr('class', 'line z')
         };
 
         // -------------------- //
@@ -111,32 +109,17 @@ const AccelerometerChart = React.createClass({
         const context = svg.append('g')
             .attr('class', 'context');
 
-        const brushContainer = context.append('g')
+        const contextPathsContainer = context.append('g')
             .attr('class', 'brush');
 
         const contextPath = {
-            x: brushContainer.append('path').attr('class', 'line x'),
-            y: brushContainer.append('path').attr('class', 'line y'),
-            z: brushContainer.append('path').attr('class', 'line z')
+            x: contextPathsContainer.append('path').attr('class', 'line x'),
+            y: contextPathsContainer.append('path').attr('class', 'line y'),
+            z: contextPathsContainer.append('path').attr('class', 'line z')
         };
 
         const contextXAxis = context.append('g')
             .attr('class', 'x axis');
-
-        const brushed = () => {
-            if (!d3.event.sourceEvent) return; // Only transition after input.
-            if (!d3.event.selection) return; // Ignore empty selections.
-            let brushDomain = d3.event.selection
-                .map(x2.invert);
-
-            this.updateData(brushDomain);
-            this.updateFocusChart();
-        };
-
-        const zoomed = () => {
-            //if (d3.event.sourceEvent && d3.event.sourceEvent.type === 'brush') return; // ignore zoom-by-brush
-            console.log('log zooming!');
-        };
 
         const mousemove = () => {
             const xPos = d3.mouse(el)[0] - margin.left;
@@ -193,18 +176,47 @@ const AccelerometerChart = React.createClass({
             });
         };
 
-        // Focus cursor (SVG)
-        focus
-            .on('mousemove', mousemove)
-            .on('mouseout', mouseout);
+        const brushed = () => {
+            if (!d3.event.sourceEvent) return; // Only transition after input.
+            if (!d3.event.selection) return; // Ignore empty selections.
+            let brushDomain = d3.event.selection
+                .map(x2.invert);
+
+            this.updateData(brushDomain);
+            this.updateFocusChart();
+        };
+
+        const zoomed = () => {
+            const selection = d3.brushSelection(contextPathsContainer.node()); // is selection was
+            if(!selection) return;
+
+            const velocity = 3; // zoom speed
+
+            const deltaY = d3.event.deltaY === undefined ? d3.event.wheelDeltaY : d3.event.deltaY;
+            const isZoomIn = deltaY < 0;
+
+            const zoomedSelection = (isZoomIn) // selection
+                ? [selection[0]-velocity, selection[1]+velocity]
+                : [selection[0]+velocity, selection[1]-velocity];
+
+            let validatedSelection = [ // extra zoom out
+                ((zoomedSelection[0] < 0) ? 0 : zoomedSelection[0]),
+                ((zoomedSelection[1]>width) ? width : zoomedSelection[1])
+            ];
+
+            if(validatedSelection[0] >= validatedSelection[1]) { // extra zoom in
+                validatedSelection = [validatedSelection[0], validatedSelection[0]]
+            }
+
+            brush.move(contextPathsContainer, validatedSelection);
+        };
 
 
         this.setDimensions = () => {
-
             let container = el.getBoundingClientRect();
 
             margin = { top: 10, right: 10, bottom: 100, left: 0 };
-            margin2 = { top: container.height - 70, right: 10, bottom: 20, left: 0 };
+            margin2 = { top: container.height - 70, right: 10, bottom: 20, left: 0 }; // TODO: refactoring
             width = container.width - margin.left - margin.right;
             height = container.height - margin.top - margin.bottom;
             height2 = container.height - margin2.top - margin2.bottom;
@@ -221,8 +233,7 @@ const AccelerometerChart = React.createClass({
                 .tickSize(width)
                 .tickFormat((v) => (y.tickFormat()(v) + 'g'));
 
-            brush.extent([[0, 0], [width, height2]])
-                .on("brush end", brushed); // TODO: Refactoring
+            brush.extent([[0, 0], [width, height2]]);
 
             svg
                 .attr('width', width + margin.left + margin.right)
@@ -246,13 +257,9 @@ const AccelerometerChart = React.createClass({
         };
 
         this.updateChart = () => {
-
             this.updateData();
-
             this.updateFocusChart();
-
             this.updateContextChart();
-
         };
 
         this.updateData = (brushDomain = null) => {
@@ -305,7 +312,15 @@ const AccelerometerChart = React.createClass({
 
         this.setDimensions();
         this.updateChart();
-        brushContainer.call(brush);
+
+        // Init event handlers
+        focus
+            .on('mousemove', mousemove)
+            .on('mouseout', mouseout)
+            .on('wheel', zoomed);
+
+        brush.on('brush end', brushed);
+        contextPathsContainer.call(brush);
 
         // ============================== //
         // ============================== //
