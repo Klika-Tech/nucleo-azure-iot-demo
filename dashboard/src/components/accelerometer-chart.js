@@ -4,34 +4,21 @@ import {scaleTime, scaleLinear} from 'd3-scale';
 import {axisBottom, axisRight} from 'd3-axis';
 import _ from 'lodash'
 import * as dataService from '../services/iotData'
-import {lineOptimized, debounce} from '../d3utils'
+import {lineOptimized} from '../d3utils'
 import './temperature-chart.scss'
 
 const AccelerometerChart = React.createClass({
 
-    prepareData: (data) => {
-
-        return _(data)
-            .map((item) => ({
-                    accelerometer: {
-                        x: item.accelerometer[0],
-                        y: item.accelerometer[1],
-                        z: item.accelerometer[2]
-                    },
-                    date: new Date(item.timestamp * 1000),
-                    marker: item.marker
-                })
-            )
-            .value()
-    },
-
     initChart: function (el) {
-
         if (!el) return;
 
-        const that = this;
-        
-        let margin, margin2, width, height, height2;
+        // ==== Init require stuff ====== //
+        // ============================== //
+
+        let margin = { top: 10, right: 10, bottom: 100, left: 0 },
+            margin2 = { right: 10, bottom: 20, left: 0 },
+            zoomVelocity = 3,
+            width, height, height2;
 
         const x = scaleTime(),
             y = scaleLinear(),
@@ -80,20 +67,18 @@ const AccelerometerChart = React.createClass({
             , z: focusPathsContainer.append('path').attr('class', 'line z')
         };
 
-        // -------------------- //
         const focusCursor = d3.select(el).append('div')
             .attr('class', 'cursor-focus');
-        // -------------------- //
+
         const markerTooltip = _.mapValues({ x: null, y: null, z: null }, v =>
             d3.select(el).append('div').attr('class', 'tooltip')
         );
-        // -------------------- //
+
         const focusCursorPoints = {
             x: d3.select(el).append('div').attr('class', 'cursor-point')
             , y: d3.select(el).append('div').attr('class', 'cursor-point')
             , z: d3.select(el).append('div').attr('class', 'cursor-point')
         };
-        // -------------------- //
 
         const focusBg = focus.append('rect')
             .attr('class', 'focus-bg')
@@ -124,7 +109,39 @@ const AccelerometerChart = React.createClass({
         const contextXAxis = context.append('g')
             .attr('class', 'x axis');
 
-        const mousemove = () => {
+        // ======= First render ========= //
+        // ============================== //
+
+        setDimensions();
+        updateChart();
+
+        // === Init actions handler  ==== //
+        // ============================== //
+
+        focus
+            .on('mousemove', mousemove)
+            .on('mouseout', mouseout)
+            .on('wheel', zoomed);
+        brush.on('brush end', brushed);
+        contextPathsContainer.call(brush);
+        d3.select(window).on('resize.accelerometer', resized);
+
+        // === Start safe render loop === //
+        // ============================== //
+
+        d3.interval(() => {
+            updateData();
+            updateFocusChart();
+            updateFocusCursorPosition();
+        }, 1000);
+        d3.interval(() => {
+            updateContextChart();
+        }, 10500);
+
+        // ========== Utils ============= //
+        // ============================== //
+
+        function mousemove() {
             focusCursorXPos = d3.mouse(el)[0] - margin.left;
             // ---------------------------- //
             focusCursor
@@ -138,10 +155,10 @@ const AccelerometerChart = React.createClass({
                 point.style('visibility', 'visible');
             });
             // ---------------------------- //
-            that.updateFocusCursorPosition();
-        };
+            updateFocusCursorPosition();
+        }
 
-        const mouseout = () => {
+        function mouseout() {
             // ---------------------------- //
             focusCursor
                 .style('visibility', 'hidden');
@@ -153,34 +170,32 @@ const AccelerometerChart = React.createClass({
             _.forEach(focusCursorPoints, (point, axis) => {
                 point.style('visibility', 'hidden');
             });
-        };
+        }
 
-        const brushed = () => {
+        function brushed() {
             if (!d3.event.sourceEvent) return; // Only transition after input.
             if (!d3.event.selection) return; // Ignore empty selections.
             let brushDomain = d3.event.selection
                 .map(x2.invert);
 
-            that.updateData(brushDomain);
-            that.updateFocusChart();
-        };
+            updateData(brushDomain);
+            updateFocusChart();
+        }
 
-        const zoomed = () => {
+        function zoomed() {
             const selection = d3.brushSelection(contextPathsContainer.node()); // is selection was
             if(!selection) return;
-
-            const velocity = 3; // zoom speed
 
             const deltaY = d3.event.deltaY === undefined ? d3.event.wheelDeltaY : d3.event.deltaY;
             const isZoomIn = deltaY < 0;
 
             const zoomedSelection = (isZoomIn) // selection
-                ? [selection[0]-velocity, selection[1]+velocity]
-                : [selection[0]+velocity, selection[1]-velocity];
+                ? [selection[0]-zoomVelocity, selection[1]+zoomVelocity]
+                : [selection[0]+zoomVelocity, selection[1]-zoomVelocity];
 
             let validatedSelection = [ // extra zoom out
                 ((zoomedSelection[0] < 0) ? 0 : zoomedSelection[0]),
-                ((zoomedSelection[1]>width) ? width : zoomedSelection[1])
+                ((zoomedSelection[1] > width) ? width : zoomedSelection[1])
             ];
 
             if(validatedSelection[0] >= validatedSelection[1]) { // extra zoom in
@@ -188,18 +203,17 @@ const AccelerometerChart = React.createClass({
             }
 
             brush.move(contextPathsContainer, validatedSelection);
-        };
+        }
 
-        const resized = () => {
-            that.setDimensions();
-            that.updateChart();
-        };
+        function resized(){
+            setDimensions();
+            updateChart();
+        }
 
-        that.setDimensions = () => {
+        function setDimensions() {
             let container = el.getBoundingClientRect();
 
-            margin = { top: 10, right: 10, bottom: 100, left: 0 };
-            margin2 = { top: container.height - 70, right: 10, bottom: 20, left: 0 }; // TODO: refactoring
+            margin2.top = container.height - 70; // TODO: refactoring
             width = container.width - margin.left - margin.right;
             height = container.height - margin.top - margin.bottom;
             height2 = container.height - margin2.top - margin2.bottom;
@@ -237,16 +251,31 @@ const AccelerometerChart = React.createClass({
             focusXAxis.attr('transform', 'translate(0,' + height + ')');
             contextXAxis.attr('transform', 'translate(0,' + height2 + ')');
 
-        };
+        }
 
-        that.updateChart = () => {
-            that.updateData();
-            that.updateFocusChart();
-            that.updateContextChart();
-        };
+        function updateChart() {
+            updateData();
+            updateFocusChart();
+            updateContextChart();
+        }
 
-        that.updateData = (brushDomain = null) => {
-            contextData = that.prepareData(dataService.get().sensorData);
+        function prepareData(data) {
+            return _(data)
+                .map((item) => ({
+                        accelerometer: {
+                            x: item.accelerometer[0],
+                            y: item.accelerometer[1],
+                            z: item.accelerometer[2]
+                        },
+                        date: new Date(item.timestamp * 1000),
+                        marker: item.marker
+                    })
+                )
+                .value()
+        }
+
+        function updateData (brushDomain = null) {
+            contextData = prepareData(dataService.get().sensorData);
             contextDomain = d3.extent(contextData.map((d) => d.date));
             const bisector = d3.bisector(function (d) { return d.date }).right;
 
@@ -260,9 +289,9 @@ const AccelerometerChart = React.createClass({
                 Math.min(contextData.length, bisector(contextData, max) + 1)
             );
             focusDomain = d3.extent(focusData.map((d) => d.date));
-        };
+        }
 
-        that.updateFocusChart = () => {
+        function updateFocusChart() {
             y.domain([
                 Math.floor((d3.min(contextData.map(d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) - .3) * 30) / 30,
                 Math.ceil((d3.max(contextData.map(d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z))) + .3) * 30) / 30
@@ -278,9 +307,9 @@ const AccelerometerChart = React.createClass({
                 .selectAll('text')
                 .attr('x', 4)
                 .attr('dy', -4);
-        };
+        }
 
-        that.updateContextChart = () => {
+        function updateContextChart() {
             x2.domain(contextDomain);
             y2.domain(y.domain());
             _.forEach(contextPath, (path, axis) => {
@@ -288,76 +317,44 @@ const AccelerometerChart = React.createClass({
                     .attr('d', contextPathGenerator[axis])
             });
             contextXAxis.call(xAxis2);
-        };
+        }
 
-        that.updateFocusCursorPosition = () => {
+        function updateFocusCursorPosition () {
             const datePos = x.invert(focusCursorXPos);
             const i = d3.bisector((d) => d.date).right(contextData, datePos);
             const d = contextData[i];
+            if (d) {
+                const rectBBox = focusBg.node().getBBox();
 
-            const rectBBox = focusBg.node().getBBox();
-
-            // ---------------------------- //
-            const focusOverlayOffset = 2;
-            focusCursor.style('left', focusCursorXPos + margin.left + focusOverlayOffset + 'px');
-            // ---------------------------- //
-            const pointSize = 12;
-            _.forEach(focusCursorPoints, (point, axis) => {
-                point
-                    .style('left',  focusCursorXPos + margin.left - pointSize/2 + focusOverlayOffset + 'px')
-                    .style('top', y(d.accelerometer[axis]) + margin.top - pointSize/2 + focusOverlayOffset + 'px');
-            });
-            // ---------------------------- //
-            _.forEach(markerTooltip, (tooltip, axis) => {
-                tooltip.text(`${axis.toUpperCase()}: ${Math.round(d.accelerometer[axis] * 100) / 100}g @ ${d3.timeFormat('%X')(d.date)}`)
-                    .style('top', y(d.accelerometer[axis]) - 25 + 'px')
-                    .attr('class', 'cursor-tooltip' + (d.marker ? ' marker' : ''))
-            });
-            if (focusCursorXPos - rectBBox.width < -200) {
-                _.forEach(markerTooltip, tooltip => {
-                    tooltip.style('left', focusCursorXPos + margin.left + 5 + 'px')
-                        .style('right', 'initial')
-                })
-            } else {
-                _.forEach(markerTooltip, tooltip => {
-                    tooltip.style('right', rectBBox.width - focusCursorXPos + margin.right + 5 + 'px')
-                        .style('left', 'initial')
-                })
+                // ---------------------------- //
+                const focusOverlayOffset = 2;
+                focusCursor.style('left', focusCursorXPos + margin.left + focusOverlayOffset + 'px');
+                // ---------------------------- //
+                const pointSize = 12;
+                _.forEach(focusCursorPoints, (point, axis) => {
+                    point
+                        .style('left', focusCursorXPos + margin.left - pointSize / 2 + focusOverlayOffset + 'px')
+                        .style('top', y(d.accelerometer[axis]) + margin.top - pointSize / 2 + focusOverlayOffset + 'px');
+                });
+                // ---------------------------- //
+                _.forEach(markerTooltip, (tooltip, axis) => {
+                    tooltip.text(`${axis.toUpperCase()}: ${Math.round(d.accelerometer[axis] * 100) / 100}g @ ${d3.timeFormat('%X')(d.date)}`)
+                        .style('top', y(d.accelerometer[axis]) - 25 + 'px')
+                        .attr('class', 'cursor-tooltip' + (d.marker ? ' marker' : ''))
+                });
+                if (focusCursorXPos - rectBBox.width < -200) {
+                    _.forEach(markerTooltip, tooltip => {
+                        tooltip.style('left', focusCursorXPos + margin.left + 5 + 'px')
+                            .style('right', 'initial')
+                    })
+                } else {
+                    _.forEach(markerTooltip, tooltip => {
+                        tooltip.style('right', rectBBox.width - focusCursorXPos + margin.right + 5 + 'px')
+                            .style('left', 'initial')
+                    })
+                }
             }
-            // ---------------------------- //
-        };
-
-        // ============================== //
-        // ============================== //
-
-        that.setDimensions();
-        that.updateChart();
-
-        // Init event handlers
-        focus
-            .on('mousemove', mousemove)
-            .on('mouseout', mouseout)
-            .on('wheel', zoomed);
-
-        brush.on('brush end', brushed);
-        contextPathsContainer.call(brush);
-        d3.select(window).on('resize.accelerometer', resized);
-
-        // ============================== //
-        // ============================== //
-
-        // Safe animation loop
-        d3.interval(() => {
-            that.updateData();
-            that.updateFocusChart();
-            that.updateFocusCursorPosition();
-        }, 1000);
-        d3.interval(() => {
-            that.updateContextChart();
-        }, 10500);
-
-        // ============================== //
-        // ============================== //
+        }
     },
 
     render: function() {
