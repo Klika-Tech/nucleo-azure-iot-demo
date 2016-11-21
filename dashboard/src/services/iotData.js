@@ -1,5 +1,6 @@
 import config from '../config'
 import _ from 'lodash'
+import 'whatwg-fetch'
 
 /**
  * Data service

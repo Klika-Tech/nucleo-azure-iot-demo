@@ -345,12 +345,12 @@ const AccelerometerChart = React.createClass({
                 if (focusCursorXPos - rectBBox.width < -200) {
                     _.forEach(markerTooltip, tooltip => {
                         tooltip.style('left', focusCursorXPos + margin.left + 5 + 'px')
-                            .style('right', 'initial')
+                            .style('right', null);
                     })
                 } else {
                     _.forEach(markerTooltip, tooltip => {
                         tooltip.style('right', rectBBox.width - focusCursorXPos + margin.right + 5 + 'px')
-                            .style('left', 'initial')
+                            .style('left', null);
                     })
                 }
             }

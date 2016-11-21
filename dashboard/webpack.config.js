@@ -2,9 +2,13 @@ const WebpackShellPlugin = require('webpack-shell-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-    entry: ['whatwg-fetch', './src/'],
+    entry: ['babel-polyfill', './src/'],
     output: { path: __dirname + '/dist', filename: 'bundle.js' },
     devtool: 'source-map', // TODO: remove on merge
+    devServer: {
+        host: '0.0.0.0',
+        port: 8080
+    },
     module: {
         loaders: [
             {
