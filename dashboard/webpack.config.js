@@ -1,44 +1,47 @@
-const WebpackShellPlugin = require('webpack-shell-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const WebpackShellPlugin = require('webpack-shell-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: ['babel-polyfill', './src/'],
-    output: { path: __dirname + '/dist', filename: 'bundle.js' },
-    devtool: 'source-map', // TODO: remove on merge
+    output: {
+        path: `${__dirname}/dist`,
+        filename: 'bundle.js',
+    },
+    devtool: 'source-map',
     devServer: {
         host: '0.0.0.0',
-        port: 8080
+        port: 8080,
     },
     module: {
         loaders: [
             {
-                test: /\.js?$/,
+                test: /\.(js|jsx)$/,
                 loader: 'babel',
                 exclude: /node_modules/,
                 query: {
-                    presets: ['es2015', 'react']
-                }
+                    presets: ['es2015', 'react'],
+                },
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css', 'sass']
+                loaders: ['style', 'css', 'sass'],
             },
             {
                 test: /\.svg$/,
-                loader: 'svg-sprite'
-            },            {
+                loader: 'svg-sprite',
+            }, {
                 test: /\.(woff2?|png|gif)$/,
-                loader: 'file'
-            }
+                loader: 'file',
+            },
         ],
         noParse: [
-            /aws\-sdk/
-        ]
+            /aws-sdk/,
+        ],
     },
     plugins: [
         new WebpackShellPlugin({
-            onBuildStart: ['npm install; npm prune']
+            onBuildStart: ['npm install; npm prune'],
         }),
-        new CleanWebpackPlugin(['dist'])
-    ]
+        new CleanWebpackPlugin(['dist']),
+    ],
 };

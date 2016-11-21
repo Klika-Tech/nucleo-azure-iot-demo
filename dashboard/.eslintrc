@@ -1,3 +1,27 @@
 {
-  "extends": "airbnb"
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "indent": [2,4],
+    "max-len": ["error", 120],
+    "no-bitwise": ["error", { "allow": ["~"] }],
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-webpack-loader-syntax": "off",
+    "import/extensions": "off",
+    "react/prop-types": "off",
+    "no-console": "off",
+    "no-unused-vars": "off",
+    "no-use-before-define": "off",
+    "class-methods-use-this": "off",
+    "no-mixed-operators": "off",
+    "no-unneeded-ternary": "off",
+    "no-param-reassign": "off",
+    "func-names": "off",
+    "react/jsx-indent-props": "off",
+    "react/jsx-filename-extension": "off"
+  }
 }
