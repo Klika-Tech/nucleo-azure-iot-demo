@@ -45,20 +45,25 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
-        const that = this;
         const store = new DataStore();
+        const self = this;
         FetchService.fetchAwsMetrics(config).then((data) => {
             store.init(data);
-            that.setState({ store, loader: false });
+            self.setState({ store, loader: false });
             const clientPromise = AwsMqttFactory.getInstance(config);
             clientPromise.then((client) => {
-                // that.setState({ online: true });
+                client.on('connect', () => {
+                    self.setState({ online: true });
+                });
                 client.on('message', (topic, msg) => {
                     const message = msg.toString();
                     if (config.debug) console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, message);
                     if (topic === config.mqttTopic) {
                         store.pushSensorData(JSON.parse(message));
                     }
+                });
+                client.on('close', () => {
+                    self.setState({ online: false });
                 });
             });
         });
