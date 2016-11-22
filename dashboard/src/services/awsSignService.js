@@ -2,37 +2,11 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 
 /**
- * @param key
- * @param msg
- */
-export function sign(key, msg) {
-    const hash = CryptoJS.HmacSHA256(msg, key);
-    return hash.toString(CryptoJS.enc.Hex);
-}
+ * @module AwsSignService
+ * */
 
 /**
- * @param msg
- */
-export function sha256(msg) {
-    const hash = CryptoJS.SHA256(msg);
-    return hash.toString(CryptoJS.enc.Hex);
-}
-
-/**
- * @param key
- * @param dateStamp
- * @param regionName
- * @param serviceName
- * @return {*}
- */
-export function getSignatureKey(key, dateStamp, regionName, serviceName) {
-    const kDate = CryptoJS.HmacSHA256(dateStamp, `AWS4${key}`);
-    const kRegion = CryptoJS.HmacSHA256(regionName, kDate);
-    const kService = CryptoJS.HmacSHA256(serviceName, kRegion);
-    return CryptoJS.HmacSHA256('aws4_request', kService);
-}
-
-/**
+ * Get aws signed url.
  * @param protocol
  * @param host
  * @param uri
@@ -41,7 +15,7 @@ export function getSignatureKey(key, dateStamp, regionName, serviceName) {
  * @param accessKey
  * @param secretKey
  * @param sessionToken
- * @return {string}
+ * @return {string} signed url
  */
 export function getSignedUrl(protocol, host, uri, service, region, accessKey, secretKey, sessionToken) {
     const time = moment().utc();
@@ -71,4 +45,35 @@ export function getSignedUrl(protocol, host, uri, service, region, accessKey, se
     }
 
     return `${protocol}://${host}${uri}?${canonicalQuerystring}`;
+}
+
+/**
+ * @param key
+ * @param msg
+ */
+function sign(key, msg) {
+    const hash = CryptoJS.HmacSHA256(msg, key);
+    return hash.toString(CryptoJS.enc.Hex);
+}
+
+/**
+ * @param msg
+ */
+function sha256(msg) {
+    const hash = CryptoJS.SHA256(msg);
+    return hash.toString(CryptoJS.enc.Hex);
+}
+
+/**
+ * @param key
+ * @param dateStamp
+ * @param regionName
+ * @param serviceName
+ * @return {*}
+ */
+function getSignatureKey(key, dateStamp, regionName, serviceName) {
+    const kDate = CryptoJS.HmacSHA256(dateStamp, `AWS4${key}`);
+    const kRegion = CryptoJS.HmacSHA256(regionName, kDate);
+    const kService = CryptoJS.HmacSHA256(serviceName, kRegion);
+    return CryptoJS.HmacSHA256('aws4_request', kService);
 }

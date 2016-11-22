@@ -5,13 +5,15 @@
     "node": true
   },
   "rules": {
-    "indent": [2,4],
     "max-len": ["error", 120],
+    "indent": [2,4],
+    "react/jsx-indent": [2,4],
     "no-bitwise": ["error", { "allow": ["~"] }],
     "import/no-unresolved": "off",
     "import/no-extraneous-dependencies": "off",
     "import/no-webpack-loader-syntax": "off",
     "import/extensions": "off",
+    "import/prefer-default-export": "off",
     "react/prop-types": "off",
     "no-console": "off",
     "no-unused-vars": "off",
