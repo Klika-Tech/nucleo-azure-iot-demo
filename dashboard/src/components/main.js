@@ -119,6 +119,10 @@ export default class Main extends React.Component {
                                                     name="Accelerometer" href="/accelerometer"
                                                     glyph="icon-fontello-chart-line"
                                                 />
+                                                <SidebarNavItem
+                                                    name="Temperature" href="/temperature"
+                                                    glyph="icon-fontello-temperatire"
+                                                />
                                             </SidebarNav>
                                         </div>
                                     </Col>

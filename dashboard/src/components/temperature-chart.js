@@ -3,13 +3,12 @@ import * as d3 from 'd3';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import { axisBottom, axisRight } from 'd3-axis';
 import _ from 'lodash';
-import lineOptimized from '../services/lineOptimized';
+import TemperatureChartParams from './temperature-chart-params';
 import './realtime-chart.scss';
 import DataStore from '../services/dataStore';
+import lineOptimized from '../services/lineOptimized';
 
 function initChart(el, store) {
-    if (!el) return;
-
     // ==== Init require stuff ====== //
     // ============================== //
 
@@ -28,7 +27,8 @@ function initChart(el, store) {
 
     const xAxis = axisBottom();
     const xAxis2 = axisBottom();
-    const yAxis = axisRight();
+    const yAxis = axisRight()
+        .tickFormat(v => (`${y.tickFormat()(v)} ${unit.toUpperCase()}`));
 
     let contextData = [];
     let contextDomain = null;
@@ -36,17 +36,15 @@ function initChart(el, store) {
     let focusDomain = null;
     let focusCursorXPos = null;
 
-    const focusPathGenerator = _.mapValues({ x: null, y: null, z: null }, (v, axis) =>
-        lineOptimized()
-            .y(d => y(d.accelerometer[axis]))
-            .x(d => x(d.date)),
-    );
+    const unit = 'c';
 
-    const contextPathGenerator = _.mapValues({ x: null, y: null, z: null }, (v, axis) =>
-        lineOptimized()
-            .y(d => y2(d.accelerometer[axis]))
-            .x(d => x2(d.date)),
-    );
+    const focusPathGenerator = lineOptimized()
+        .y(d => y(d.temperature))
+        .x(d => x(d.date));
+
+    const contextPathGenerator = lineOptimized()
+        .y(d => y2(d.temperature))
+        .x(d => x2(d.date));
 
     const brush = d3.brushX();
 
@@ -62,24 +60,18 @@ function initChart(el, store) {
     const focusPathsContainer = focus.append('g')
         .attr('class', 'zoom');
 
-    const focusPath = {
-        x: focusPathsContainer.append('path').attr('class', 'line x'), // line x
-        y: focusPathsContainer.append('path').attr('class', 'line y'),
-        z: focusPathsContainer.append('path').attr('class', 'line z'),
-    };
+    const focusPath = focusPathsContainer
+        .append('path')
+        .attr('class', 'line');
 
     const focusCursor = d3.select(el).append('div')
         .attr('class', 'cursor-focus');
 
-    const markerTooltip = _.mapValues({ x: null, y: null, z: null }, v =>
-        d3.select(el).append('div').attr('class', 'tooltip'),
-    );
+    const markerTooltip = d3.select(el).append('div').attr('class', 'tooltip');
 
-    const focusCursorPoints = {
-        x: d3.select(el).append('div').attr('class', 'cursor-point'),
-        y: d3.select(el).append('div').attr('class', 'cursor-point'),
-        z: d3.select(el).append('div').attr('class', 'cursor-point'),
-    };
+    const focusCursorPoint = d3.select(el)
+        .append('div')
+        .attr('class', 'cursor-point');
 
     const focusBg = focus.append('rect')
         .attr('class', 'focus-bg')
@@ -98,14 +90,13 @@ function initChart(el, store) {
     const context = svg.append('g')
         .attr('class', 'context');
 
-    const contextPathsContainer = context.append('g')
+    const contextPathsContainer = context
+        .append('g')
         .attr('class', 'brush');
 
-    const contextPath = {
-        x: contextPathsContainer.append('path').attr('class', 'line x'),
-        y: contextPathsContainer.append('path').attr('class', 'line y'),
-        z: contextPathsContainer.append('path').attr('class', 'line z'),
-    };
+    const contextPath = contextPathsContainer
+        .append('path')
+        .attr('class', 'line');
 
     const contextXAxis = context.append('g')
         .attr('class', 'x axis');
@@ -125,7 +116,7 @@ function initChart(el, store) {
         .on('wheel', zoomed);
     brush.on('brush end', brushed);
     contextPathsContainer.call(brush);
-    d3.select(window).on('resize.accelerometer', resized);
+    d3.select(window).on('resize', resized);
 
     // === Start safe render loop === //
     // ============================== //
@@ -148,13 +139,9 @@ function initChart(el, store) {
         focusCursor
             .style('visibility', 'visible');
         // ---------------------------- //
-        _.forEach(markerTooltip, (tooltip) => {
-            tooltip.style('visibility', 'visible');
-        });
+        markerTooltip.style('visibility', 'visible');
         // ---------------------------- //
-        _.forEach(focusCursorPoints, (point, axis) => {
-            point.style('visibility', 'visible');
-        });
+        focusCursorPoint.style('visibility', 'visible');
         // ---------------------------- //
         updateFocusCursorPosition();
     }
@@ -164,13 +151,9 @@ function initChart(el, store) {
         focusCursor
             .style('visibility', 'hidden');
         // ---------------------------- //
-        _.forEach(markerTooltip, (tooltip) => {
-            tooltip.style('visibility', 'hidden');
-        });
+        markerTooltip.style('visibility', 'hidden');
         // ---------------------------- //
-        _.forEach(focusCursorPoints, (point, axis) => {
-            point.style('visibility', 'hidden');
-        });
+        focusCursorPoint.style('visibility', 'hidden');
     }
 
     function brushed() {
@@ -228,8 +211,7 @@ function initChart(el, store) {
         xAxis2.scale(x2);
 
         yAxis.scale(y)
-            .tickSize(width)
-            .tickFormat(v => (`${y.tickFormat()(v)}g`));
+            .tickSize(width);
 
         brush.extent([[0, 0], [width, height2]]);
 
@@ -262,15 +244,13 @@ function initChart(el, store) {
     function prepareData(data) {
         return _(data)
             .map(item => ({
-                accelerometer: {
-                    x: item.accelerometer[0],
-                    y: item.accelerometer[1],
-                    z: item.accelerometer[2],
-                },
+                temperature:
+                        unit === 'f'
+                            ? item.temperature * 9 / 5 + 32
+                            : item.temperature,
                 date: new Date(item.timestamp * 1000),
                 marker: item.marker,
-            }),
-            )
+            }))
             .value();
     }
 
@@ -292,20 +272,13 @@ function initChart(el, store) {
     }
 
     function updateFocusChart() {
-        const minimal = d3.min(contextData.map(
-            d => Math.min(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z)));
-        const maximal = d3.max(contextData.map(
-            d => Math.max(d.accelerometer.x, d.accelerometer.y, d.accelerometer.z)));
+        const minimal = d3.min(contextData, d => (d.temperature));
+        const maximal = d3.max(contextData, d => (d.temperature));
 
-        y.domain([
-            Math.floor((minimal - 0.3) * 30) / 30,
-            Math.ceil((maximal + 0.3) * 30) / 30,
-        ]);
+        y.domain([minimal, maximal]);
         x.domain(focusDomain);
-        _.forEach(focusPath, (path, axis) => {
-            path.datum(focusData)
-                .attr('d', focusPathGenerator[axis]);
-        });
+        focusPath.datum(focusData)
+            .attr('d', focusPathGenerator);
         focusXAxis.call(xAxis);
         focusYAxis
             .call(yAxis)
@@ -317,10 +290,8 @@ function initChart(el, store) {
     function updateContextChart() {
         x2.domain(contextDomain);
         y2.domain(y.domain());
-        _.forEach(contextPath, (path, axis) => {
-            path.datum(contextData)
-                .attr('d', contextPathGenerator[axis]);
-        });
+        contextPath.datum(contextData)
+            .attr('d', contextPathGenerator);
         contextXAxis.call(xAxis2);
     }
 
@@ -330,63 +301,77 @@ function initChart(el, store) {
         const d = contextData[i];
         if (d) {
             const rectBBox = focusBg.node().getBBox();
-
             // ---------------------------- //
             const focusOverlayOffset = 2;
             focusCursor.style('left', `${focusCursorXPos + margin.left + focusOverlayOffset}px`);
             // ---------------------------- //
             const pointSize = 12;
-            _.forEach(focusCursorPoints, (point, axis) => {
-                point
+            focusCursorPoint
                 .style('left', `${focusCursorXPos + margin.left - pointSize / 2 + focusOverlayOffset}px`)
-                .style('top', `${y(d.accelerometer[axis]) + margin.top - pointSize / 2 + focusOverlayOffset}px`);
-            });
+                .style('top', `${y(d.temperature) + margin.top - pointSize / 2 + focusOverlayOffset}px`);
             // ---------------------------- //
-            _.forEach(markerTooltip, (tooltip, axis) => {
-                const axisLabel = axis.toUpperCase();
-                const value = Math.round(d.accelerometer[axis] * 100) / 100;
-                const date = d3.timeFormat('%X')(d.date);
-                tooltip.text(`${axisLabel}: ${value}g @ ${date}`)
-                    .style('top', `${y(d.accelerometer[axis]) - 25}px`)
-                    .attr('class', `cursor-tooltip${d.marker ? ' marker' : ''}`);
-            });
+            const value = Math.round(d.temperature * 100) / 100;
+            const date = d3.timeFormat('%X')(d.date);
+            markerTooltip.text(`${value}°${unit.toUpperCase()} @ ${date}`)
+                .style('top', `${y(d.temperature) - 25}px`)
+                .attr('class', `cursor-tooltip${d.marker ? ' marker' : ''}`);
             if (focusCursorXPos - rectBBox.width < -200) {
-                _.forEach(markerTooltip, (tooltip) => {
-                    tooltip.style('left', `${focusCursorXPos + margin.left + 5}px`)
-                        .style('right', null);
-                });
+                markerTooltip.style('left', `${focusCursorXPos + margin.left + 5}px`)
+                    .style('right', null);
             } else {
-                _.forEach(markerTooltip, (tooltip) => {
-                    tooltip.style('right', `${rectBBox.width - focusCursorXPos + margin.right + 5}px`)
-                        .style('left', null);
-                });
+                markerTooltip.style('right', `${rectBBox.width - focusCursorXPos + margin.right + 5}px`)
+                    .style('left', null);
             }
         }
     }
 }
 
-export default class AccelerometerChart extends React.Component {
+export default class TemperatureChart extends React.Component {
     constructor(props) {
         super(props);
         this.setEl = this.setEl.bind(this);
+        this.setChartParam = this.setChartParam.bind(this);
+        this.state = {
+            chartParams: {
+                chartType: 'area',
+                units: 'c',
+                showWeatherFor: [],
+            },
+        };
     }
+
     componentDidMount() {
         const { el } = this;
         const store = this.props.store;
-        initChart(el, store); // Call single time
+        initChart(el, store);
     }
+
     setEl(el) {
         this.el = el;
     }
+
+    setChartParam(paramName, value) {
+        this.state.chartParams[paramName] = value;
+        this.setState({
+            chartParams: this.state.chartParams,
+        });
+    }
+
     render() {
+        const weatherData = this.props.store.get().weatherData;
         return (
             <div className="temperature-chart-container">
-                <div className="magnetometer-chart" ref={this.setEl} />
+                <TemperatureChartParams
+                    setChartParam={this.setChartParam}
+                    chartParams={this.state.chartParams}
+                    weatherData={weatherData}
+                />
+                <div className="temperature-chart" ref={this.setEl} />
             </div>
         );
     }
 }
 
-AccelerometerChart.propTypes = {
+TemperatureChart.propTypes = {
     store: React.PropTypes.instanceOf(DataStore),
 };
