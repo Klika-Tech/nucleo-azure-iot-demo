@@ -15,7 +15,6 @@ class Focus extends Component {
                 let [x, y] = d3.mouse(g.node());
                 x -= margin.left;
                 y -= margin.top;
-                console.log('mousemove', [x, y]);
                 onMouseMove.call({}, x, y);
             });
         }

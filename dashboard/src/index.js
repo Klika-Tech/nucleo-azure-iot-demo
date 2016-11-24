@@ -1,8 +1,8 @@
 import 'file?name=[name].[ext]!./index.html';
 import React from 'react';
 import { render } from 'react-dom';
-import './main.scss';
-import './rubix/sass/main.scss';
-import Router from './components/router';
+import configureStore from './configureStore';
+import Root from './components/Root';
 
-render((<Router />), document.getElementById('root'));
+const store = configureStore();
+render((<Root store={store} />), document.getElementById('root'));

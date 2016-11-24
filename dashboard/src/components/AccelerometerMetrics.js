@@ -1,28 +1,17 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { connect } from 'react-redux';
 import AccelerometerChart from './AccelerometerChart';
 
-const AccelerometerMetrics = ({ store }) => (
+const mapStateToProps = state => ({
+    data: state.data.accelerometerData,
+});
+
+const AccelerometerMetrics = ({ data }) => (
     <div className="temperature-chart-container">
         <div className="magnetometer-chart">
-            <AccelerometerChart data={prepareData(store.get().sensorData)} />
+            <AccelerometerChart data={data} />
         </div>
     </div>
 );
 
-function prepareData(data) { // Сам себе злобный буратина!
-    return _(data)
-        .map(item => ({
-            accelerometer: {
-                x: item.accelerometer[0],
-                y: item.accelerometer[1],
-                z: item.accelerometer[2],
-            },
-            date: new Date(item.timestamp * 1000),
-            marker: item.marker,
-        }),
-        )
-        .value();
-}
-
-export default AccelerometerMetrics;
+export default connect(mapStateToProps)(AccelerometerMetrics);

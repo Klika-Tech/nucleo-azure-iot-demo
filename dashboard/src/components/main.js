@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
     Sidebar,
@@ -23,33 +24,33 @@ import {
     OverlayTrigger,
 } from '@sketchpixy/rubix';
 import classNames from 'classnames';
-import DataStore from '../services/dataStore';
 import config from '../config';
 import * as FetchService from '../services/fetchService';
 import * as AwsMqttFactory from '../services/awsMqttFactory';
 import Loader from './loader';
+import { fetchData, pushData } from '../actions/data';
 import '../main.scss';
 import '../rubix/sass/main.scss';
 
 const MainContainerWR = withRouter(MainContainer);
 
-export default class Main extends React.Component {
+class Main extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            store: null,
             loader: true,
             online: false,
         };
     }
 
     componentDidMount() {
-        const store = new DataStore();
         const self = this;
+        const { dispatch } = this.props;
+
         FetchService.fetchAwsMetrics(config).then((data) => {
-            store.init(data);
-            self.setState({ store, loader: false });
+            dispatch(fetchData(data));
+            self.setState({ loader: false });
             const clientPromise = AwsMqttFactory.getInstance(config);
             clientPromise.then((client) => {
                 client.on('connect', () => {
@@ -59,7 +60,7 @@ export default class Main extends React.Component {
                     const message = msg.toString();
                     if (config.debug) console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, message);
                     if (topic === config.mqttTopic) {
-                        store.pushSensorData(JSON.parse(message));
+                        dispatch(pushData(JSON.parse(message)));
                     }
                 });
                 client.on('close', () => {
@@ -119,14 +120,6 @@ export default class Main extends React.Component {
                                                     name="Accelerometer" href="/accelerometer"
                                                     glyph="icon-fontello-chart-line"
                                                 />
-                                                <SidebarNavItem
-                                                    name="Acl (optimized)" href="/accelerometer-optimized"
-                                                    glyph="icon-fontello-chart-line"
-                                                />
-                                                <SidebarNavItem
-                                                    name="Temperature" href="/temperature"
-                                                    glyph="icon-fontello-temperatire"
-                                                />
                                             </SidebarNav>
                                         </div>
                                     </Col>
@@ -173,11 +166,7 @@ export default class Main extends React.Component {
                 </Grid>
 
                 <div id="body">
-                    {wrapInPanel(React.cloneElement(
-                        this.props.children,
-                        {
-                            store: this.state.store,
-                        }))}
+                    {wrapInPanel(React.cloneElement(this.props.children))}
                 </div>
 
             </MainContainerWR>
@@ -185,3 +174,5 @@ export default class Main extends React.Component {
     }
 
 }
+
+export default connect()(Main);

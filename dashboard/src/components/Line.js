@@ -9,13 +9,15 @@ class Line extends Component {
             .x(this.props.x);
     }
 
-    componentWillReceiveProps(newProps) {
-        this.d = this.generator(newProps.data);
+    shouldComponentUpdate(nextProps) {
+        const oldProps = this.props;
+        return !oldProps.data || (nextProps.data !== oldProps.data);
     }
+
 
     render() {
         return (
-            <path className={`line ${this.props.className}`} d={this.d} />
+            <path className={`line ${this.props.className}`} d={this.generator(this.props.data)} />
         );
     }
 }
