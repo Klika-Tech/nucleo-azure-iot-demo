@@ -3,37 +3,25 @@ import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
 class Focus extends Component {
-
-    componentDidMount() { this.addListeners(); }
-
-    addListeners() {
-        const { onMouseMove, onMouseOut, onWheel, margin } = this.props;
-        const node = ReactDOM.findDOMNode(this);
-        const g = d3.select(node);
-        if (onMouseMove) {
-            g.on('mousemove', () => {
-                let [x, y] = d3.mouse(g.node());
-                x -= margin.left;
-                y -= margin.top;
-                onMouseMove.call({}, x, y);
-            });
-        }
-        if (onMouseOut) {
-            g.on('mouseout', () => {
-                onMouseOut.call();
-            });
-        }
-        if (onWheel) {
-            g.on('wheel', () => {
-                onWheel.call();
-            });
-        }
+    constructor(props) {
+        super(props);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
     }
-
+    handleMouseMove(e) {
+        const { onMouseMove, margin } = this.props;
+        let [x, y] = [e.clientX, e.clientY];
+        x -= margin.left + 300; // TODO: refactoring
+        y -= margin.top;
+        onMouseMove.call({}, x, y);
+    }
     render() {
         const { margin, children } = this.props;
         return (
-            <g className="focus" transform={`translate(${margin.left},${margin.top})`}>
+            <g
+                className="focus"
+                transform={`translate(${margin.left},${margin.top})`}
+                onMouseMove={this.handleMouseMove}
+            >
                 {children}
             </g>
         );
