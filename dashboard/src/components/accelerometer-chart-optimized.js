@@ -86,9 +86,6 @@ function initChart(el, store) {
         .attr('x', 0)
         .attr('y', 0);
 
-    const cursor = focus.append('g')
-        .attr('class', 'focus-cursor');
-
     const focusXAxis = focus.append('g')
         .attr('class', 'x axis');
 

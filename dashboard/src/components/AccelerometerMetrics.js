@@ -10,7 +10,7 @@ const AccelerometerMetrics = ({ store }) => (
     </div>
 );
 
-function prepareData(data) {
+function prepareData(data) { // Сам себе злобный буратина!
     return _(data)
         .map(item => ({
             accelerometer: {

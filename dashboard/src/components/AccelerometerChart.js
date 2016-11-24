@@ -5,6 +5,7 @@ import { scaleTime, scaleLinear } from 'd3-scale';
 import './realtime-chart.scss';
 import Axis from './Axis';
 import Line from './Line';
+import Focus from './Focus';
 
 
 class AccelerometerChart extends Component {
@@ -16,6 +17,14 @@ class AccelerometerChart extends Component {
         this.x2 = scaleTime();
         this.y2 = scaleLinear();
 
+        this.state = {
+            cursor: {},
+        };
+
+        console.log('Init!');
+
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseOut = this.handleMouseOut.bind(this);
         this.updateD3(props);
     }
 
@@ -24,6 +33,8 @@ class AccelerometerChart extends Component {
     }
 
     updateD3(props) {
+        console.log('updateD3!');
+
         const { x, y, x2, y2 } = this;
         const { containerWidth, containerHeight, data } = props;
         const minY = d3.min(data.map(
@@ -54,12 +65,31 @@ class AccelerometerChart extends Component {
         y2.domain(y.domain()).range([this.height2, 0]);
     }
 
+    handleMouseMove(x, y) {
+        this.setState({
+            cursorVisible: true,
+            cursorX: x,
+            cursorY: y,
+        });
+    }
+
+    handleMouseOut() {
+        this.setState({
+            cursorVisible: false,
+        });
+    }
+
     render() {
         const { containerWidth, containerHeight, data } = this.props;
         const { margin, margin2, x, y, x2, y2, height, height2, width } = this;
         return (
             <svg width={containerWidth} height={containerHeight}>
-                <g className="focus" transform={`translate(${margin.left},${margin.top})`}>
+                <defs>
+                    <clipPath id="clip">
+                        <rect width={width} height={height} />
+                    </clipPath>
+                </defs>
+                <Focus margin={margin} onMouseMove={this.handleMouseMove}>
                     <g className="zoom">
                         <Line
                             className="x"
@@ -80,9 +110,14 @@ class AccelerometerChart extends Component {
                             y={d => y(d.accelerometer.z)}
                         />
                     </g>
-                    <Axis type="y" scale={y} tickFormat={v => (`${y.tickFormat()(v)}g`)} />
-                    <Axis type="x" scale={x} translateY={height} />
-                </g>
+                    <line
+                        stroke="black" strokeWidth="1px"
+                        y1="0" y2={height}
+                        x1={this.state.cursorX} x2={this.state.cursorX}
+                    />
+                    <Axis type="x" scale={x} translate={[0, height]} />
+                    <Axis type="y" scale={y} width={width} tickFormat={v => (`${y.tickFormat()(v)}g`)} />
+                </Focus>
                 <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
                     <g className="brush">
                         <Line
@@ -104,7 +139,7 @@ class AccelerometerChart extends Component {
                             y={d => y2(d.accelerometer.z)}
                         />
                     </g>
-                    <Axis type="x" scale={this.x2} translateY={height2} />
+                    <Axis type="x" scale={this.x2} translate={[0, height2]} />
                 </g>
             </svg>
         );

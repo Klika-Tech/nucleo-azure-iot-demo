@@ -120,6 +120,10 @@ export default class Main extends React.Component {
                                                     glyph="icon-fontello-chart-line"
                                                 />
                                                 <SidebarNavItem
+                                                    name="Acl (optimized)" href="/accelerometer-optimized"
+                                                    glyph="icon-fontello-chart-line"
+                                                />
+                                                <SidebarNavItem
                                                     name="Temperature" href="/temperature"
                                                     glyph="icon-fontello-temperatire"
                                                 />

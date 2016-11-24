@@ -17,19 +17,25 @@ class Axis extends Component {
     componentDidUpdate() { this.renderAxis(); }
 
     renderAxis() {
+        const { axis } = this;
+        const { type, width } = this.props;
         const node = ReactDOM.findDOMNode(this);
         const g = d3.select(node);
-        g.call(this.axis);
-        if (this.props.type === 'y') {
+        if (width) {
+            axis.tickSize(width);
+        }
+        g.call(axis);
+        if (type === 'y') {
             g.selectAll('text').attr('x', 4).attr('dy', -4);
         }
     }
 
     render() {
+        const { type, translate } = this.props;
         return (
             <g
-                className={`${this.props.type} axis`}
-                transform={`translate(${this.props.translateX}, ${this.props.translateY})`}
+                className={`${type} axis`}
+                transform={(translate) ? `translate(${translate.join(',')})` : null}
             />
         );
     }
@@ -39,8 +45,8 @@ Axis.propTypes = {
     type: PropTypes.oneOf(['x', 'y']),
     scale: PropTypes.func,
     tickFormat: PropTypes.func,
-    translateX: PropTypes.number,
-    translateY: PropTypes.number,
+    width: PropTypes.number,
+    translate: PropTypes.arrayOf(PropTypes.number),
 };
 
 Axis.defaultProps = {
