@@ -6,6 +6,7 @@ import { axisBottom, axisRight } from 'd3-axis';
 class Axis extends Component {
     constructor(props) {
         super(props);
+        this.renderAxis = this.renderAxis.bind(this);
         this.axis = (props.type === 'x') ? axisBottom() : axisRight();
         this.axis.scale(props.scale);
         if (props.tickFormat) {
@@ -14,15 +15,24 @@ class Axis extends Component {
     }
 
     componentDidMount() { this.renderAxis(); }
-    componentDidUpdate() { this.renderAxis(); }
+
+    shouldComponentUpdate(newProps, newState, nextContext) {
+        return (this.props.data !== newProps.data)
+            || (this.context.containerWidth !== nextContext.containerWidth)
+            || (this.context.containerHeight !== nextContext.containerHeight);
+    }
+
+    componentDidUpdate() {
+        this.renderAxis();
+    }
 
     renderAxis() {
         const { axis } = this;
-        const { type, width } = this.props;
+        const { type, tickSize } = this.props;
         const node = ReactDOM.findDOMNode(this);
         const g = d3.select(node);
-        if (width) {
-            axis.tickSize(width);
+        if (tickSize) {
+            axis.tickSize(tickSize);
         }
         g.call(axis);
         if (type === 'y') {
@@ -42,11 +52,17 @@ class Axis extends Component {
 }
 
 Axis.propTypes = {
+    data: PropTypes.array,
     type: PropTypes.oneOf(['x', 'y']),
     scale: PropTypes.func,
     tickFormat: PropTypes.func,
-    width: PropTypes.number,
+    tickSize: PropTypes.number,
     translate: PropTypes.arrayOf(PropTypes.number),
+};
+
+Axis.contextTypes = {
+    containerHeight: PropTypes.number,
+    containerWidth: PropTypes.number,
 };
 
 Axis.defaultProps = {

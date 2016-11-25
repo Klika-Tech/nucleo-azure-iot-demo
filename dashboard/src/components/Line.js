@@ -9,11 +9,11 @@ class Line extends Component {
             .x(this.props.x);
     }
 
-    shouldComponentUpdate(nextProps) {
-        const oldProps = this.props;
-        return !oldProps.data || (nextProps.data !== oldProps.data);
+    shouldComponentUpdate(newProps, newState, nextContext) {
+        return (this.props.data !== newProps.data)
+            || (this.context.containerWidth !== nextContext.containerWidth)
+            || (this.context.containerHeight !== nextContext.containerHeight);
     }
-
 
     render() {
         return (
@@ -27,6 +27,11 @@ Line.propTypes = {
     x: PropTypes.func,
     y: PropTypes.func,
     className: PropTypes.string,
+};
+
+Line.contextTypes = {
+    containerHeight: PropTypes.number,
+    containerWidth: PropTypes.number,
 };
 
 export default Line;
