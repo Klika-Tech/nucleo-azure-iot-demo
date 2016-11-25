@@ -7,7 +7,20 @@ import Axis from './Axis';
 import Line from './Line';
 import Focus from './Focus';
 import Cursor from './Cursor';
+import CursorMarker from './CursorMarker';
+import CursorTooltip from './CursorTooltip';
 
+const timeFormat = d3.timeFormat('%X');
+
+function getTooltipText(data, axis) {
+    if (data) {
+        const axisLabel = axis.toUpperCase();
+        const value = Math.round(data.accelerometer[axis] * 100) / 100;
+        const date = timeFormat(data.date);
+        return `${axisLabel}: ${value}g @ ${date}`;
+    }
+    return '';
+}
 
 class AccelerometerChart extends Component {
     constructor(props) {
@@ -25,11 +38,9 @@ class AccelerometerChart extends Component {
         this.updateDimension = this.updateDimension.bind(this);
         this.updateD3(props);
     }
-
     componentWillReceiveProps(newProps) {
         this.updateD3(newProps, this.props);
     }
-
     updateD3(newProps, oldProps = {}) {
         if (oldProps.data !== newProps.data) {
             this.updateData(newProps);
@@ -39,7 +50,6 @@ class AccelerometerChart extends Component {
             this.updateDimension(newProps);
         }
     }
-
     updateData(props) {
         const { x, y, x2, y2 } = this;
         const { data } = props;
@@ -63,7 +73,6 @@ class AccelerometerChart extends Component {
         x2.domain(contextDomain);
         y2.domain(y.domain());
     }
-
     updateDimension(props) {
         const { x, y, x2, y2 } = this;
         const { containerWidth, containerHeight } = props;
@@ -76,23 +85,25 @@ class AccelerometerChart extends Component {
         x2.range([0, this.width]);
         y2.range([this.height2, 0]);
     }
-
     handleMouseMove(x, y) {
+        const { data } = this.props;
+        const datePos = this.x.invert(x);
+        const i = d3.bisector(d => d.date).right(data, datePos);
+        const cursorData = data[i];
         this.setState({
+            cursorData,
             cursorVisible: true,
             cursorX: x,
             cursorY: y,
         });
     }
-
     handleMouseOut() {
         this.setState({
             cursorVisible: false,
         });
     }
-
     render() {
-        const { containerWidth, containerHeight, data, isShouldUpdate } = this.props;
+        const { containerWidth, containerHeight, data } = this.props;
         const { margin, margin2, x, y, x2, y2, height, height2, width, state } = this;
         return (
             <div>
@@ -134,7 +145,6 @@ class AccelerometerChart extends Component {
                             scale={x}
                             data={data}
                             translate={[0, height]}
-                            shouldUpdate={isShouldUpdate}
                         />
                         <Axis
                             type="y"
@@ -142,7 +152,6 @@ class AccelerometerChart extends Component {
                             data={data}
                             tickSize={width}
                             tickFormat={v => (`${y.tickFormat()(v)}g`)}
-                            shouldUpdate={isShouldUpdate}
                         />
                     </Focus>
                     <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
@@ -171,7 +180,6 @@ class AccelerometerChart extends Component {
                             data={data}
                             scale={this.x2}
                             translate={[0, height2]}
-                            shouldUpdate={isShouldUpdate}
                         />
                     </g>
                 </svg>
@@ -180,7 +188,35 @@ class AccelerometerChart extends Component {
                     x={state.cursorX}
                     height={height}
                     visible={state.cursorVisible}
-                />
+                >
+                    <CursorMarker
+                        data={state.cursorData}
+                        y={d => y(d.accelerometer.x)}
+                    >
+                        <CursorTooltip cursorX={state.cursorX} containerWidth={width}>
+                            {getTooltipText(state.cursorData, 'x')}
+                        </CursorTooltip>
+                    </CursorMarker>
+
+                    <CursorMarker
+                        data={state.cursorData}
+                        y={d => y(d.accelerometer.y)}
+                    >
+                        <CursorTooltip cursorX={state.cursorX} containerWidth={width}>
+                            {getTooltipText(state.cursorData, 'y')}
+                        </CursorTooltip>
+                    </CursorMarker>
+
+                    <CursorMarker
+                        data={state.cursorData}
+                        y={d => y(d.accelerometer.z)}
+                    >
+                        <CursorTooltip cursorX={state.cursorX} containerWidth={width}>
+                            {getTooltipText(state.cursorData, 'z')}
+                        </CursorTooltip>
+                    </CursorMarker>
+
+                </Cursor>
             </div>
         );
     }
@@ -198,3 +234,4 @@ AccelerometerChart.propTypes = {
 };
 
 export default Chart(AccelerometerChart);
+

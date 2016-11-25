@@ -103,7 +103,6 @@
 
     .cursor-focus {
       position: absolute;
-      visibility: hidden;
       top: 0;
       left: 0;
       width: 1px;
@@ -112,7 +111,6 @@
 
     .cursor-point {
       position: absolute;
-      visibility: hidden;
       top: 0;
       left: 0;
       height: 10px;
@@ -124,7 +122,6 @@
 
     .cursor-tooltip, .city-label {
       position: absolute;
-      visibility: hidden;
       font-size: small;
       font-family: Lato, "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
       background-color: #2eb398;

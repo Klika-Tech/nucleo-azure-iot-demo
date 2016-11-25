@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
 
+const CURSOR_OFFSET = 2;
+
 const Cursor = ({ children, x, y, height, visible }) => {
     const style = {
         top: `${y}px`,
-        left: `${x}px`,
+        left: `${x + CURSOR_OFFSET}px`,
         height: `${height}px`,
-        visibility: (visible) ? 'visible' : 'hidden',
+        display: (visible) ? 'block' : 'none',
     };
     return (
         <div className="cursor-focus" style={style}>
