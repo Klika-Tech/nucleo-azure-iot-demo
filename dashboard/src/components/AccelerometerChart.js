@@ -161,18 +161,21 @@ class AccelerometerChart extends Component {
                                 data={data}
                                 x={d => x2(d.date)}
                                 y={d => y2(d.accelerometer.x)}
+                                skipRenderCount={10}
                             />
                             <Line
                                 className="y"
                                 data={data}
                                 x={d => x2(d.date)}
                                 y={d => y2(d.accelerometer.y)}
+                                skipRenderCount={10}
                             />
                             <Line
                                 className="z"
                                 data={data}
                                 x={d => x2(d.date)}
                                 y={d => y2(d.accelerometer.z)}
+                                skipRenderCount={10}
                             />
                         </g>
                         <Axis
@@ -180,6 +183,7 @@ class AccelerometerChart extends Component {
                             data={data}
                             scale={this.x2}
                             translate={[0, height2]}
+                            skipRenderCount={10}
                         />
                     </g>
                 </svg>

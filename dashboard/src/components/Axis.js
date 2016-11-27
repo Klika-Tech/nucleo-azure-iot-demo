@@ -12,14 +12,25 @@ class Axis extends Component {
         if (props.tickFormat) {
             this.axis.tickFormat(props.tickFormat);
         }
+        this.renderCounter = props.skipRenderCount;
     }
 
     componentDidMount() { this.renderAxis(); }
 
     shouldComponentUpdate(newProps, newState, nextContext) {
-        return (this.props.data !== newProps.data)
+        const shouldComponentUpdate = (this.props.data !== newProps.data)
             || (this.context.containerWidth !== nextContext.containerWidth)
             || (this.context.containerHeight !== nextContext.containerHeight);
+        let shouldRender = true;
+        if (newProps.skipRenderCount !== undefined) {
+            shouldRender = this.renderCounter <= 0;
+            if (shouldRender) {
+                this.renderCounter = newProps.skipRenderCount;
+            } else {
+                this.renderCounter -= 1;
+            }
+        }
+        return shouldComponentUpdate && shouldRender;
     }
 
     componentDidUpdate() {
@@ -58,6 +69,7 @@ Axis.propTypes = {
     tickFormat: PropTypes.func,
     tickSize: PropTypes.number,
     translate: PropTypes.arrayOf(PropTypes.number),
+    skipRenderCount: PropTypes.number,
 };
 
 Axis.contextTypes = {

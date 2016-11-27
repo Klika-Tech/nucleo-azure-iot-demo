@@ -7,12 +7,23 @@ class Line extends Component {
         this.generator = lineOptimized()
             .y(this.props.y)
             .x(this.props.x);
+        this.renderCounter = props.skipRenderCount;
     }
 
     shouldComponentUpdate(newProps, newState, nextContext) {
-        return (this.props.data !== newProps.data)
+        const shouldComponentUpdate = (this.props.data !== newProps.data)
             || (this.context.containerWidth !== nextContext.containerWidth)
             || (this.context.containerHeight !== nextContext.containerHeight);
+        let shouldRender = true;
+        if (newProps.skipRenderCount !== undefined) {
+            shouldRender = this.renderCounter <= 0;
+            if (shouldRender) {
+                this.renderCounter = newProps.skipRenderCount;
+            } else {
+                this.renderCounter -= 1;
+            }
+        }
+        return shouldComponentUpdate && shouldRender;
     }
 
     render() {
@@ -27,6 +38,7 @@ Line.propTypes = {
     x: PropTypes.func,
     y: PropTypes.func,
     className: PropTypes.string,
+    skipRenderCount: PropTypes.number,
 };
 
 Line.contextTypes = {
