@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import data from './data';
+import accelerometer from './accelerometer';
 
 export default combineReducers({
-    data,
+    accelerometer,
 });
