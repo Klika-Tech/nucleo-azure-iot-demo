@@ -25,7 +25,7 @@ class BrushX extends Component {
         const node = ReactDOM.findDOMNode(this);
         const g = d3.select(node);
         brush.extent([[0, 0], [width, height]]);
-        brush.on('brush end', this.brushed);
+        brush.on('end', this.brushed);
         g.call(brush);
         const moveBrush = function (selection) {
             brush.move(g, selection);

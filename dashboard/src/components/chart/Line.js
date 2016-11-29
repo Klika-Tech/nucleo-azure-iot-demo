@@ -18,6 +18,7 @@ class Line extends Component {
         if (newProps.skipRenderCount !== undefined) {
             shouldRender = this.renderCounter <= 0;
             if (shouldRender) {
+                console.log('Line: shouldRender');
                 this.renderCounter = newProps.skipRenderCount;
             } else {
                 this.renderCounter -= 1;

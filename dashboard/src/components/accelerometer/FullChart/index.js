@@ -85,7 +85,6 @@ class AccelerometerChart extends Component {
 
     handleBrushEnd(selection) {
         const { dispatch } = this.props;
-        console.log('!!!!!!!');
         dispatch(accelerometerBrushEnd(this.x2, selection));
     }
 
