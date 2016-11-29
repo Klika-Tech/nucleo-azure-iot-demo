@@ -1,6 +1,3 @@
-export const FETCH_DATA = 'fetch_data';
-export const PUSH_DATA = 'push_data';
-
 export const ACCELEROMETER_FETCH = 'accelerometer_fetch';
 export const ACCELEROMETER_PUSH = 'accelerometer_push';
 export const ACCELEROMETER_UPDATE = 'accelerometer_update';

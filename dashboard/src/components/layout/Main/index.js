@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
     Sidebar,
-    SidebarNav,
-    SidebarNavItem,
     SidebarBtn,
     Grid,
     Col,
@@ -24,13 +22,14 @@ import {
     OverlayTrigger,
 } from '@sketchpixy/rubix';
 import classNames from 'classnames';
-import config from '../config';
-import * as FetchService from '../services/fetchService';
-import * as AwsMqttFactory from '../services/awsMqttFactory';
-import Loader from './loader';
-import { fetchData, pushData } from '../actions/data';
-import '../main.scss';
-import '../rubix/sass/main.scss';
+import config from '../../../config';
+import * as FetchService from '../../../services/fetchService';
+import * as AwsMqttFactory from '../../../services/awsMqttFactory';
+import Loader from '../../common/Loader';
+import { fetchData, pushData } from '../../../actions/data';
+import Menu from './Menu';
+import '../../../rubix/sass/main.scss';
+import './style.scss';
 
 const MainContainerWR = withRouter(MainContainer);
 
@@ -114,14 +113,7 @@ class Main extends React.Component {
                             <Grid>
                                 <Row>
                                     <Col xs={12}>
-                                        <div className="sidebar-nav-container">
-                                            <SidebarNav>
-                                                <SidebarNavItem
-                                                    name="Accelerometer" href="/accelerometer"
-                                                    glyph="icon-fontello-chart-line"
-                                                />
-                                            </SidebarNav>
-                                        </div>
+                                        <Menu />
                                     </Col>
                                 </Row>
                             </Grid>

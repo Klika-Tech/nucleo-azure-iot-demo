@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRedirect, hashHistory } from 'react-router';
-import AccelerometerChart from './AccelerometerChart';
-import Main from './main';
+import AccelerometerChart from './accelerometer/FullChart';
+import Main from './layout/Main';
 
 const RouterComponent = ({ store }) => (
     <Provider store={store}>

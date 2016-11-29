@@ -13,7 +13,7 @@ export function accelerometerFetch(data) {
     return (dispatch, getState) => {
         dispatch(accelerometerFetchAction(data));
         const state = getState().accelerometer;
-        dispatch(accelerometerUpdate(state.data, state.focusDomain, state.brushDomain));
+        dispatch(accelerometerUpdate(state.data));
     };
 }
 
@@ -28,7 +28,7 @@ export function accelerometerPush(chunk) {
     return (dispatch, getState) => {
         dispatch(accelerometerPushAction(chunk));
         const state = getState().accelerometer;
-        dispatch(accelerometerUpdate(state.data, state.focusDomain, state.brushDomain));
+        dispatch(accelerometerUpdate(state.data, state.focusDomain));
     };
 }
 
@@ -96,7 +96,10 @@ function accelerometerBrushEndAction(xScale, selection) {
     const brushDomain = selection.map(xScale.invert);
     return {
         type: ACCELEROMETER_BRUSH_END,
-        payload: brushDomain,
+        payload: {
+            brushDomain,
+            brushSelection: selection,
+        },
     };
 }
 

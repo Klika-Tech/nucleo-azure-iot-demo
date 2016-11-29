@@ -1,20 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import './realtime-chart.scss';
-import Chart from './Chart';
-import Axis from './Axis';
-import Line from './Line';
-import Focus from './Focus';
-import BrushX from './BrushX';
-import AccelerometerFocus from './AccelerometerFocus';
-import { accelerometerFocusMove, accelerometerFocusOut, accelerometerBrushEnd } from '../actions/accelerometer';
+import '../../chart/style.scss';
+import Chart from '../../chart/Chart';
+import Axis from '../../chart/Axis';
+import Line from '../../chart/Line';
+import Focus from '../../chart/Focus';
+import BrushX from '../../chart/BrushX';
+import AccelerometerCursor from './Cursor';
+import { accelerometerFocusMove, accelerometerFocusOut, accelerometerBrushEnd } from '../../../actions/accelerometer';
 
 const mapStateToProps = state => ({
     data: state.accelerometer.data,
     yDomain: state.accelerometer.yDomain,
     focusDomain: state.accelerometer.focusDomain,
     contextDomain: state.accelerometer.contextDomain,
+    brushSelection: state.accelerometer.brushSelection,
 });
 
 class AccelerometerChart extends Component {
@@ -26,9 +27,9 @@ class AccelerometerChart extends Component {
         this.y2 = scaleLinear();
         this.margin = { top: 10, right: 10, bottom: 100, left: 0 };
         this.margin2 = { right: 10, bottom: 20, left: 0 };
-        this.state = { cursorVisible: false };
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);
+        this.handleBrushMount = this.handleBrushMount.bind(this);
         this.handleBrushEnd = this.handleBrushEnd.bind(this);
         this.updateData = this.updateData.bind(this);
         this.updateDimension = this.updateDimension.bind(this);
@@ -84,12 +85,17 @@ class AccelerometerChart extends Component {
 
     handleBrushEnd(selection) {
         const { dispatch } = this.props;
+        console.log('!!!!!!!');
         dispatch(accelerometerBrushEnd(this.x2, selection));
     }
 
+    handleBrushMount({ moveBrush }) {
+        this.moveBrush = moveBrush;
+    }
+
     render() {
-        const { containerWidth, containerHeight, data } = this.props;
-        const { margin, margin2, x, y, x2, y2, height, height2, width } = this;
+        const { containerWidth, containerHeight, data, brushSelection } = this.props;
+        const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush } = this;
         return (
             <div className="temperature-chart-container">
                 <div className="magnetometer-chart">
@@ -105,6 +111,7 @@ class AccelerometerChart extends Component {
                             width={width}
                             onMouseMove={this.handleMouseMove}
                             onMouseOut={this.handleMouseOut}
+                            wheel={({ moveBrush, selection: brushSelection })}
                         >
                             <g className="zoom">
                                 <Line
@@ -141,7 +148,12 @@ class AccelerometerChart extends Component {
                             />
                         </Focus>
                         <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
-                            <BrushX width={width} height={height2} onBrushEnd={this.handleBrushEnd}>
+                            <BrushX
+                                width={width}
+                                height={height2}
+                                onBrushEnd={this.handleBrushEnd}
+                                onBrushMount={this.handleBrushMount}
+                            >
                                 <Line
                                     className="x"
                                     data={data}
@@ -173,7 +185,7 @@ class AccelerometerChart extends Component {
                             />
                         </g>
                     </svg>
-                    <AccelerometerFocus margin={margin} height={height} width={width} y={y} />
+                    <AccelerometerCursor margin={margin} height={height} width={width} y={y} />
                 </div>
             </div>
         );

@@ -2152,7 +2152,7 @@ function isPrimaryMouseButton(ev) {
 ----------------------------------------------------------------------------------------------------------------------*/
 
 
-// Creates a basic segment with the intersection of the two ranges. Returns undefined if no intersection.
+// Creates a chart segment with the intersection of the two ranges. Returns undefined if no intersection.
 // Expects all dates to be normalized to the same timezone beforehand.
 function intersectionToSeg(subjectStart, subjectEnd, intervalStart, intervalEnd) {
 	var segStart, segEnd;
@@ -5494,7 +5494,7 @@ $.extend(TimeGrid.prototype, {
 	},
 
 
-	// Renders the basic HTML skeleton for the grid
+	// Renders the chart HTML skeleton for the grid
 	renderHtml: function() {
 		return '' +
 			'<div class="fc-bg">' +
@@ -6816,7 +6816,7 @@ function View(calendar) {
 	// ====================================================================================================
 	// Utilities for day "cells"
 	// ====================================================================================================
-	// The "basic" views are completely made up of day cells.
+	// The "chart" views are completely made up of day cells.
 	// The "agenda" views have day cells at the top "all day" slot.
 	// This was the obvious common place to put these utilities, but they should be abstracted out into
 	// a more meaningful class (like DayEventRenderer).
@@ -7122,7 +7122,7 @@ function View(calendar) {
 
 ;;
 
-/* An abstract class for the "basic" views, as well as month view. Renders one or more rows of day cells.
+/* An abstract class for the "chart" views, as well as month view. Renders one or more rows of day cells.
 ----------------------------------------------------------------------------------------------------------------------*/
 // It is a manager for a DayGrid subcomponent, which does most of the heavy lifting.
 // It is responsible for managing width/height.
@@ -7159,7 +7159,7 @@ $.extend(BasicView.prototype, {
 		this.weekNumbersVisible = this.opt('weekNumbers');
 		this.dayGrid.numbersVisible = this.dayNumbersVisible || this.weekNumbersVisible;
 
-		this.el.addClass('fc-basic-view').html(this.renderHtml());
+		this.el.addClass('fc-chart-view').html(this.renderHtml());
 
 		this.headRowEl = this.el.find('thead .fc-row');
 

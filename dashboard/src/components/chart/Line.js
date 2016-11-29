@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import lineOptimized from '../services/lineOptimized';
+import lineOptimized from '../../services/lineOptimized';
 
 class Line extends Component {
     constructor(props) {

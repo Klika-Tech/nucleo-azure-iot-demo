@@ -2,12 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import './realtime-chart.scss';
-import Cursor from './Cursor';
-import CursorMarker from './CursorMarker';
-import CursorTooltip from './CursorTooltip';
+import Cursor from '../../chart/Cursor';
+import CursorMarker from '../../chart/CursorMarker';
+import CursorTooltip from '../../chart/CursorTooltip';
 
-function AccelerometerFocus({ data, cursorIndex, cursorVisible, cursorX, margin, height, width, y }) {
+function AccelerometerCursor({ data, cursorIndex, cursorVisible, cursorX, margin, height, width, y }) {
     const cursorData = data[cursorIndex];
     return (
         <Cursor
@@ -57,7 +56,7 @@ function AccelerometerFocus({ data, cursorIndex, cursorVisible, cursorX, margin,
     }
 }
 
-AccelerometerFocus.propTypes = {
+AccelerometerCursor.propTypes = {
     margin: PropTypes.shape({
         left: PropTypes.number,
         top: PropTypes.number,
@@ -74,5 +73,5 @@ export default connect(state => ({
     cursorIndex: state.accelerometer.cursorIndex,
     cursorVisible: state.accelerometer.cursorVisible,
     cursorX: state.accelerometer.cursorX,
-}))(AccelerometerFocus);
+}))(AccelerometerCursor);
 

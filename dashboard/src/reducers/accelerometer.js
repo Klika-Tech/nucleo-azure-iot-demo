@@ -17,6 +17,7 @@ import {
  * focusDomain = [];
  * yDomain = [];
  * brushSelection = [];
+ * brushDomain = [];
  * */
 
 export default function (state = {}, { type, payload }) {
@@ -78,7 +79,8 @@ function accelerometerUpdate(state, { contextDomain, focusDomain, yDomain }) {
 function accelerometerBrushEnd(state, payload) {
     return {
         ...state,
-        brushDomain: payload,
+        brushDomain: payload.brushDomain,
+        brushSelection: payload.brushSelection,
     };
 }
 

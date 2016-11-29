@@ -1,6 +1,7 @@
 import React from 'react';
+import './style.scss';
 
-const oval = require('../assets/oval.svg');
+const oval = require('./oval.svg');
 
 const Loader = () => (
     <svg>
