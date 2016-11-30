@@ -12,7 +12,7 @@ class Focus extends Component {
         this.handleWheel = this.handleWheel.bind(this);
     }
     handleRect(e) {
-        this.rect = e.getBoundingClientRect();
+        if (e) this.rect = e.getBoundingClientRect();
     }
     handleMouseMove(e) {
         const { rect } = this;

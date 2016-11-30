@@ -12,6 +12,7 @@ const mqttMiddleware = (function () {
 
     return (store) => {
         let messages = [];
+        if (interval) clearInterval(interval);
         interval = setInterval(() => {
             if (messages.length) {
                 if (config.debug) console.log('MQTT: dispatch batch update');
@@ -34,7 +35,7 @@ const mqttMiddleware = (function () {
                     client.subscribe(config.mqttTopic);
                     setTimeout(() => {
                         client.end();
-                    }, 270000); // 270000 = 4.5 minutes
+                    }, 270000); // 4.5 minutes
                 });
                 client.on('close', () => {
                     if (config.debug) console.log('MQTT: client disconnected');

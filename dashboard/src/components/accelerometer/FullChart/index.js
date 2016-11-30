@@ -25,7 +25,7 @@ class AccelerometerChart extends Component {
         this.y = scaleLinear();
         this.x2 = scaleTime();
         this.y2 = scaleLinear();
-        this.margin = { top: 10, right: 10, bottom: 100, left: 0 };
+        this.margin = { top: 0, right: 40, bottom: 100, left: 0 };
         this.margin2 = { right: 10, bottom: 20, left: 0 };
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);

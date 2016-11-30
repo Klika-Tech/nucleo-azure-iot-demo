@@ -9,9 +9,6 @@ class Axis extends Component {
         this.renderAxis = this.renderAxis.bind(this);
         this.axis = (props.type === 'x') ? axisBottom() : axisRight();
         this.axis.scale(props.scale);
-        if (props.tickFormat) {
-            this.axis.tickFormat(props.tickFormat);
-        }
         this.renderCounter = props.skipRenderCount;
     }
 
@@ -39,11 +36,17 @@ class Axis extends Component {
 
     renderAxis() {
         const { axis } = this;
-        const { type, tickSize } = this.props;
+        const { type, tickSize, ticks, tickFormat } = this.props;
         const node = ReactDOM.findDOMNode(this);
         const g = d3.select(node);
+        if (ticks) {
+            axis.ticks(ticks);
+        }
         if (tickSize) {
             axis.tickSize(tickSize);
+        }
+        if (tickFormat) {
+            axis.tickFormat(tickFormat);
         }
         g.call(axis);
         if (type === 'y') {
@@ -68,6 +71,7 @@ Axis.propTypes = {
     scale: PropTypes.func,
     tickFormat: PropTypes.func,
     tickSize: PropTypes.number,
+    ticks: PropTypes.number,
     translate: PropTypes.arrayOf(PropTypes.number),
     skipRenderCount: PropTypes.number,
 };
