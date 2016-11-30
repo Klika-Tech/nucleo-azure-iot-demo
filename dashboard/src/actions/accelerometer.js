@@ -1,41 +1,53 @@
 import * as d3 from 'd3';
+import _ from 'lodash';
 import {
-    ACCELEROMETER_FETCH,
-    ACCELEROMETER_PUSH,
+    ACCELEROMETER_UPDATE,
     ACCELEROMETER_FOCUS_MOVE,
     ACCELEROMETER_FOCUS_OUT,
-    ACCELEROMETER_UPDATE,
-    ACCELEROMETER_BRUSH_END,
 } from '../actionTypes';
 
+export const accelerometerFetch = data => accelerometerFetchAndUpdate(data);
 
-export function accelerometerFetch(data) {
-    return (dispatch, getState) => {
-        dispatch(accelerometerFetchAction(data));
-        const state = getState().accelerometer;
-        dispatch(accelerometerUpdate(state.data));
-    };
-}
-
-function accelerometerFetchAction(data) {
+function accelerometerFetchAndUpdate(fullData) {
+    const data = fullData.sensorData.map(prepareAccelerometerDataItem);
+    const domains = calculateDomains(data);
     return {
-        type: ACCELEROMETER_FETCH,
-        payload: data.sensorData.map(prepareAccelerometerDataItem),
+        type: ACCELEROMETER_UPDATE,
+        payload: { ...domains, data },
     };
 }
 
-export function accelerometerPush(chunk) {
+export const accelerometerPush = chunk => accelerometerPushAndUpdate(chunk);
+
+function accelerometerPushAndUpdate(chunk) {
     return (dispatch, getState) => {
-        dispatch(accelerometerPushAction(chunk));
         const state = getState().accelerometer;
-        dispatch(accelerometerUpdate(state.data, state.focusDomain));
+        const data = getCleanedData(state.data);
+        data.push(prepareAccelerometerDataItem(chunk));
+        const domains = calculateDomains(data, state.focusDomain);
+        dispatch({
+            type: ACCELEROMETER_UPDATE,
+            payload: { ...domains, data },
+        });
     };
 }
 
-function accelerometerPushAction(chunk) {
-    return {
-        type: ACCELEROMETER_PUSH,
-        payload: prepareAccelerometerDataItem(chunk),
+export const accelerometerBrushEnd = (xScale, selection) => accelerometerBrushAndUpdate(xScale, selection);
+
+function accelerometerBrushAndUpdate(xScale, selection) {
+    return (dispatch, getState) => {
+        const state = getState().accelerometer;
+        const brushDomain = selection.map(xScale.invert);
+        const domains = calculateDomains(state.data, state.focusDomain, brushDomain);
+        dispatch({
+            type: ACCELEROMETER_UPDATE,
+            payload: {
+                ...domains,
+                data: state.data,
+                brushDomain,
+                brushSelection: selection,
+            },
+        });
     };
 }
 
@@ -54,7 +66,7 @@ export function accelerometerFocusOut() {
     };
 }
 
-export function accelerometerUpdate(data, focusDomain = null, brushDomain = null) {
+function calculateDomains(data, focusDomain = null, brushDomain = null) {
     const contextDomain = d3.extent(data.map(d => d.date));
     const bisector = d3.bisector(d => d.date).right;
     let fd = focusDomain;
@@ -75,33 +87,12 @@ export function accelerometerUpdate(data, focusDomain = null, brushDomain = null
         Math.ceil((maxY + 0.3) * 30) / 30,
     ];
     return {
-        type: ACCELEROMETER_UPDATE,
-        payload: {
-            contextDomain,
-            focusDomain: fd,
-            yDomain,
-        },
+        contextDomain,
+        focusDomain: fd,
+        yDomain,
     };
 }
 
-export function accelerometerBrushEnd(xScale, selection) {
-    return (dispatch, getState) => {
-        dispatch(accelerometerBrushEndAction(xScale, selection));
-        const state = getState().accelerometer;
-        dispatch(accelerometerUpdate(state.data, state.focusDomain, state.brushDomain));
-    };
-}
-
-function accelerometerBrushEndAction(xScale, selection) {
-    const brushDomain = selection.map(xScale.invert);
-    return {
-        type: ACCELEROMETER_BRUSH_END,
-        payload: {
-            brushDomain,
-            brushSelection: selection,
-        },
-    };
-}
 
 function prepareAccelerometerDataItem(item) {
     return {
@@ -113,4 +104,10 @@ function prepareAccelerometerDataItem(item) {
         date: new Date(item.timestamp * 1000),
         marker: item.marker,
     };
+}
+
+function getCleanedData(data, last = 86400) {
+    return _(data)
+        .filter(item => item.date.getTime() / 1000 >= Math.round(Date.now() / 1000) - last)
+        .value();
 }

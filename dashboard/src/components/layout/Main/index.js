@@ -24,7 +24,7 @@ import {
 import classNames from 'classnames';
 import config from '../../../config';
 import * as FetchService from '../../../services/fetchService';
-import * as AwsMqttFactory from '../../../services/awsMqttFactory';
+import * as AwsMqttService from '../../../services/awsMqttService';
 import Loader from '../../common/Loader';
 import { fetchData, pushData } from '../../../actions/data';
 import Menu from './Menu';
@@ -33,44 +33,25 @@ import './style.scss';
 
 const MainContainerWR = withRouter(MainContainer);
 
+const mapStateToProps = state => ({
+    loader: !state.accelerometer.data,
+    online: state.mqtt.connected,
+});
+
 class Main extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loader: true,
-            online: false,
-        };
-    }
-
     componentDidMount() {
-        const self = this;
         const { dispatch } = this.props;
 
         FetchService.fetchAwsMetrics(config).then((data) => {
             dispatch(fetchData(data));
-            self.setState({ loader: false });
-            const clientPromise = AwsMqttFactory.getInstance(config);
-            clientPromise.then((client) => {
-                client.on('connect', () => {
-                    self.setState({ online: true });
-                });
-                client.on('message', (topic, msg) => {
-                    const message = msg.toString();
-                    if (config.debug) console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, message);
-                    if (topic === config.mqttTopic) {
-                        dispatch(pushData(JSON.parse(message)));
-                    }
-                });
-                client.on('close', () => {
-                    self.setState({ online: false });
-                });
-            });
+            AwsMqttService.connect(dispatch, config);
         });
     }
 
     render() {
-        if (this.state.loader) {
+        const { loader, online } = this.props;
+        if (loader) {
             return (
                 <div className="app">
                     <div className="loader"><Loader /></div>
@@ -80,10 +61,10 @@ class Main extends React.Component {
 
         const onlineTooltip = (
             <Tooltip id="online-tooltip">
-                The board is {this.state.online ? 'online' : 'offline'}
+                The board is {online ? 'online' : 'offline'}
             </Tooltip>
         );
-        const statusClassName = classNames('online-status', { online: this.state.online });
+        const statusClassName = classNames('online-status', { online });
 
         const wrapInPanel = (children) => {
             if (this.props.location.pathname === '/dashboard') {
@@ -167,4 +148,4 @@ class Main extends React.Component {
 
 }
 
-export default connect()(Main);
+export default connect(mapStateToProps)(Main);

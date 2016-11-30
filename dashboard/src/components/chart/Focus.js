@@ -11,7 +11,7 @@ class Focus extends Component {
         this.handleMouseOut = this.handleMouseOut.bind(this);
         this.handleWheel = this.handleWheel.bind(this);
         // ---------- //
-        const throttledWheel = _.throttle(this.handleWheel, 100);
+        const throttledWheel = _.throttle(this.handleWheel, 100, { trailing: true });
         this.persistThrottledWheel = function (e) {
             e.persist();
             throttledWheel(e);
@@ -55,7 +55,6 @@ class Focus extends Component {
         if (validatedSelection[0] >= validatedSelection[1]) { // extra zoom in
             validatedSelection = [validatedSelection[0], validatedSelection[0]];
         }
-
         wheel.moveBrush.call({}, validatedSelection);
     }
 

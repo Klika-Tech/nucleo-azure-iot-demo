@@ -1,11 +1,7 @@
-import _ from 'lodash';
 import {
-    ACCELEROMETER_FETCH,
-    ACCELEROMETER_PUSH,
     ACCELEROMETER_FOCUS_MOVE,
     ACCELEROMETER_FOCUS_OUT,
     ACCELEROMETER_UPDATE,
-    ACCELEROMETER_BRUSH_END,
 } from '../actionTypes';
 
 /**
@@ -22,12 +18,6 @@ import {
 
 export default function (state = {}, { type, payload }) {
     switch (type) {
-    case ACCELEROMETER_FETCH: {
-        return accelerometerFetch(payload);
-    }
-    case ACCELEROMETER_PUSH: {
-        return accelerometerPush(state, payload);
-    }
     case ACCELEROMETER_FOCUS_MOVE: {
         return accelerometerFocusMove(state, payload);
     }
@@ -37,25 +27,9 @@ export default function (state = {}, { type, payload }) {
     case ACCELEROMETER_UPDATE: {
         return accelerometerUpdate(state, payload);
     }
-    case ACCELEROMETER_BRUSH_END: {
-        return accelerometerBrushEnd(state, payload);
-    }
     default:
         return state;
     }
-}
-
-function accelerometerFetch(payload) {
-    return {
-        data: payload,
-    };
-}
-
-function accelerometerPush(state, payload) {
-    const data = getCleanedData(state.data);
-    data.push(payload);
-    const cursorIndex = (state.cursorIndex >= 0) ? state.cursorIndex + 1 : -1;
-    return { ...state, cursorIndex, data };
 }
 
 function accelerometerFocusMove(state, payload) {
@@ -67,21 +41,17 @@ function accelerometerFocusMove(state, payload) {
     };
 }
 
-function accelerometerUpdate(state, { contextDomain, focusDomain, yDomain }) {
-    return {
+function accelerometerUpdate(state, { data, contextDomain, focusDomain, yDomain, brushDomain, brushSelection }) {
+    const newState = {
         ...state,
+        data,
         contextDomain,
         focusDomain,
         yDomain,
     };
-}
-
-function accelerometerBrushEnd(state, payload) {
-    return {
-        ...state,
-        brushDomain: payload.brushDomain,
-        brushSelection: payload.brushSelection,
-    };
+    if (brushDomain) newState.brushDomain = brushDomain;
+    if (brushSelection) newState.brushSelection = brushSelection;
+    return newState;
 }
 
 function accelerometerFocusOut(state) {
@@ -90,10 +60,3 @@ function accelerometerFocusOut(state) {
         cursorVisible: false,
     };
 }
-
-function getCleanedData(data, last = 86400) {
-    return _(data)
-        .filter(item => item.date.getTime() / 1000 >= Math.round(Date.now() / 1000) - last)
-        .value();
-}
-
