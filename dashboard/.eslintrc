@@ -10,6 +10,7 @@
     "react/jsx-indent": [2,4],
     "no-bitwise": ["error", { "allow": ["~"] }],
     "no-console": "off",
+    "consistent-return": "off",
     "no-unused-vars": "off",
     "no-use-before-define": "off",
     "class-methods-use-this": "off",

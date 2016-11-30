@@ -10,13 +10,10 @@ class BrushX extends Component {
         this.brushed = this.brushed.bind(this);
     }
     componentDidMount() { this.renderBrush(); }
-    shouldComponentUpdate() {
-        return false;
-    }
     brushed() {
         const { onBrushEnd } = this.props;
         // if (!d3.event.sourceEvent) return; // Only transition after input.
-        // if (!d3.event.selection) return; // Ignore empty selections.
+        if (!d3.event.selection) return; // Ignore empty selections.
         onBrushEnd.call({}, d3.event.selection);
     }
     renderBrush() {

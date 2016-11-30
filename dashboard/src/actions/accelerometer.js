@@ -17,13 +17,13 @@ function accelerometerFetchAndUpdate(fullData) {
     };
 }
 
-export const accelerometerPush = chunk => accelerometerPushAndUpdate(chunk);
+export const accelerometerPush = chunks => accelerometerPushAndUpdate(chunks);
 
-function accelerometerPushAndUpdate(chunk) {
+function accelerometerPushAndUpdate(chunks) {
     return (dispatch, getState) => {
         const state = getState().accelerometer;
-        const data = getCleanedData(state.data);
-        data.push(prepareAccelerometerDataItem(chunk));
+        let data = getCleanedData(state.data);
+        data = data.concat(chunks.map(prepareAccelerometerDataItem));
         const domains = calculateDomains(data, state.focusDomain);
         dispatch({
             type: ACCELEROMETER_UPDATE,

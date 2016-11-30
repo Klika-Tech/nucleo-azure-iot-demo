@@ -5,48 +5,54 @@ import { pushData } from '../actions/data';
 import config from '../config';
 
 const mqttMiddleware = (function () {
-    let client = null;
     let url = null;
     let reconnectPeriod = null;
+    let client = null;
+    let interval = null;
 
-    return store => next => (action) => {
-        switch (action.type) {
-        case MQTT_CONNECT:
-            if (client != null) {
-                client.end();
+    return (store) => {
+        let messages = [];
+        interval = setInterval(() => {
+            if (messages.length) {
+                if (config.debug) console.log('MQTT: dispatch batch update');
+                store.dispatch(pushData(messages));
+                messages = [];
             }
-            url = action.payload.url;
-            reconnectPeriod = action.payload.reconnectPeriod;
-            client = mqtt.connect(url, { reconnectPeriod });
-
-            client.on('connect', () => {
-                if (config.debug) console.log('MQTT client connected');
-                store.dispatch(connected());
-                client.subscribe(config.mqttTopic);
-                setTimeout(() => {
+        }, 1000);
+        return next => (action) => {
+            switch (action.type) {
+            case MQTT_CONNECT:
+                if (client != null) {
                     client.end();
-                }, 270000); // 4.5 minutes
-            });
-            client.on('close', () => {
-                if (config.debug) console.log('MQTT client disconnected');
-                client.end();
-                store.dispatch(disconnected());
-                setTimeout(() => {
-                    if (config.debug) console.log('Reconnecting');
-                    store.dispatch(connect(url, reconnectPeriod));
-                }, 1000);
-            });
-            client.on('message', (topic, msg) => {
-                const message = msg.toString();
-                if (config.debug) console.info('Message recieved.\nTopic: %s\nPayload: %s', topic, message);
-                if (topic === config.mqttTopic) {
-                    store.dispatch(pushData(JSON.parse(message)));
                 }
-            });
-            break;
-        default:
-            return next(action);
-        }
+                url = action.payload.url;
+                reconnectPeriod = action.payload.reconnectPeriod;
+                client = mqtt.connect(url, { reconnectPeriod });
+                client.on('connect', () => {
+                    if (config.debug) console.log('MQTT: client connected');
+                    store.dispatch(connected());
+                    client.subscribe(config.mqttTopic);
+                    setTimeout(() => {
+                        client.end();
+                    }, 270000); // 270000 = 4.5 minutes
+                });
+                client.on('close', () => {
+                    if (config.debug) console.log('MQTT: client disconnected');
+                    client.end();
+                    store.dispatch(disconnected());
+                });
+                client.on('message', (topic, msg) => {
+                    const message = msg.toString();
+                    if (config.debug) console.info('MQTT: Message recieved.\nTopic: %s\nPayload: %s', topic, message);
+                    if (topic === config.mqttTopic) {
+                        messages.push(JSON.parse(message));
+                    }
+                });
+                break;
+            default:
+                return next(action);
+            }
+        };
     };
 }());
 

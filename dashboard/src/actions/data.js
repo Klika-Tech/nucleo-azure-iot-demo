@@ -1,17 +1,19 @@
 import _ from 'lodash';
+import { DATA_FETCHED } from '../actionTypes';
 import { accelerometerFetch, accelerometerPush } from './accelerometer';
 
 export function fetchData(data) {
     return (dispatch) => {
         const pd = prepareData(data);
         dispatch(accelerometerFetch(pd));
+        dispatch({ type: DATA_FETCHED });
     };
 }
 
-export function pushData(chunk) {
+export function pushData(chunks) {
     return (dispatch) => {
-        const pd = prepareDataItem(chunk);
-        dispatch(accelerometerPush(pd));
+        const pds = chunks.map(prepareDataItem);
+        dispatch(accelerometerPush(pds));
     };
 }
 

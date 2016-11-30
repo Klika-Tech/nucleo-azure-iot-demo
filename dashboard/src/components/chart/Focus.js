@@ -10,12 +10,6 @@ class Focus extends Component {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);
         this.handleWheel = this.handleWheel.bind(this);
-        // ---------- //
-        const throttledWheel = _.throttle(this.handleWheel, 100, { trailing: true });
-        this.persistThrottledWheel = function (e) {
-            e.persist();
-            throttledWheel(e);
-        };
     }
     handleRect(e) {
         this.rect = e.getBoundingClientRect();
@@ -33,8 +27,9 @@ class Focus extends Component {
         onMouseOut.call();
     }
     handleWheel(e) {
-        const { wheel, width } = this.props;
         const deltaY = e.deltaY === undefined ? e.wheelDeltaY : e.deltaY;
+
+        const { wheel, width } = this.props;
         if (!wheel
             || !wheel.selection
             || !wheel.selection.length
@@ -55,9 +50,9 @@ class Focus extends Component {
         if (validatedSelection[0] >= validatedSelection[1]) { // extra zoom in
             validatedSelection = [validatedSelection[0], validatedSelection[0]];
         }
+
         wheel.moveBrush.call({}, validatedSelection);
     }
-
     render() {
         const { margin, children, width, height } = this.props;
         return (
@@ -66,7 +61,7 @@ class Focus extends Component {
                 transform={`translate(${margin.left},${margin.top})`}
                 onMouseMove={this.handleMouseMove}
                 onMouseOut={this.handleMouseOut}
-                onWheel={this.persistThrottledWheel}
+                onWheel={this.handleWheel}
             >
                 <rect className="focus-bg" x="0" y="0" width={width} height={height} ref={this.handleRect} />
                 {children}

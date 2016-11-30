@@ -22,11 +22,8 @@ import {
     OverlayTrigger,
 } from '@sketchpixy/rubix';
 import classNames from 'classnames';
-import config from '../../../config';
-import * as FetchService from '../../../services/fetchService';
-import * as AwsMqttService from '../../../services/awsMqttService';
+import { AWS_CONNECT } from '../../../actionTypes';
 import Loader from '../../common/Loader';
-import { fetchData, pushData } from '../../../actions/data';
 import Menu from './Menu';
 import '../../../rubix/sass/main.scss';
 import './style.scss';
@@ -34,7 +31,7 @@ import './style.scss';
 const MainContainerWR = withRouter(MainContainer);
 
 const mapStateToProps = state => ({
-    loader: !state.accelerometer.data,
+    loader: !state.data.fetched,
     online: state.mqtt.connected,
 });
 
@@ -42,11 +39,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-
-        FetchService.fetchAwsMetrics(config).then((data) => {
-            dispatch(fetchData(data));
-            AwsMqttService.connect(dispatch, config);
-        });
+        dispatch({ type: AWS_CONNECT });
     }
 
     render() {
