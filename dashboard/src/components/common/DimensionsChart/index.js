@@ -1,24 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import '../../chart/style.scss';
-import Chart from '../../chart/Chart';
-import Axis from '../../chart/Axis';
-import Line from '../../chart/Line';
-import Focus from '../../chart/Focus';
-import BrushX from '../../chart/BrushX';
-import AccelerometerCursor from './Cursor';
+import '../../common/style.scss';
+import Chart from '../../common/Chart';
+import Axis from '../../common/Axis';
+import Line from '../../common/Line';
+import Focus from '../../common/Focus';
+import BrushX from '../../common/BrushX';
+import DimensionsCursor from './DimensionsCursor';
 import { accelerometerFocusMove, accelerometerFocusOut, accelerometerBrushEnd } from '../../../actions/accelerometer';
 
-const mapStateToProps = state => ({
-    data: state.accelerometer.data,
-    yDomain: state.accelerometer.yDomain,
-    focusDomain: state.accelerometer.focusDomain,
-    contextDomain: state.accelerometer.contextDomain,
-    brushSelection: state.accelerometer.brushSelection,
-});
-
-class AccelerometerChart extends Component {
+class DimensionsChart extends Component {
     constructor(props) {
         super(props);
         this.x = scaleTime();
@@ -74,21 +65,20 @@ class AccelerometerChart extends Component {
         y2.range([this.height2, 0]);
     }
 
-    handleMouseMove(xPos, y) {
+    handleMouseMove(xPos) {
         const { x } = this;
-        const { dispatch, data } = this.props;
-        dispatch(accelerometerFocusMove(data, x, xPos));
+        const { data, onMouseMove } = this.props;
+        onMouseMove.call({}, data, x, xPos);
     }
 
     handleMouseOut() {
-        const { dispatch } = this.props;
-        dispatch(accelerometerFocusOut());
+        const { onMouseOut } = this.props;
+        onMouseOut.call();
     }
 
     handleBrushEnd(selection) {
-        const { dispatch } = this.props;
-        console.log('selection:', selection);
-        dispatch(accelerometerBrushEnd(this.x2, selection));
+        const { onBrushEnd } = this.props;
+        onBrushEnd.call({}, this.x2, selection);
     }
 
     handleBrushMount({ moveBrush }) {
@@ -96,7 +86,8 @@ class AccelerometerChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, brushSelection } = this.props;
+        const { containerWidth, containerHeight, data,
+            brushSelection, type, yUnits, cursorIndex, cursorX, cursorVisible } = this.props;
         const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush, defaultSelection } = this;
         return (
             <div className="temperature-chart-container">
@@ -120,19 +111,19 @@ class AccelerometerChart extends Component {
                                     className="x"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.x)}
+                                    y={d => y(d[type].x)}
                                 />
                                 <Line
                                     className="y"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.y)}
+                                    y={d => y(d[type].y)}
                                 />
                                 <Line
                                     className="z"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.z)}
+                                    y={d => y(d[type].z)}
                                 />
                             </g>
                             <Axis
@@ -160,21 +151,21 @@ class AccelerometerChart extends Component {
                                     className="x"
                                     data={data}
                                     x={d => x2(d.date)}
-                                    y={d => y2(d.accelerometer.x)}
+                                    y={d => y2(d[type].x)}
                                     skipRenderCount={10}
                                 />
                                 <Line
                                     className="y"
                                     data={data}
                                     x={d => x2(d.date)}
-                                    y={d => y2(d.accelerometer.y)}
+                                    y={d => y2(d[type].y)}
                                     skipRenderCount={10}
                                 />
                                 <Line
                                     className="z"
                                     data={data}
                                     x={d => x2(d.date)}
-                                    y={d => y2(d.accelerometer.z)}
+                                    y={d => y2(d[type].z)}
                                     skipRenderCount={10}
                                 />
                             </BrushX>
@@ -187,22 +178,40 @@ class AccelerometerChart extends Component {
                             />
                         </g>
                     </svg>
-                    <AccelerometerCursor margin={margin} height={height} width={width} y={y} />
+                    <DimensionsCursor
+                        units={yUnits}
+                        data={data}
+                        cursorIndex={cursorIndex}
+                        cursorX={cursorX}
+                        cursorVisible={cursorVisible}
+                        margin={margin}
+                        height={height}
+                        width={width}
+                        y={y}
+                    />
                 </div>
             </div>
         );
     }
 }
 
-AccelerometerChart.propTypes = {
+DimensionsChart.propTypes = {
+    dispatch: PropTypes.func,
+    type: PropTypes.string,
+    yUnits: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape({
-        accelerometer: PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number,
-            z: PropTypes.number,
-        }),
         date: PropTypes.instanceOf(Date),
     })),
+    yDomain: PropTypes.arrayOf(PropTypes.number),
+    focusDomain: PropTypes.array,
+    contextDomain: PropTypes.array,
+    brushSelection: PropTypes.arrayOf(PropTypes.number),
+    cursorIndex: PropTypes.number,
+    cursorX: PropTypes.number,
+    cursorVisible: PropTypes.bool,
+    onMouseMove: PropTypes.func,
+    onMouseOut: PropTypes.func,
+    onBrushEnd: PropTypes.func,
 };
 
-export default connect(mapStateToProps)(Chart(AccelerometerChart));
+export default Chart(DimensionsChart);

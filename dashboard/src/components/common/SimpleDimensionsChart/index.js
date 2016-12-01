@@ -1,18 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import '../chart/style.scss';
-import Chart from '../chart/Chart';
-import Axis from '../chart/Axis';
-import Line from '../chart/Line';
+import '../style.scss';
+import Chart from '../Chart';
+import Axis from '../Axis';
+import Line from '../Line';
 
-const mapStateToProps = state => ({
-    data: state.accelerometer.data,
-    yDomain: state.accelerometer.yDomain,
-    focusDomain: state.accelerometer.focusDomain,
-});
-
-class SimpleAccelerometerChart extends Component {
+class SimpleDimensionsChart extends Component {
     constructor(props) {
         super(props);
         this.x = scaleTime();
@@ -39,9 +32,9 @@ class SimpleAccelerometerChart extends Component {
 
     updateData(props) {
         const { x, y } = this;
-        const { yDomain, focusDomain } = this.props;
+        const { yDomain, xDomain } = this.props;
         y.domain(yDomain);
-        x.domain(focusDomain);
+        x.domain(xDomain);
     }
 
     updateDimension(props) {
@@ -54,7 +47,7 @@ class SimpleAccelerometerChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data } = this.props;
+        const { containerWidth, containerHeight, data, type, yUnits } = this.props;
         const { margin, x, y, height, width } = this;
         return (
             <div className="temperature-chart-container">
@@ -74,19 +67,19 @@ class SimpleAccelerometerChart extends Component {
                                     className="x"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.x)}
+                                    y={d => y(d[type].x)}
                                 />
                                 <Line
                                     className="y"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.y)}
+                                    y={d => y(d[type].y)}
                                 />
                                 <Line
                                     className="z"
                                     data={data}
                                     x={d => x(d.date)}
-                                    y={d => y(d.accelerometer.z)}
+                                    y={d => y(d[type].z)}
                                 />
                             </g>
                             <Axis
@@ -102,7 +95,7 @@ class SimpleAccelerometerChart extends Component {
                                 data={data}
                                 tickSize={0}
                                 ticks={4}
-                                tickFormat={v => (`${y.tickFormat()(v)}g`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${yUnits}`)}
                             />
                         </g>
                     </svg>
@@ -112,15 +105,14 @@ class SimpleAccelerometerChart extends Component {
     }
 }
 
-SimpleAccelerometerChart.propTypes = {
+SimpleDimensionsChart.propTypes = {
+    type: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape({
-        accelerometer: PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number,
-            z: PropTypes.number,
-        }),
         date: PropTypes.instanceOf(Date),
     })),
+    yDomain: PropTypes.arrayOf(PropTypes.number),
+    yUnits: PropTypes.string,
+    xDomain: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(Chart(SimpleAccelerometerChart));
+export default Chart(SimpleDimensionsChart);

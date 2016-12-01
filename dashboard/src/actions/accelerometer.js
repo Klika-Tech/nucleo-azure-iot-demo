@@ -97,7 +97,6 @@ function calculateDomains(data, brushDomain = null) {
     };
 }
 
-
 function prepareAccelerometerDataItem(item) {
     return {
         accelerometer: {

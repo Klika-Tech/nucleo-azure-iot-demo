@@ -3,8 +3,8 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRedirect, hashHistory } from 'react-router';
 import Main from './layout/Main';
-import Dashboard from './pages/Dashboard';
-import Accelerometer from './accelerometer/FullChart';
+import Dashboard from './views/Dashboard';
+import Accelerometer from './views/Accelerometer';
 
 const RouterComponent = ({ store }) => (
     <Provider store={store}>
