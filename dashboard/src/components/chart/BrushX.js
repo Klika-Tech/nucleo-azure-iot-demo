@@ -12,8 +12,6 @@ class BrushX extends Component {
     componentDidMount() { this.renderBrush(); }
     brushed() {
         const { onBrushEnd } = this.props;
-        // if (!d3.event.sourceEvent) return; // Only transition after input.
-        if (!d3.event.selection) return; // Ignore empty selections.
         onBrushEnd.call({}, d3.event.selection);
     }
     renderBrush() {

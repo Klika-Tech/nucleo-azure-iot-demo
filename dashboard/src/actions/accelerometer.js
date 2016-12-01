@@ -22,12 +22,18 @@ export const accelerometerPush = chunks => accelerometerPushAndUpdate(chunks);
 function accelerometerPushAndUpdate(chunks) {
     return (dispatch, getState) => {
         const state = getState().accelerometer;
-        let data = getCleanedData(state.data);
+        let data = state.data;
         data = data.concat(chunks.map(prepareAccelerometerDataItem));
-        const domains = calculateDomains(data, state.focusDomain);
+        data = getActualData(data);
+        const domains = calculateDomains(data, state.brushDomain);
         dispatch({
             type: ACCELEROMETER_UPDATE,
-            payload: { ...domains, data },
+            payload: {
+                ...domains,
+                data,
+                brushDomain: state.brushDomain,
+                brushSelection: state.brushSelection,
+            },
         });
     };
 }
@@ -37,8 +43,8 @@ export const accelerometerBrushEnd = (xScale, selection) => accelerometerBrushAn
 function accelerometerBrushAndUpdate(xScale, selection) {
     return (dispatch, getState) => {
         const state = getState().accelerometer;
-        const brushDomain = selection.map(xScale.invert);
-        const domains = calculateDomains(state.data, state.focusDomain, brushDomain);
+        const brushDomain = (selection) ? selection.map(xScale.invert) : null;
+        const domains = calculateDomains(state.data, brushDomain);
         dispatch({
             type: ACCELEROMETER_UPDATE,
             payload: {
@@ -66,12 +72,10 @@ export function accelerometerFocusOut() {
     };
 }
 
-function calculateDomains(data, focusDomain = null, brushDomain = null) {
+function calculateDomains(data, brushDomain = null) {
     const contextDomain = d3.extent(data.map(d => d.date));
     const bisector = d3.bisector(d => d.date).right;
-    let fd = focusDomain;
-    fd = (!fd) ? [contextDomain[1] - 300000, contextDomain[1]] : fd;
-    fd = (brushDomain) ? brushDomain : fd;
+    let fd = (brushDomain) ? brushDomain : [contextDomain[1] - 300000, contextDomain[1]];
     const [minX, maxX] = fd;
     const focusData = data.slice(
         Math.max(0, bisector(data, minX) - 1),
@@ -88,8 +92,8 @@ function calculateDomains(data, focusDomain = null, brushDomain = null) {
     ];
     return {
         contextDomain,
-        focusDomain: fd,
         yDomain,
+        focusDomain: fd,
     };
 }
 
@@ -106,8 +110,10 @@ function prepareAccelerometerDataItem(item) {
     };
 }
 
-function getCleanedData(data, last = 86400) {
+function getActualData(data) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     return _(data)
-        .filter(item => item.date.getTime() / 1000 >= Math.round(Date.now() / 1000) - last)
+        .filter(item => item.date.getTime() >= yesterday.getTime())
         .value();
 }

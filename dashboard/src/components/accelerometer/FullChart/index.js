@@ -57,6 +57,8 @@ class AccelerometerChart extends Component {
         x.domain(focusDomain);
         x2.domain(contextDomain);
         y2.domain(yDomain);
+        // start brush selection
+        this.defaultSelection = focusDomain.map(d => x2(d));
     }
 
     updateDimension(props) {
@@ -85,6 +87,7 @@ class AccelerometerChart extends Component {
 
     handleBrushEnd(selection) {
         const { dispatch } = this.props;
+        console.log('selection:', selection);
         dispatch(accelerometerBrushEnd(this.x2, selection));
     }
 
@@ -94,7 +97,7 @@ class AccelerometerChart extends Component {
 
     render() {
         const { containerWidth, containerHeight, data, brushSelection } = this.props;
-        const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush } = this;
+        const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush, defaultSelection } = this;
         return (
             <div className="temperature-chart-container">
                 <div className="magnetometer-chart">
@@ -110,7 +113,7 @@ class AccelerometerChart extends Component {
                             width={width}
                             onMouseMove={this.handleMouseMove}
                             onMouseOut={this.handleMouseOut}
-                            wheel={({ moveBrush, selection: brushSelection })}
+                            wheel={({ moveBrush, defaultSelection, selection: brushSelection })}
                         >
                             <g className="zoom">
                                 <Line

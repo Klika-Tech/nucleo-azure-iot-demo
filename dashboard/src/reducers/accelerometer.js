@@ -11,6 +11,7 @@ import {
  * cursorX = 0;
  * contextDomain = [];
  * focusDomain = [];
+ * defaultFocusDomain = [];
  * yDomain = [];
  * brushSelection = [];
  * brushDomain = [];
@@ -42,16 +43,15 @@ function accelerometerFocusMove(state, payload) {
 }
 
 function accelerometerUpdate(state, { data, contextDomain, focusDomain, yDomain, brushDomain, brushSelection }) {
-    const newState = {
+    return {
         ...state,
         data,
         contextDomain,
         focusDomain,
         yDomain,
+        brushDomain,
+        brushSelection,
     };
-    if (brushDomain) newState.brushDomain = brushDomain;
-    if (brushSelection) newState.brushSelection = brushSelection;
-    return newState;
 }
 
 function accelerometerFocusOut(state) {

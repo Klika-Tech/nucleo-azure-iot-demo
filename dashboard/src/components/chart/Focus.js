@@ -31,16 +31,15 @@ class Focus extends Component {
 
         const { wheel, width } = this.props;
         if (!wheel
-            || !wheel.selection
-            || !wheel.selection.length
             || !wheel.moveBrush
         ) return;
 
+        const selection = wheel.selection ? wheel.selection : wheel.defaultSelection;
         const isZoomIn = deltaY < 0;
 
         const zoomedSelection = (isZoomIn) // selection
-            ? [wheel.selection[0] - zoomVelocity, wheel.selection[1] + zoomVelocity]
-            : [wheel.selection[0] + zoomVelocity, wheel.selection[1] - zoomVelocity];
+            ? [selection[0] - zoomVelocity, selection[1] + zoomVelocity]
+            : [selection[0] + zoomVelocity, selection[1] - zoomVelocity];
 
         let validatedSelection = [ // extra zoom out
             ((zoomedSelection[0] < 0) ? 0 : zoomedSelection[0]),
@@ -83,6 +82,7 @@ Focus.propTypes = {
     onMouseOut: PropTypes.func,
     wheel: PropTypes.shape({
         moveBrush: PropTypes.func,
+        defaultSelection: PropTypes.arrayOf(PropTypes.number),
         selection: PropTypes.arrayOf(PropTypes.number),
     }),
 
