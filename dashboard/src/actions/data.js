@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { batchActions } from 'redux-batched-actions';
 import { DATA_FETCHED } from '../actionTypes';
 import { accelerometerFetch, accelerometerPush } from './accelerometer';
 import { gyroscopeFetch, gyroscopePush } from './gyroscope';
@@ -7,19 +8,24 @@ import { magnetometerFetch, magnetometerPush } from './magnetometer';
 export function fetchData(data) {
     return (dispatch) => {
         const pd = prepareData(data);
-        dispatch(accelerometerFetch(pd));
-        dispatch(gyroscopeFetch(pd));
-        dispatch(magnetometerFetch(pd));
-        dispatch({ type: DATA_FETCHED });
+        dispatch(batchActions([
+            accelerometerFetch(pd),
+            gyroscopeFetch(pd),
+            magnetometerFetch(pd),
+            { type: DATA_FETCHED },
+        ]));
     };
 }
 
 export function pushData(chunks) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         const pds = chunks.map(prepareDataItem);
-        dispatch(accelerometerPush(pds));
-        dispatch(gyroscopePush(pds));
-        dispatch(magnetometerPush(pds));
+        const { accelerometer, gyroscope, magnetometer } = getState();
+        dispatch(batchActions([
+            accelerometerPush(pds, accelerometer),
+            gyroscopePush(pds, gyroscope),
+            magnetometerPush(pds, magnetometer),
+        ]));
     };
 }
 

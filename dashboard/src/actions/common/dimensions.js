@@ -17,13 +17,12 @@ export function fetchAndUpdate(type, key) {
 export function pushAndUpdate(type, key) {
     const pdi = prepareDataItem(key);
     const cd = calculateDomains(key);
-    return chunks => (dispatch, getState) => {
-        const state = getState()[key];
+    return (chunks, state) => {
         let data = state.data;
         data = data.concat(chunks.map(pdi));
         data = getActualData(data);
         const domains = cd(data, state.brushDomain);
-        dispatch({
+        return {
             type,
             payload: {
                 ...domains,
@@ -31,7 +30,7 @@ export function pushAndUpdate(type, key) {
                 brushDomain: state.brushDomain,
                 brushSelection: state.brushSelection,
             },
-        });
+        };
     };
 }
 
