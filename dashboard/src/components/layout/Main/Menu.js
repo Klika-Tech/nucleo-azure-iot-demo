@@ -9,6 +9,14 @@ const Menu = () => (
                 glyph="icon-fontello-th-large"
             />
             <SidebarNavItem
+                name="Magnetometer" href="/magnetometer"
+                glyph="icon-fontello-magnet"
+            />
+            <SidebarNavItem
+                name="Gyroscope" href="/gyroscope"
+                glyph="icon-fontello-direction"
+            />
+            <SidebarNavItem
                 name="Accelerometer" href="/accelerometer"
                 glyph="icon-fontello-chart-line"
             />

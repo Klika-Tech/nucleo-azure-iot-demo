@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DimensionsChart from '../../common/DimensionsChart';
-import { accelerometerFocusMove, accelerometerFocusOut, accelerometerBrushEnd } from '../../../actions/accelerometer';
+import DimensionsChart from '../common/DimensionsChart';
+import { gyroscopeFocusMove, gyroscopeFocusOut, gyroscopeBrushEnd } from '../../actions/gyroscope';
 
 const mapStateToProps = state => ({
-    data: state.accelerometer.data,
-    yDomain: state.accelerometer.yDomain,
-    focusDomain: state.accelerometer.focusDomain,
-    contextDomain: state.accelerometer.contextDomain,
-    brushSelection: state.accelerometer.brushSelection,
-    cursorIndex: state.accelerometer.cursorIndex,
-    cursorX: state.accelerometer.cursorX,
-    cursorVisible: state.accelerometer.cursorVisible,
+    data: state.gyroscope.data,
+    yDomain: state.gyroscope.yDomain,
+    focusDomain: state.gyroscope.focusDomain,
+    contextDomain: state.gyroscope.contextDomain,
+    brushSelection: state.gyroscope.brushSelection,
+    cursorIndex: state.gyroscope.cursorIndex,
+    cursorX: state.gyroscope.cursorX,
+    cursorVisible: state.gyroscope.cursorVisible,
 });
 
-class AccelerometerChart extends Component {
+class Accelerometer extends Component {
 
     constructor(props) {
         super(props);
@@ -25,17 +25,17 @@ class AccelerometerChart extends Component {
 
     handleMouseMove(data, xScale, xPos) {
         const { dispatch } = this.props;
-        dispatch(accelerometerFocusMove(data, xScale, xPos));
+        dispatch(gyroscopeFocusMove(data, xScale, xPos));
     }
 
     handleMouseOut() {
         const { dispatch } = this.props;
-        dispatch(accelerometerFocusOut());
+        dispatch(gyroscopeFocusOut());
     }
 
     handleBrushEnd(xScale, selection) {
         const { dispatch } = this.props;
-        dispatch(accelerometerBrushEnd(xScale, selection));
+        dispatch(gyroscopeBrushEnd(xScale, selection));
     }
 
     render() {
@@ -45,10 +45,10 @@ class AccelerometerChart extends Component {
         return (
             <DimensionsChart
                 dispatch={dispatch}
-                type="accelerometer"
+                type="gyroscope"
                 data={data}
                 yDomain={yDomain}
-                yUnits="g"
+                yUnits="°"
                 focusDomain={focusDomain}
                 contextDomain={contextDomain}
                 brushSelection={brushSelection}
@@ -64,4 +64,4 @@ class AccelerometerChart extends Component {
 }
 
 
-export default connect(mapStateToProps)(AccelerometerChart);
+export default connect(mapStateToProps)(Accelerometer);

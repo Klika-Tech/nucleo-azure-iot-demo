@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import '../style.scss';
-import Chart from '../Chart';
-import Axis from '../Axis';
-import Line from '../Line';
+import './style.scss';
+import Chart from './Chart';
+import Axis from './Axis';
+import Line from './Line';
 
 class SimpleDimensionsChart extends Component {
     constructor(props) {

@@ -137,7 +137,7 @@ class DimensionsChart extends Component {
                                 scale={y}
                                 data={data}
                                 tickSize={width}
-                                tickFormat={v => (`${y.tickFormat()(v)}g`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${yUnits}`)}
                             />
                         </Focus>
                         <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
@@ -179,6 +179,7 @@ class DimensionsChart extends Component {
                         </g>
                     </svg>
                     <DimensionsCursor
+                        type={type}
                         units={yUnits}
                         data={data}
                         cursorIndex={cursorIndex}
@@ -196,7 +197,6 @@ class DimensionsChart extends Component {
 }
 
 DimensionsChart.propTypes = {
-    dispatch: PropTypes.func,
     type: PropTypes.string,
     yUnits: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape({
