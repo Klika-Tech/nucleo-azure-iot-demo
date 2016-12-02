@@ -1,11 +1,15 @@
 import _ from 'lodash';
 import { DATA_FETCHED } from '../actionTypes';
 import { accelerometerFetch, accelerometerPush } from './accelerometer';
+import { gyroscopeFetch, gyroscopePush } from './gyroscope';
+import { magnetometerFetch, magnetometerPush } from './magnetometer';
 
 export function fetchData(data) {
     return (dispatch) => {
         const pd = prepareData(data);
         dispatch(accelerometerFetch(pd));
+        dispatch(gyroscopeFetch(pd));
+        dispatch(magnetometerFetch(pd));
         dispatch({ type: DATA_FETCHED });
     };
 }
@@ -14,6 +18,8 @@ export function pushData(chunks) {
     return (dispatch) => {
         const pds = chunks.map(prepareDataItem);
         dispatch(accelerometerPush(pds));
+        dispatch(gyroscopePush(pds));
+        dispatch(magnetometerPush(pds));
     };
 }
 

@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { Grid, Row, Col, PanelContainer, Panel, PanelHeader, PanelBody } from '@sketchpixy/rubix';
 import './style.scss';
 import AccelerometerWidget from './AccelerometerWidget';
+import GyroscopeWidget from './GyroscopeWidget';
+import MagnetometerWidget from './MagnetometerWidget';
 
 
 const Dashboard = ({ data }) => (
@@ -96,7 +98,9 @@ const Dashboard = ({ data }) => (
                             <Grid>
                                 <Row>
                                     <Col xs={12} className="chart-panel-body">
-                                        <Link to="/magnetometer">TODO</Link>
+                                        <Link to="/magnetometer">
+                                            <MagnetometerWidget />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Grid>
@@ -120,7 +124,9 @@ const Dashboard = ({ data }) => (
                             <Grid>
                                 <Row>
                                     <Col xs={12} className="chart-panel-body">
-                                        <Link to="/gyroscope">TODO</Link>
+                                        <Link to="/gyroscope">
+                                            <GyroscopeWidget />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Grid>
