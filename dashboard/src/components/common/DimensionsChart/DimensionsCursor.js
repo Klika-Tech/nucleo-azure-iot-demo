@@ -4,8 +4,7 @@ import Cursor from '../../common/Cursor';
 import CursorMarker from '../../common/CursorMarker';
 import CursorTooltip from '../../common/CursorTooltip';
 
-function DimensionsCursor({ data, cursorIndex, cursorVisible, cursorX, margin, height, width, y, units, type }) {
-    const cursorData = data[cursorIndex];
+function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width, y, units, type }) {
     return (
         <Cursor
             y={margin.top}
@@ -14,53 +13,53 @@ function DimensionsCursor({ data, cursorIndex, cursorVisible, cursorX, margin, h
             visible={cursorVisible}
         >
             <CursorMarker
-                data={cursorData}
+                data={data}
                 y={d => y(d[type].x)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText('x')}
+                    {getTooltipText(type, 'x', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
             <CursorMarker
-                data={cursorData}
+                data={data}
                 y={d => y(d[type].y)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText('y')}
+                    {getTooltipText(type, 'y', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
             <CursorMarker
-                data={cursorData}
+                data={data}
                 y={d => y(d[type].z)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText('z')}
+                    {getTooltipText(type, 'z', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
         </Cursor>
     );
-    function getTooltipText(axis) {
-        const timeFormat = d3.timeFormat('%X');
-        if (cursorData) {
-            const axisLabel = axis.toUpperCase();
-            const value = Math.round(cursorData[type][axis] * 100) / 100;
-            const date = timeFormat(cursorData.date);
-            return `${axisLabel}: ${value}${units} @ ${date}`;
-        }
-        return '';
+}
+
+function getTooltipText(type, axis, data, units) {
+    const timeFormat = d3.timeFormat('%X');
+    if (data) {
+        const axisLabel = axis.toUpperCase();
+        const value = Math.round(data[type][axis] * 100) / 100;
+        const date = timeFormat(data.date);
+        return `${axisLabel}: ${value}${units} @ ${date}`;
     }
+    return '';
 }
 
 DimensionsCursor.propTypes = {
     type: PropTypes.string,
     units: PropTypes.string,
-    data: PropTypes.arrayOf(PropTypes.shape({
+    data: PropTypes.shape({
         date: PropTypes.instanceOf(Date),
-    })),
-    cursorIndex: PropTypes.number,
+    }),
     cursorX: PropTypes.number,
     cursorVisible: PropTypes.bool,
     margin: PropTypes.shape({

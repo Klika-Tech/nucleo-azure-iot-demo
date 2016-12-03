@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import * as d3 from 'd3';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import '../../common/style.scss';
 import Chart from '../../common/Chart';
@@ -7,7 +8,6 @@ import Line from '../../common/Line';
 import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
 import DimensionsCursor from './DimensionsCursor';
-import { accelerometerFocusMove, accelerometerFocusOut, accelerometerBrushEnd } from '../../../actions/accelerometer';
 
 class DimensionsChart extends Component {
     constructor(props) {
@@ -18,6 +18,12 @@ class DimensionsChart extends Component {
         this.y2 = scaleLinear();
         this.margin = { top: 0, right: 40, bottom: 100, left: 0 };
         this.margin2 = { right: 10, bottom: 20, left: 0 };
+        this.state = {
+            cursorData: null,
+            cursorX: 0,
+            cursorVisible: false,
+        };
+        this.calculateCursorState = this.calculateCursorState.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);
         this.handleBrushMount = this.handleBrushMount.bind(this);
@@ -41,7 +47,7 @@ class DimensionsChart extends Component {
         }
     }
 
-    updateData(props) {
+    updateData() {
         const { x, y, x2, y2 } = this;
         const { yDomain, focusDomain, contextDomain } = this.props;
         y.domain(yDomain);
@@ -50,6 +56,17 @@ class DimensionsChart extends Component {
         y2.domain(yDomain);
         // start brush selection
         this.defaultSelection = focusDomain.map(d => x2(d));
+        // use component state for cursor position for better performance
+        const cursorX = this.state.cursorX;
+        if (cursorX) {
+            const cursorVisible = this.state.cursorVisible;
+            const cs = this.calculateCursorState(cursorX);
+            this.state = {
+                ...cs,
+                cursorX,
+                cursorVisible,
+            };
+        }
     }
 
     updateDimension(props) {
@@ -65,15 +82,28 @@ class DimensionsChart extends Component {
         y2.range([this.height2, 0]);
     }
 
-    handleMouseMove(xPos) {
+    calculateCursorState(xPos) {
         const { x } = this;
-        const { data, onMouseMove } = this.props;
-        onMouseMove.call({}, data, x, xPos);
+        const { data } = this.props;
+        const datePos = x.invert(xPos);
+        const index = d3.bisector(d => d.date).right(data, datePos);
+        return {
+            cursorData: data[index],
+            cursorX: xPos,
+        };
+    }
+
+    handleMouseMove(xPos) {
+        const { calculateCursorState } = this;
+        const cs = calculateCursorState(xPos);
+        cs.cursorVisible = true;
+        this.setState(cs);
     }
 
     handleMouseOut() {
-        const { onMouseOut } = this.props;
-        onMouseOut.call();
+        this.setState({
+            cursorVisible: false,
+        });
     }
 
     handleBrushEnd(selection) {
@@ -87,8 +117,9 @@ class DimensionsChart extends Component {
 
     render() {
         const { containerWidth, containerHeight, data,
-            brushSelection, type, yUnits, cursorIndex, cursorX, cursorVisible } = this.props;
-        const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush, defaultSelection } = this;
+            brushSelection, type, units,
+        } = this.props;
+        const { margin, margin2, x, y, x2, y2, height, height2, width, moveBrush, defaultSelection, state } = this;
         return (
             <div className="temperature-chart-container">
                 <div className="magnetometer-chart">
@@ -137,7 +168,7 @@ class DimensionsChart extends Component {
                                 scale={y}
                                 data={data}
                                 tickSize={width}
-                                tickFormat={v => (`${y.tickFormat()(v)}${yUnits}`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${units}`)}
                             />
                         </Focus>
                         <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
@@ -180,11 +211,10 @@ class DimensionsChart extends Component {
                     </svg>
                     <DimensionsCursor
                         type={type}
-                        units={yUnits}
-                        data={data}
-                        cursorIndex={cursorIndex}
-                        cursorX={cursorX}
-                        cursorVisible={cursorVisible}
+                        units={units}
+                        data={state.cursorData}
+                        cursorX={state.cursorX}
+                        cursorVisible={state.cursorVisible}
                         margin={margin}
                         height={height}
                         width={width}
@@ -198,7 +228,7 @@ class DimensionsChart extends Component {
 
 DimensionsChart.propTypes = {
     type: PropTypes.string,
-    yUnits: PropTypes.string,
+    units: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
@@ -206,11 +236,6 @@ DimensionsChart.propTypes = {
     focusDomain: PropTypes.array,
     contextDomain: PropTypes.array,
     brushSelection: PropTypes.arrayOf(PropTypes.number),
-    cursorIndex: PropTypes.number,
-    cursorX: PropTypes.number,
-    cursorVisible: PropTypes.bool,
-    onMouseMove: PropTypes.func,
-    onMouseOut: PropTypes.func,
     onBrushEnd: PropTypes.func,
 };
 
