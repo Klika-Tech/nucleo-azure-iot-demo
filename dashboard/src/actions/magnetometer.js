@@ -1,8 +1,6 @@
 import { MAGNETOMETER_UPDATE } from '../actionTypes';
-import { fetchAndUpdate, pushAndUpdate, brushAndUpdate } from './common/dimensions';
+import { fetch, push } from './common/dimensions';
 
-export const magnetometerFetch = fetchAndUpdate(MAGNETOMETER_UPDATE, 'magnetometer');
+export const magnetometerFetch = fetch(MAGNETOMETER_UPDATE, 'magnetometer');
 
-export const magnetometerPush = pushAndUpdate(MAGNETOMETER_UPDATE, 'magnetometer');
-
-export const magnetometerBrushEnd = brushAndUpdate(MAGNETOMETER_UPDATE, 'magnetometer');
+export const magnetometerPush = push(MAGNETOMETER_UPDATE, 'magnetometer');

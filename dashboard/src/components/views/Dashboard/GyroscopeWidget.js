@@ -4,17 +4,13 @@ import SimpleDimensionsChart from '../../common/SimpleDimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.gyroscope.data,
-    yDomain: state.gyroscope.yDomain,
-    xDomain: state.gyroscope.focusDomain,
 });
 
-const GyroscopeWidget = ({ data, yDomain, xDomain }) => (
+const GyroscopeWidget = ({ data }) => (
     <SimpleDimensionsChart
         type="gyroscope"
+        units="°"
         data={data}
-        yDomain={yDomain}
-        yUnits="°"
-        xDomain={xDomain}
     />
 );
 

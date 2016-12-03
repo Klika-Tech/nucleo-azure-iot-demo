@@ -1,20 +1,10 @@
 /**
  * State shape:
  * data = [];
- * yDomain = [];
- * focusDomain = [];
- * contextDomain = [];
- * brushSelection = [];
- * brushDomain = [];
  * */
-export function update(state, { data, contextDomain, focusDomain, yDomain, brushDomain, brushSelection }) {
+export function update(state, { data }) {
     return {
         ...state,
         data,
-        contextDomain,
-        focusDomain,
-        yDomain,
-        brushDomain,
-        brushSelection,
     };
 }

@@ -7,20 +7,38 @@ class BrushX extends Component {
         super(props);
         this.brush = d3.brushX();
         this.renderBrush = this.renderBrush.bind(this);
-        this.brushed = this.brushed.bind(this);
+        this.handleBrushStart = this.handleBrushStart.bind(this);
+        this.handleBrush = this.handleBrush.bind(this);
+        this.handleBrushEnd = this.handleBrushEnd.bind(this);
     }
     componentDidMount() { this.renderBrush(); }
-    brushed() {
+    handleBrushStart() {
+        const { onBrushStart } = this.props;
+        onBrushStart.call({}, d3.event.selection);
+    }
+    handleBrush() {
+        const { onBrush } = this.props;
+        onBrush.call({}, d3.event.selection);
+    }
+    handleBrushEnd() {
         const { onBrushEnd } = this.props;
         onBrushEnd.call({}, d3.event.selection);
     }
     renderBrush() {
         const { brush } = this;
-        const { width, height, onBrushMount } = this.props;
+        const { width, height, onBrushMount, onBrushStart, onBrush, onBrushEnd } = this.props;
         const node = ReactDOM.findDOMNode(this);
         const g = d3.select(node);
         brush.extent([[0, 0], [width, height]]);
-        brush.on('end', this.brushed);
+        if (onBrushStart) {
+            brush.on('start', this.handleBrushStart);
+        }
+        if (onBrush) {
+            brush.on('brush', this.handleBrush);
+        }
+        if (onBrushEnd) {
+            brush.on('end', this.handleBrushEnd);
+        }
         g.call(brush);
         const moveBrush = function (selection) {
             brush.move(g, selection);
@@ -41,6 +59,8 @@ BrushX.propTypes = {
     height: PropTypes.number,
     width: PropTypes.number,
     onBrushMount: PropTypes.func,
+    onBrushStart: PropTypes.func,
+    onBrush: PropTypes.func,
     onBrushEnd: PropTypes.func,
 };
 

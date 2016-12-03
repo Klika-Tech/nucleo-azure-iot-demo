@@ -4,17 +4,13 @@ import SimpleDimensionsChart from '../../common/SimpleDimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.accelerometer.data,
-    yDomain: state.accelerometer.yDomain,
-    xDomain: state.accelerometer.focusDomain,
 });
 
-const AccelerometerWidget = ({ data, yDomain, xDomain }) => (
+const AccelerometerWidget = ({ data }) => (
     <SimpleDimensionsChart
         type="accelerometer"
+        units="g"
         data={data}
-        yDomain={yDomain}
-        yUnits="g"
-        xDomain={xDomain}
     />
 );
 

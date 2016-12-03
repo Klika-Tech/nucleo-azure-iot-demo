@@ -17,7 +17,7 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
                 y={d => y(d[type].x)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText(type, 'x', data, units)}
+                    {label(type, 'x', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
@@ -26,7 +26,7 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
                 y={d => y(d[type].y)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText(type, 'y', data, units)}
+                    {label(type, 'y', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
@@ -35,7 +35,7 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
                 y={d => y(d[type].z)}
             >
                 <CursorTooltip cursorX={cursorX} containerWidth={width}>
-                    {getTooltipText(type, 'z', data, units)}
+                    {label(type, 'z', data, units)}
                 </CursorTooltip>
             </CursorMarker>
 
@@ -43,7 +43,7 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
     );
 }
 
-function getTooltipText(type, axis, data, units) {
+function label(type, axis, data, units) {
     const timeFormat = d3.timeFormat('%X');
     if (data) {
         const axisLabel = axis.toUpperCase();

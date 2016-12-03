@@ -4,17 +4,13 @@ import SimpleDimensionsChart from '../../common/SimpleDimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.magnetometer.data,
-    yDomain: state.magnetometer.yDomain,
-    xDomain: state.magnetometer.focusDomain,
 });
 
 const MagnetometerWidget = ({ data, yDomain, xDomain }) => (
     <SimpleDimensionsChart
         type="magnetometer"
+        units="µT"
         data={data}
-        yDomain={yDomain}
-        yUnits="µT"
-        xDomain={xDomain}
     />
 );
 

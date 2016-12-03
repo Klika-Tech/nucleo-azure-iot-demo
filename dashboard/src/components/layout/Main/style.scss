@@ -1,18 +1,17 @@
-
 body {
-	font-family: sans-serif;
-	margin: 0;
+  font-family: sans-serif;
+  margin: 0;
 }
 
 .app {
 
-	$app-padding: 8px;
+  $app-padding: 8px;
 
-	position: absolute;
-	top: $app-padding;
-	right: $app-padding;
-	bottom: $app-padding;
-	left: $app-padding;
+  position: absolute;
+  top: $app-padding;
+  right: $app-padding;
+  bottom: $app-padding;
+  left: $app-padding;
 
 }
 

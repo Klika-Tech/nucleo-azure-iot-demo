@@ -1,5 +1,5 @@
 
-.temperature-chart-container {
+.nucleo-chart-container {
 
   position: absolute;
   top: 20px;
@@ -7,13 +7,13 @@
   bottom: 20px;
   left: 20px;
 
-  .temperature-chart-params {
+  .chart-side-bar {
     float: right;
     width: 130px;
     font-size: small;
   }
 
-  .temperature-chart, .magnetometer-chart {
+  .locations-chart, .dimensions-chart {
 
     position: absolute;
     top: 0;
@@ -157,26 +157,8 @@
     }
   }
 
-  .magnetometer-chart {
+  .dimensions-chart {
     right: 0;
   }
 
-  .chart-lens {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-  }
-
-  .jq-focus-cursor {
-    position: absolute;
-    width: 2px;
-    background: red;
-    top: 0;
-    bottom: 0;
-    left: 100px;
-    z-index: 200;
-  }
 }

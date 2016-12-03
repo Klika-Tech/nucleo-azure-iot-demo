@@ -1,7 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
-
-const zoomVelocity = 3;
 
 class Focus extends Component {
     constructor(props) {
@@ -27,30 +24,9 @@ class Focus extends Component {
         onMouseOut.call();
     }
     handleWheel(e) {
+        const { onWheel } = this.props;
         const deltaY = e.deltaY === undefined ? e.wheelDeltaY : e.deltaY;
-
-        const { wheel, width } = this.props;
-        if (!wheel
-            || !wheel.moveBrush
-        ) return;
-
-        const selection = wheel.selection ? wheel.selection : wheel.defaultSelection;
-        const isZoomIn = deltaY < 0;
-
-        const zoomedSelection = (isZoomIn) // selection
-            ? [selection[0] - zoomVelocity, selection[1] + zoomVelocity]
-            : [selection[0] + zoomVelocity, selection[1] - zoomVelocity];
-
-        let validatedSelection = [ // extra zoom out
-            ((zoomedSelection[0] < 0) ? 0 : zoomedSelection[0]),
-            ((zoomedSelection[1] > width) ? width : zoomedSelection[1]),
-        ];
-
-        if (validatedSelection[0] >= validatedSelection[1]) { // extra zoom in
-            validatedSelection = [validatedSelection[0], validatedSelection[0]];
-        }
-
-        wheel.moveBrush.call({}, validatedSelection);
+        onWheel.call({}, deltaY);
     }
     render() {
         const { margin, children, width, height } = this.props;
@@ -80,11 +56,7 @@ Focus.propTypes = {
     width: PropTypes.number,
     onMouseMove: PropTypes.func,
     onMouseOut: PropTypes.func,
-    wheel: PropTypes.shape({
-        moveBrush: PropTypes.func,
-        defaultSelection: PropTypes.arrayOf(PropTypes.number),
-        selection: PropTypes.arrayOf(PropTypes.number),
-    }),
+    onWheel: PropTypes.func
 
 };
 

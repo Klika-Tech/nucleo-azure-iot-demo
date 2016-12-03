@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import * as d3 from 'd3';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import './style.scss';
 import Chart from './Chart';
@@ -11,7 +12,8 @@ class SimpleDimensionsChart extends Component {
         this.x = scaleTime();
         this.y = scaleLinear();
         this.margin = { top: 0, right: 0, bottom: 60, left: 0 };
-        this.updateData = this.updateData.bind(this);
+        this.getDefaultDomain = this.getDefaultDomain.bind(this);
+        this.updateDomains = this.updateDomains.bind(this);
         this.updateDimension = this.updateDimension.bind(this);
         this.updateD3(props);
     }
@@ -20,21 +22,37 @@ class SimpleDimensionsChart extends Component {
         this.updateD3(newProps, this.props);
     }
 
+    getDefaultDomain(last = 300000) { // for last 5 min
+        const { contextDomain } = this;
+        return [contextDomain[1] - last, contextDomain[1]];
+    }
+
     updateD3(newProps, oldProps = {}) {
-        if (oldProps.data !== newProps.data) {
-            this.updateData(newProps);
+        const isDataChanged = oldProps.data !== newProps.data;
+        const isSizeChanged = (oldProps.containerWidth !== newProps.containerWidth)
+            || (oldProps.containerHeight !== newProps.containerHeight);
+        if (isDataChanged) {
+            this.updateDomains(newProps);
         }
-        if ((oldProps.containerWidth !== newProps.containerWidth)
-            || (oldProps.containerHeight !== newProps.containerHeight)) {
+        if (isSizeChanged) {
             this.updateDimension(newProps);
         }
     }
 
-    updateData(props) {
-        const { x, y } = this;
-        const { yDomain, xDomain } = this.props;
-        y.domain(yDomain);
-        x.domain(xDomain);
+    updateDomains(props) {
+        const { y, x, getDefaultDomain } = this;
+        const { type, data } = props;
+        this.contextDomain = d3.extent(data.map(d => d.date));
+        const minY = d3.min(data.map(
+            d => Math.min(d[type].x, d[type].y, d[type].z)));
+        const maxY = d3.max(data.map(
+            d => Math.max(d[type].x, d[type].y, d[type].z)));
+        this.yDomain = [
+            Math.floor((minY - 0.3) * 30) / 30,
+            Math.ceil((maxY + 0.3) * 30) / 30,
+        ];
+        y.domain(this.yDomain);
+        x.domain(getDefaultDomain());
     }
 
     updateDimension(props) {
@@ -47,11 +65,11 @@ class SimpleDimensionsChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, type, yUnits } = this.props;
+        const { containerWidth, containerHeight, data, type, units } = this.props;
         const { margin, x, y, height, width } = this;
         return (
-            <div className="temperature-chart-container">
-                <div className="magnetometer-chart">
+            <div className="nucleo-chart-container">
+                <div className="dimensions-chart">
                     <svg width={containerWidth} height={containerHeight}>
                         <defs>
                             <clipPath id="clip">
@@ -95,7 +113,7 @@ class SimpleDimensionsChart extends Component {
                                 data={data}
                                 tickSize={0}
                                 ticks={4}
-                                tickFormat={v => (`${y.tickFormat()(v)}${yUnits}`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${units}`)}
                             />
                         </g>
                     </svg>
@@ -107,12 +125,10 @@ class SimpleDimensionsChart extends Component {
 
 SimpleDimensionsChart.propTypes = {
     type: PropTypes.string,
+    units: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
-    yDomain: PropTypes.arrayOf(PropTypes.number),
-    yUnits: PropTypes.string,
-    xDomain: PropTypes.array,
 };
 
 export default Chart(SimpleDimensionsChart);
