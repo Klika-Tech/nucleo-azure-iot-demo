@@ -1170,7 +1170,7 @@
         },
         update: function (options) {
             return this.each(function () {
-                this.updateCursor(options);
+                this.updateData(options);
             });
         },
         remove: function () {
