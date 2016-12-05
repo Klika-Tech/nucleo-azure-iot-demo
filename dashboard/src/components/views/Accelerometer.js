@@ -6,14 +6,12 @@ const mapStateToProps = state => ({
     data: state.accelerometer.data,
 });
 
-const Accelerometer = ({ data }) => {
-    return (
-        <DimensionsChart
+const Accelerometer = ({ data }) => (
+    <DimensionsChart
             type="accelerometer"
             units="g"
             data={data}
-        />
-    );
-};
+    />
+);
 
 export default connect(mapStateToProps)(Accelerometer);

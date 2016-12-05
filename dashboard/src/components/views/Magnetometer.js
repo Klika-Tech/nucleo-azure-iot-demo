@@ -6,14 +6,12 @@ const mapStateToProps = state => ({
     data: state.magnetometer.data,
 });
 
-const Magnetometer = ({ data }) => {
-    return (
-        <DimensionsChart
+const Magnetometer = ({ data }) => (
+    <DimensionsChart
             type="magnetometer"
             units="µT"
             data={data}
-        />
-    );
-};
+    />
+);
 
 export default connect(mapStateToProps)(Magnetometer);

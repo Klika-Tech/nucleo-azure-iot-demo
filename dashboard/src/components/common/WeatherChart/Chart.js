@@ -4,15 +4,17 @@ import { scaleTime, scaleLinear } from 'd3-scale';
 import '../../common/style.scss';
 import Chart from '../../common/Chart';
 import Axis from '../../common/Axis';
+import Area from '../../common/Area';
 import Line from '../../common/Line';
 import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
-import DimensionsCursor from './Cursor';
+import WeatherCursor from './Cursor';
+import { LINE_CHART, AREA_CHART } from '../../../chartTypes';
 
 const bisector = d3.bisector(d => d.date).right;
 const zoomVelocity = 3;
 
-class DimensionsChart extends Component {
+class WeatherChart extends Component {
     constructor(props) {
         super(props);
         this.x = scaleTime();
@@ -87,12 +89,10 @@ class DimensionsChart extends Component {
 
     updateContextDomains(props) {
         const { y, x2, y2 } = this;
-        const { type, data } = props;
+        const { type, data, units } = props;
         this.contextDomain = d3.extent(data.map(d => d.date));
-        const minY = d3.min(data.map(
-            d => Math.min(d[type].x, d[type].y, d[type].z)));
-        const maxY = d3.max(data.map(
-            d => Math.max(d[type].x, d[type].y, d[type].z)));
+        const minY = d3.min(data.map(d => d[type][units.key]));
+        const maxY = d3.max(data.map(d => d[type][units.key]));
         this.yDomain = [
             Math.floor((minY - 0.3) * 30) / 30,
             Math.ceil((maxY + 0.3) * 30) / 30,
@@ -103,7 +103,7 @@ class DimensionsChart extends Component {
     }
 
     updateFocusDomain(props, state = {}) {
-        const { x, x2, contextDomain, getDefaultFocusDomain } = this;
+        const { x, x2, getDefaultFocusDomain } = this;
         const { selection } = state;
         const { data } = props;
         const fd = (selection) ? (selection.map(x2.invert)) : getDefaultFocusDomain();
@@ -205,122 +205,117 @@ class DimensionsChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, type, units } = this.props;
+        const { containerWidth, containerHeight, data, type, units, chartType } = this.props;
         const { margin, margin2, x, y, x2, y2, height, height2, width, state } = this;
         return (
-            <div className="nucleo-chart-container">
-                <div className="dimensions-chart">
-                    <svg width={containerWidth} height={containerHeight}>
-                        <defs>
-                            <clipPath id="clip">
-                                <rect width={width} height={height} />
-                            </clipPath>
-                        </defs>
-                        <Focus
-                            margin={margin}
-                            height={height}
-                            width={width}
-                            onMouseMove={this.handleMouseMove}
-                            onMouseOut={this.handleMouseOut}
-                            onWheel={this.handleWheel}
-                        >
-                            <g className="zoom">
-                                <Line
-                                    className="x"
-                                    data={data}
-                                    x={d => x(d.date)}
-                                    y={d => y(d[type].x)}
-                                />
-                                <Line
-                                    className="y"
-                                    data={data}
-                                    x={d => x(d.date)}
-                                    y={d => y(d[type].y)}
-                                />
-                                <Line
-                                    className="z"
-                                    data={data}
-                                    x={d => x(d.date)}
-                                    y={d => y(d[type].z)}
-                                />
-                            </g>
-                            <Axis
-                                type="x"
-                                scale={x}
-                                data={data}
-                                translate={[0, height]}
-                            />
-                            <Axis
-                                type="y"
-                                scale={y}
-                                data={data}
-                                tickSize={width}
-                                tickFormat={v => (`${y.tickFormat()(v)}${units}`)}
-                            />
-                        </Focus>
-                        <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
-                            <BrushX
-                                width={width}
-                                height={height2}
-                                onBrushMount={this.handleBrushMount}
-                                onBrushStart={this.handleBrushStart}
-                                onBrush={this.handleBrush}
-                                onBrushEnd={this.handleBrushEnd}
-                            >
-                                <Line
-                                    className="x"
-                                    data={data}
-                                    x={d => x2(d.date)}
-                                    y={d => y2(d[type].x)}
-                                    skipRenderCount={10}
-                                />
-                                <Line
-                                    className="y"
-                                    data={data}
-                                    x={d => x2(d.date)}
-                                    y={d => y2(d[type].y)}
-                                    skipRenderCount={10}
-                                />
-                                <Line
-                                    className="z"
-                                    data={data}
-                                    x={d => x2(d.date)}
-                                    y={d => y2(d[type].z)}
-                                    skipRenderCount={10}
-                                />
-                            </BrushX>
-                            <Axis
-                                type="x"
-                                data={data}
-                                scale={this.x2}
-                                translate={[0, height2]}
-                                skipRenderCount={10}
-                            />
-                        </g>
-                    </svg>
-                    <DimensionsCursor
-                        type={type}
-                        units={units}
-                        data={state.cursorData}
-                        cursorX={state.cursorX}
-                        cursorVisible={state.cursorVisible}
+            <div>
+                <svg width={containerWidth} height={containerHeight}>
+                    <defs>
+                        <clipPath id="clip">
+                            <rect width={width} height={height} />
+                        </clipPath>
+                    </defs>
+                    <Focus
                         margin={margin}
                         height={height}
                         width={width}
-                        y={y}
-                    />
-                </div>
+                        onMouseMove={this.handleMouseMove}
+                        onMouseOut={this.handleMouseOut}
+                        onWheel={this.handleWheel}
+                    >
+                        <g className="zoom">
+                            {chartType === AREA_CHART && (
+                                <Area
+                                    data={data}
+                                    x={d => x(d.date)}
+                                    y0={d => height}
+                                    y1={d => y(d[type][units.key])}
+                                />
+                            )}
+                            {chartType === LINE_CHART && (
+                                <Line
+                                    data={data}
+                                    x={d => x(d.date)}
+                                    y={d => y(d[type][units.key])}
+                                />
+                            )}
+                        </g>
+                        <Axis
+                            type="x"
+                            scale={x}
+                            data={data}
+                            translate={[0, height]}
+                        />
+                        <Axis
+                            type="y"
+                            scale={y}
+                            data={data}
+                            tickSize={width}
+                            tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}
+                        />
+                    </Focus>
+                    <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
+                        <BrushX
+                            width={width}
+                            height={height2}
+                            onBrushMount={this.handleBrushMount}
+                            onBrushStart={this.handleBrushStart}
+                            onBrush={this.handleBrush}
+                            onBrushEnd={this.handleBrushEnd}
+                        >
+                            {chartType === AREA_CHART && (
+                                <Area
+                                    data={data}
+                                    x={d => x2(d.date)}
+                                    y0={d => height2}
+                                    y1={d => y2(d[type][units.key])}
+                                    skipRenderCount={10}
+                                />
+                            )}
+                            {chartType === LINE_CHART && (
+                                <Line
+                                    data={data}
+                                    x={d => x2(d.date)}
+                                    y={d => y2(d[type][units.key])}
+                                    skipRenderCount={10}
+                                />
+                            )}
+                        </BrushX>
+                        <Axis
+                            type="x"
+                            data={data}
+                            scale={this.x2}
+                            translate={[0, height2]}
+                            skipRenderCount={10}
+                        />
+                    </g>
+                </svg>
+                <WeatherCursor
+                    type={type}
+                    units={units}
+                    data={state.cursorData}
+                    cursorX={state.cursorX}
+                    cursorVisible={state.cursorVisible}
+                    margin={margin}
+                    height={height}
+                    width={width}
+                    y={y}
+                />
             </div>
         );
     }
 }
 
-DimensionsChart.propTypes = {
+WeatherChart.propTypes = {
     type: PropTypes.string,
-    units: PropTypes.string,
+    chartType: PropTypes.string,
+    units: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+    }),
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
 };
 
-export default Chart(DimensionsChart);
+export default Chart(WeatherChart);

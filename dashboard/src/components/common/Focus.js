@@ -56,8 +56,7 @@ Focus.propTypes = {
     width: PropTypes.number,
     onMouseMove: PropTypes.func,
     onMouseOut: PropTypes.func,
-    onWheel: PropTypes.func
-
+    onWheel: PropTypes.func,
 };
 
 

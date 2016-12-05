@@ -12,4 +12,6 @@ export const GYROSCOPE_UPDATE = 'gyroscope_update';
 
 export const MAGNETOMETER_UPDATE = 'magnetometer_update';
 
-export const PRESSURE_UPDATE = 'barometer_update';
+export const PRESSURE_UPDATE = 'pressure_update';
+export const PRESSURE_CHANGE_CHART_TYRE = 'pressure_change_chart_type';
+export const PRESSURE_TOGGLE_VISIBILITY = 'pressure_toggle_visibility';

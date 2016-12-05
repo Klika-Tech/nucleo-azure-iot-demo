@@ -9,6 +9,10 @@ const Menu = () => (
                 glyph="icon-fontello-th-large"
             />
             <SidebarNavItem
+                name="Barometer" href="/barometer"
+                glyph="icon-fontello-gauge"
+            />
+            <SidebarNavItem
                 name="Magnetometer" href="/magnetometer"
                 glyph="icon-fontello-magnet"
             />

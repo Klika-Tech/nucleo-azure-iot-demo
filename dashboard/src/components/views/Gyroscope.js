@@ -6,14 +6,12 @@ const mapStateToProps = state => ({
     data: state.gyroscope.data,
 });
 
-const Gyroscope = ({ data }) => {
-    return (
-        <DimensionsChart
+const Gyroscope = ({ data }) => (
+    <DimensionsChart
             type="gyroscope"
             units="°"
             data={data}
-        />
-    );
-};
+    />
+);
 
 export default connect(mapStateToProps)(Gyroscope);
