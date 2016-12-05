@@ -4,6 +4,7 @@ import data from './data';
 import accelerometer from './accelerometer';
 import gyroscope from './gyroscope';
 import magnetometer from './magnetometer';
+import pressure from './pressure';
 import mqtt from './mqtt';
 
 export default enableBatching(
@@ -13,5 +14,6 @@ export default enableBatching(
         accelerometer,
         gyroscope,
         magnetometer,
+        pressure,
     }),
 );

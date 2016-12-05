@@ -5,7 +5,7 @@ import './style.scss';
 import AccelerometerWidget from './AccelerometerWidget';
 import GyroscopeWidget from './GyroscopeWidget';
 import MagnetometerWidget from './MagnetometerWidget';
-
+import BarometerWidget from './BarometerWidget';
 
 const Dashboard = ({ data }) => (
     <Grid className="dashboard">
@@ -74,7 +74,9 @@ const Dashboard = ({ data }) => (
                             <Grid>
                                 <Row>
                                     <Col xs={12} className="chart-panel-body">
-                                        <Link to="/barometer">TODO</Link>
+                                        <Link to="/barometer">
+                                            <BarometerWidget />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Grid>

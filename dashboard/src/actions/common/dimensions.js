@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { getActualData } from './utils';
 
 export function fetch(type, key) {
     const pdi = prepareDataItem(key);
@@ -36,12 +36,4 @@ function prepareDataItem(key) {
         date: new Date(item.timestamp * 1000),
         marker: item.marker,
     });
-}
-
-function getActualData(data) {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    return _(data)
-        .filter(item => item.date.getTime() >= yesterday.getTime())
-        .value();
 }

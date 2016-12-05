@@ -11,3 +11,5 @@ export const ACCELEROMETER_UPDATE = 'accelerometer_update';
 export const GYROSCOPE_UPDATE = 'gyroscope_update';
 
 export const MAGNETOMETER_UPDATE = 'magnetometer_update';
+
+export const PRESSURE_UPDATE = 'barometer_update';
