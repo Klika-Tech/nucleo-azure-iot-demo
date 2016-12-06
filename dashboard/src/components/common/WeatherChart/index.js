@@ -8,6 +8,8 @@ const WeatherChartContainer = ({
 }) => (
     <div className="nucleo-chart-container">
         <WeatherParams
+            type={type}
+            selectedUnits={units}
             chartType={chartType}
             citiesData={citiesData}
             displayedCitiesData={displayedCitiesData}

@@ -6,6 +6,7 @@ import { gyroscopeFetch, gyroscopePush } from './gyroscope';
 import { magnetometerFetch, magnetometerPush } from './magnetometer';
 import { pressureFetch, pressurePush } from './pressure';
 import { humidityFetch, humidityPush } from './humidity';
+import { temperatureFetch, temperaturePush } from './temperature';
 
 export function fetchData(data) {
     return (dispatch) => {
@@ -16,6 +17,7 @@ export function fetchData(data) {
             magnetometerFetch(pd),
             pressureFetch(pd),
             humidityFetch(pd),
+            temperatureFetch(pd),
             { type: DATA_FETCHED },
         ]));
     };
@@ -24,13 +26,14 @@ export function fetchData(data) {
 export function pushData(chunks) {
     return (dispatch, getState) => {
         const pds = chunks.map(prepareDataItem);
-        const { accelerometer, gyroscope, magnetometer, pressure, humidity } = getState();
+        const { accelerometer, gyroscope, magnetometer, pressure, humidity, temperature } = getState();
         dispatch(batchActions([
             accelerometerPush(pds, accelerometer),
             gyroscopePush(pds, gyroscope),
             magnetometerPush(pds, magnetometer),
             pressurePush(pds, pressure),
             humidityPush(pds, humidity),
+            temperaturePush(pds, temperature),
         ]));
     };
 }

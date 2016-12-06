@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Form, FormGroup, ControlLabel, Radio, Checkbox } from '@sketchpixy/rubix';
 import './index.scss';
 import { LINE_CHART, AREA_CHART } from '../../../chartTypes';
+import { CELSIUS, FAHRENHEITS } from '../../../scaleUnits';
 
 class WeatherParams extends Component {
     constructor(props) {
@@ -16,8 +17,11 @@ class WeatherParams extends Component {
         onChangeType.call({}, event.target.value);
     }
     setUnits(event) {
-        const { setChartParam } = this.props;
-        setChartParam('units', event.target.value);
+        const { type, onChangeUnits } = this.props;
+        if (type === 'temperature') {
+            const val = (event.target.value === 'f') ? FAHRENHEITS : CELSIUS;
+            onChangeUnits.call({}, val);
+        }
     }
     setShowWeatherFor(event) {
         const { onToggleVisibility } = this.props;
@@ -26,7 +30,7 @@ class WeatherParams extends Component {
     }
     render() {
         const { setShowWeatherFor } = this;
-        const { chartType, units, citiesData, displayedCitiesData, unitsSwitcher } = this.props;
+        const { chartType, selectedUnits, citiesData, displayedCitiesData, type } = this.props;
         const displayedCitiesIds = displayedCitiesData.map(d => d.cityId);
         return (
             <div className="weather-chart-params">
@@ -49,11 +53,21 @@ class WeatherParams extends Component {
                             Line
                         </Radio>
                     </FormGroup>
-                    {unitsSwitcher && (
+                    {(type === 'temperature') && (
                         <FormGroup>
                             <ControlLabel>Units</ControlLabel>
-                            <Radio checked={units === 'c'} value="c" onChange={this.setUnits} inline>°C</Radio>
-                            <Radio checked={units === 'f'} value="f" onChange={this.setUnits} inline>°F</Radio>
+                            <Radio
+                                checked={selectedUnits.key === CELSIUS.key}
+                                value="c"
+                                onChange={this.setUnits}
+                                inline
+                            >{CELSIUS.label}</Radio>
+                            <Radio
+                                checked={selectedUnits.key === FAHRENHEITS.key}
+                                value="f"
+                                onChange={this.setUnits}
+                                inline
+                            >{FAHRENHEITS.label}</Radio>
                         </FormGroup>
                     )}
                     <FormGroup>
@@ -73,9 +87,9 @@ class WeatherParams extends Component {
 }
 
 WeatherParams.propTypes = {
+    type: PropTypes.string,
     chartType: PropTypes.string,
-    unitsSwitcher: PropTypes.bool,
-    units: PropTypes.shape({
+    selectedUnits: PropTypes.shape({
         key: PropTypes.string,
         label: PropTypes.string,
     }),

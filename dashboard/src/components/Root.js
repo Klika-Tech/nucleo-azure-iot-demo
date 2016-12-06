@@ -9,6 +9,7 @@ import Gyroscope from './views/Gyroscope';
 import Accelerometer from './views/Accelerometer';
 import Barometer from './views/Barometer';
 import Humidity from './views/Humidity';
+import Temperature from './views/Temperature';
 
 const RouterComponent = ({ store }) => (
     <Provider store={store}>
@@ -16,6 +17,7 @@ const RouterComponent = ({ store }) => (
             <Route path="/" component={Main}>
                 <IndexRedirect to="/dashboard" />
                 <Route path="dashboard" component={Dashboard} />
+                <Route path="temperature" component={Temperature} />
                 <Route path="humidity" component={Humidity} />
                 <Route path="barometer" component={Barometer} />
                 <Route path="magnetometer" component={Magnetometer} />

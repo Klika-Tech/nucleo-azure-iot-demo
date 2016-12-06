@@ -8,6 +8,6 @@ export const humidityToggleVisibility = toggleVisibility(HUMIDITY_TOGGLE_VISIBIL
 
 const pdi = prepareDataItem('humidity', PERCENTS);
 
-export const humidityFetch = fetch(HUMIDITY_UPDATE, 'humidity', pdi);
+export const humidityFetch = fetch(HUMIDITY_UPDATE, 'humidityData', pdi);
 
 export const humidityPush = push(HUMIDITY_UPDATE, pdi);

@@ -7,6 +7,7 @@ import GyroscopeWidget from './GyroscopeWidget';
 import MagnetometerWidget from './MagnetometerWidget';
 import BarometerWidget from './BarometerWidget';
 import HumidityWidget from './HumidityWidget';
+import TemperatureWidget from './TemperatureWidget';
 
 const Dashboard = ({ data }) => (
     <Grid className="dashboard">
@@ -27,7 +28,9 @@ const Dashboard = ({ data }) => (
                             <Grid>
                                 <Row>
                                     <Col xs={12} className="chart-panel-body">
-                                        <Link to="/temperature">TODO</Link>
+                                        <Link to="/temperature">
+                                            <TemperatureWidget />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Grid>

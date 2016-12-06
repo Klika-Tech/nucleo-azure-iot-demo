@@ -8,6 +8,6 @@ export const pressureToggleVisibility = toggleVisibility(PRESSURE_TOGGLE_VISIBIL
 
 const pdi = prepareDataItem('pressure', HYPER_PASCALS);
 
-export const pressureFetch = fetch(PRESSURE_UPDATE, 'pressure', pdi);
+export const pressureFetch = fetch(PRESSURE_UPDATE, 'pressureData', pdi);
 
 export const pressurePush = push(PRESSURE_UPDATE, pdi);

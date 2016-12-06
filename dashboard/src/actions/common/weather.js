@@ -41,7 +41,7 @@ export const fetch = (actionType, type, pdi) => (fullData) => {
     const citiesData = fullData.weatherData.map(d => ({
         cityId: d.cityId,
         cityName: d.cityName,
-        data: d[`${type}Data`].map(pdi),
+        data: d[type].map(pdi),
     }));
     return {
         type: actionType,

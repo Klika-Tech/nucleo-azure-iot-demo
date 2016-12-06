@@ -76,10 +76,11 @@ class WeatherChart extends Component {
         const isBrush = state.brush;
         const isCursorVisible = state.cursorVisible;
         const isCitiesChanged = oldProps.citiesData !== newProps.citiesData;
-        if (isDataChanged || isCitiesChanged) {
+        const isUnitsChanged = oldProps.units !== newProps.units;
+        if (isDataChanged || isCitiesChanged || isUnitsChanged) {
             this.updateContextDomains(newProps, state);
         }
-        if (isBrush || isDataChanged) {
+        if (isBrush || isDataChanged || isUnitsChanged) {
             this.updateFocusDomain(newProps, state);
         }
         if (isSizeChanged) {
@@ -234,6 +235,7 @@ class WeatherChart extends Component {
                         <g className="zoom">
                             {chartType === AREA_CHART && (
                                 <Area
+                                    key={units.key}
                                     data={data}
                                     x={d => x(d.date)}
                                     y0={d => height}
@@ -242,6 +244,7 @@ class WeatherChart extends Component {
                             )}
                             {chartType === LINE_CHART && (
                                 <Line
+                                    key={units.key}
                                     data={data}
                                     x={d => x(d.date)}
                                     y={d => y(d[type][units.key])}
@@ -249,7 +252,7 @@ class WeatherChart extends Component {
                             )}
                             {citiesData.map(city => (
                                 <Line
-                                    key={city.cityId}
+                                    key={`${units.key}-${city.cityId}`}
                                     className={`city-${city.cityId}`}
                                     data={city.data}
                                     x={d => x(d.date)}
@@ -282,6 +285,7 @@ class WeatherChart extends Component {
                         >
                             {chartType === AREA_CHART && (
                                 <Area
+                                    key={units.key}
                                     data={data}
                                     x={d => x2(d.date)}
                                     y0={d => height2}
@@ -291,6 +295,7 @@ class WeatherChart extends Component {
                             )}
                             {chartType === LINE_CHART && (
                                 <Line
+                                    key={units.key}
                                     data={data}
                                     x={d => x2(d.date)}
                                     y={d => y2(d[type][units.key])}
