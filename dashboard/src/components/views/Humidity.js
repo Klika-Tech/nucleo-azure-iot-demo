@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { HYPER_PASCALS } from '../../scaleUnits';
+import { PERCENTS } from '../../scaleUnits';
 import WeatherChart from '../common/WeatherChart';
-import { pressureChangeChartType, pressureToggleVisibility } from '../../actions/pressure';
+import { humidityChangeChartType, humidityToggleVisibility } from '../../actions/humidity';
 
 const mapStateToProps = state => ({
-    chartType: state.pressure.chartType,
-    sensorData: state.pressure.sensorData,
-    citiesData: state.pressure.citiesData,
-    displayedCitiesData: state.pressure.displayedCitiesData,
+    chartType: state.humidity.chartType,
+    sensorData: state.humidity.sensorData,
+    citiesData: state.humidity.citiesData,
+    displayedCitiesData: state.humidity.displayedCitiesData,
 });
 
 const mapDispatchToProps = dispatch => ({
     handleChangeType(type) {
-        dispatch(pressureChangeChartType(type));
+        dispatch(humidityChangeChartType(type));
     },
     handleToggleVisibility(value) {
-        dispatch(pressureToggleVisibility(value));
+        dispatch(humidityToggleVisibility(value));
     },
 });
 
-const Barometer = ({
+const Humidity = ({
     sensorData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
 }) => (
     <WeatherChart
-        type="pressure"
-        units={HYPER_PASCALS}
+        type="humidity"
+        units={PERCENTS}
         chartType={chartType}
         sensorData={sensorData}
         citiesData={citiesData}
@@ -35,4 +35,4 @@ const Barometer = ({
     />
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Barometer);
+export default connect(mapStateToProps, mapDispatchToProps)(Humidity);

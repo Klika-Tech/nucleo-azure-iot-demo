@@ -9,6 +9,10 @@ const Menu = () => (
                 glyph="icon-fontello-th-large"
             />
             <SidebarNavItem
+                name="Humidity" href="/humidity"
+                glyph="icon-fontello-water"
+            />
+            <SidebarNavItem
                 name="Barometer" href="/barometer"
                 glyph="icon-fontello-gauge"
             />
