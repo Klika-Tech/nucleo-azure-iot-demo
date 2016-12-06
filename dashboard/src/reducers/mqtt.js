@@ -3,9 +3,6 @@ import {
     MQTT_DISCONNECTED,
 } from '../actionTypes';
 
-/**
- * connected = false;
- * */
 export default function (state = {}, { type }) {
     switch (type) {
     case MQTT_CONNECTED: {

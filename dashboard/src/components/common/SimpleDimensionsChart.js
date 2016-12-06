@@ -113,7 +113,7 @@ class SimpleDimensionsChart extends Component {
                                 data={data}
                                 tickSize={0}
                                 ticks={4}
-                                tickFormat={v => (`${y.tickFormat()(v)}${units}`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}
                             />
                         </g>
                     </svg>
@@ -125,7 +125,10 @@ class SimpleDimensionsChart extends Component {
 
 SimpleDimensionsChart.propTypes = {
     type: PropTypes.string,
-    units: PropTypes.string,
+    units: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+    }),
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),

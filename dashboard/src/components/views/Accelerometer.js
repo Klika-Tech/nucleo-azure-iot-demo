@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { G } from '../../scaleUnits';
 import DimensionsChart from '../common/DimensionsChart';
 
 const mapStateToProps = state => ({
@@ -9,7 +10,7 @@ const mapStateToProps = state => ({
 const Accelerometer = ({ data }) => (
     <DimensionsChart
             type="accelerometer"
-            units="g"
+            units={G}
             data={data}
     />
 );

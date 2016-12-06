@@ -49,14 +49,17 @@ function label(type, axis, data, units) {
         const axisLabel = axis.toUpperCase();
         const value = Math.round(data[type][axis] * 100) / 100;
         const date = timeFormat(data.date);
-        return `${axisLabel}: ${value}${units} @ ${date}`;
+        return `${axisLabel}: ${value}${units.label} @ ${date}`;
     }
     return '';
 }
 
 DimensionsCursor.propTypes = {
     type: PropTypes.string,
-    units: PropTypes.string,
+    units: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+    }),
     data: PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     }),

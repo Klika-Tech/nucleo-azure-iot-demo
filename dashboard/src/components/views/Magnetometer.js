@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { TESLAS } from '../../scaleUnits';
 import DimensionsChart from '../common/DimensionsChart';
 
 const mapStateToProps = state => ({
@@ -9,7 +10,7 @@ const mapStateToProps = state => ({
 const Magnetometer = ({ data }) => (
     <DimensionsChart
             type="magnetometer"
-            units="µT"
+            units={TESLAS}
             data={data}
     />
 );

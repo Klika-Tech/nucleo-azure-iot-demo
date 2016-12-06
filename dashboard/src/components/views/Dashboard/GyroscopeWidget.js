@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SimpleDimensionsChart from '../../common/SimpleDimensionsChart';
+import { DEGREES } from '../../../scaleUnits';
 
 const mapStateToProps = state => ({
     data: state.gyroscope.data,
@@ -9,7 +10,7 @@ const mapStateToProps = state => ({
 const GyroscopeWidget = ({ data }) => (
     <SimpleDimensionsChart
         type="gyroscope"
-        units="°"
+        units={DEGREES}
         data={data}
     />
 );

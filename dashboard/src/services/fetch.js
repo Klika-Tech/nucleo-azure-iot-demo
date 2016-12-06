@@ -1,10 +1,6 @@
 import 'whatwg-fetch';
 
 /**
- * @module FetchService
- * */
-
-/**
  * Load aws metrics for the last 4h
  * @param apiUrl
  * @return {*|Promise.<Object>}

@@ -1,13 +1,5 @@
 import _ from 'lodash';
 
-/**
- * Common state shape:
- * chartType: 'line'|'area'
- * sensorData = [];
- * citiesData = [];
- * displayedCitiesData = [];
- * */
-
 export function update(state, { sensorData, citiesData }) {
     const displayedCitiesIds = state.displayedCitiesData.map(d => d.cityId);
     const displayedCitiesData = state.citiesData.filter(d => _.includes(displayedCitiesIds, d.cityId));

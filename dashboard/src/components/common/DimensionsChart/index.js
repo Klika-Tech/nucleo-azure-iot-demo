@@ -255,7 +255,7 @@ class DimensionsChart extends Component {
                                 scale={y}
                                 data={data}
                                 tickSize={width}
-                                tickFormat={v => (`${y.tickFormat()(v)}${units}`)}
+                                tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}
                             />
                         </Focus>
                         <g className="context" transform={`translate(${margin2.left},${margin2.top})`}>
@@ -317,7 +317,10 @@ class DimensionsChart extends Component {
 
 DimensionsChart.propTypes = {
     type: PropTypes.string,
-    units: PropTypes.string,
+    units: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+    }),
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),

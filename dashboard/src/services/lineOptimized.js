@@ -1,6 +1,5 @@
 /**
  * Optimized line path generator (d3).
- * TODO: decide use or not.
  * @ref https://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/
  * @return function path generator
  * */

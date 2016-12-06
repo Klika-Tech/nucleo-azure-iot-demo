@@ -2,10 +2,6 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 
 /**
- * @module AwsSignService
- * */
-
-/**
  * Get aws signed url.
  * @param protocol
  * @param host
