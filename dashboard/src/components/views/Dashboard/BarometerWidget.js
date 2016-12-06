@@ -4,7 +4,7 @@ import { HYPER_PASCALS } from '../../../scaleUnits';
 import SimpleWeatherChart from '../../common/SimpleWeatherChart';
 
 const mapStateToProps = state => ({
-    data: state.pressure.data,
+    data: state.pressure.sensorData,
 });
 
 const BarometerWidget = ({ data }) => (

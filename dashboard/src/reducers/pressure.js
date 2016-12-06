@@ -1,15 +1,18 @@
+import { update, changeType, toggleVisibility } from './common/weather';
 import { PRESSURE_UPDATE, PRESSURE_CHANGE_CHART_TYRE, PRESSURE_TOGGLE_VISIBILITY } from '../actionTypes';
 import { AREA_CHART } from '../chartTypes';
 
 /**
  * State shape:
  * chartType: 'line'|'area'
- * showFor = [];
- * data = [];
- * weatherData = [];
+ * sensorData = [];
+ * citiesData = [];
+ * displayedCitiesData = [];
  * */
 
-export default function (state = { chartType: AREA_CHART, showFor: [] }, { type, payload }) {
+export default function (state = {
+    chartType: AREA_CHART, citiesData: [], displayedCitiesData: [],
+}, { type, payload }) {
     switch (type) {
     case PRESSURE_UPDATE: {
         return update(state, payload);
@@ -23,26 +26,4 @@ export default function (state = { chartType: AREA_CHART, showFor: [] }, { type,
     default:
         return state;
     }
-}
-
-function update(state, { data, weatherData }) {
-    return {
-        ...state,
-        data,
-        weatherData,
-    };
-}
-
-function changeType(state, { chartType }) {
-    return {
-        ...state,
-        chartType,
-    };
-}
-
-function toggleVisibility(state, { showFor }) {
-    return {
-        ...state,
-        showFor,
-    };
 }

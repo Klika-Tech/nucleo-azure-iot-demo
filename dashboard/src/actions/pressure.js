@@ -10,26 +10,17 @@ export const changeChartType = chartType => ({
     },
 });
 
-export const toggleVisibility = value => (dispatch, getState) => {
-    const oldShowFor = getState().pressure.showFor;
-    let showFor;
-    if (_.includes(oldShowFor, value)) {
-        showFor = _.without(oldShowFor, value);
-    } else {
-        showFor = _.union(oldShowFor, [value]);
-    }
-    dispatch({
-        type: PRESSURE_TOGGLE_VISIBILITY,
-        payload: {
-            showFor,
-        },
-    });
-};
+export const toggleVisibility = value => ({
+    type: PRESSURE_TOGGLE_VISIBILITY,
+    payload: {
+        value,
+    },
+});
 
 export const pressureFetch = (fullData) => {
     const pdi = prepareSensorDataItem(HYPER_PASCALS);
-    const data = fullData.sensorData.map(pdi);
-    const weatherData = fullData.weatherData.map(d => ({
+    const sensorData = fullData.sensorData.map(pdi);
+    const citiesData = fullData.weatherData.map(d => ({
         cityId: d.cityId,
         cityName: d.cityName,
         data: d.pressureData.map(pdi),
@@ -37,23 +28,23 @@ export const pressureFetch = (fullData) => {
     return {
         type: PRESSURE_UPDATE,
         payload: {
-            data,
-            weatherData,
+            sensorData,
+            citiesData,
         },
     };
 };
 
 export const pressurePush = (chunks, state) => {
     const pdi = prepareSensorDataItem(HYPER_PASCALS);
-    let data = state.data;
-    data = data.concat(chunks.map(pdi));
-    data = getActualData(data);
-    const weatherData = getUpdatedWeatherDataStub(state.weatherData, data);
+    let sensorData = state.sensorData;
+    sensorData = sensorData.concat(chunks.map(pdi));
+    sensorData = getActualData(sensorData);
+    const citiesData = getUpdatedCitiesDataStub(state.citiesData, sensorData);
     return {
         type: PRESSURE_UPDATE,
         payload: {
-            data,
-            weatherData,
+            sensorData,
+            citiesData,
         },
     };
 };
@@ -71,12 +62,12 @@ function prepareSensorDataItem(scaleUnit) {
 /**
  * TODO: return data from server
  * */
-function getUpdatedWeatherDataStub(weatherData, sensorData) {
-    weatherData.forEach((d) => {
+function getUpdatedCitiesDataStub(citiesData, sensorData) {
+    citiesData.forEach((d) => {
         const last = _.last(d.data);
         last.date = _.last(sensorData).date;
         d.data.push(last);
         d.data = getActualData(d.data);
     });
-    return weatherData;
+    return citiesData;
 }

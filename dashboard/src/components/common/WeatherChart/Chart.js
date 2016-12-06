@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3 from 'd3';
 import { scaleTime, scaleLinear } from 'd3-scale';
+import _ from 'lodash';
 import '../../common/style.scss';
 import Chart from '../../common/Chart';
 import Axis from '../../common/Axis';
@@ -9,6 +10,7 @@ import Line from '../../common/Line';
 import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
 import WeatherCursor from './Cursor';
+import CityLabel from './CityLabel';
 import { LINE_CHART, AREA_CHART } from '../../../chartTypes';
 
 const bisector = d3.bisector(d => d.date).right;
@@ -73,7 +75,8 @@ class WeatherChart extends Component {
             || (oldProps.containerHeight !== newProps.containerHeight);
         const isBrush = state.brush;
         const isCursorVisible = state.cursorVisible;
-        if (isDataChanged) {
+        const isCitiesChanged = oldProps.citiesData !== newProps.citiesData;
+        if (isDataChanged || isCitiesChanged) {
             this.updateContextDomains(newProps, state);
         }
         if (isBrush || isDataChanged) {
@@ -89,10 +92,15 @@ class WeatherChart extends Component {
 
     updateContextDomains(props) {
         const { y, x2, y2 } = this;
-        const { type, data, units } = props;
+        const { type, data, citiesData, units } = props;
         this.contextDomain = d3.extent(data.map(d => d.date));
-        const minY = d3.min(data.map(d => d[type][units.key]));
-        const maxY = d3.max(data.map(d => d[type][units.key]));
+        const dataUnion = _(citiesData) // can be optimized
+            .map(d => d.data)
+            .push(data)
+            .flatten()
+            .value();
+        const minY = d3.min(dataUnion.map(d => d[type][units.key]));
+        const maxY = d3.max(dataUnion.map(d => d[type][units.key]));
         this.yDomain = [
             Math.floor((minY - 0.3) * 30) / 30,
             Math.ceil((maxY + 0.3) * 30) / 30,
@@ -205,7 +213,7 @@ class WeatherChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, type, units, chartType } = this.props;
+        const { containerWidth, containerHeight, data, citiesData, type, units, chartType } = this.props;
         const { margin, margin2, x, y, x2, y2, height, height2, width, state } = this;
         return (
             <div>
@@ -239,6 +247,15 @@ class WeatherChart extends Component {
                                     y={d => y(d[type][units.key])}
                                 />
                             )}
+                            {citiesData.map(city => (
+                                <Line
+                                    key={city.cityId}
+                                    className={`city-${city.cityId}`}
+                                    data={city.data}
+                                    x={d => x(d.date)}
+                                    y={d => y(d[type][units.key])}
+                                />
+                            ))}
                         </g>
                         <Axis
                             type="x"
@@ -301,6 +318,14 @@ class WeatherChart extends Component {
                     width={width}
                     y={y}
                 />
+                {citiesData.map(city => (
+                    <CityLabel
+                        key={city.cityId}
+                        data={city}
+                        margin={margin}
+                        top={y(_.last(city.data)[type][units.key])}
+                    />
+                ))}
             </div>
         );
     }
@@ -315,6 +340,10 @@ WeatherChart.propTypes = {
     }),
     data: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
+    })),
+    citiesData: PropTypes.arrayOf(PropTypes.shape({
+        cityId: PropTypes.number,
+        cityName: PropTypes.string,
     })),
 };
 

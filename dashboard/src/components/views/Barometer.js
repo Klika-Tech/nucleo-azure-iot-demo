@@ -6,9 +6,9 @@ import { changeChartType, toggleVisibility } from '../../actions/pressure';
 
 const mapStateToProps = state => ({
     chartType: state.pressure.chartType,
-    showFor: state.pressure.showFor,
-    sensorData: state.pressure.data,
-    weatherData: state.pressure.weatherData,
+    sensorData: state.pressure.sensorData,
+    citiesData: state.pressure.citiesData,
+    displayedCitiesData: state.pressure.displayedCitiesData,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,14 +20,16 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 
-const Barometer = ({ sensorData, chartType, showFor, weatherData, handleChangeType, handleToggleVisibility }) => (
+const Barometer = ({
+    sensorData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
+}) => (
     <WeatherChart
         type="pressure"
         units={HYPER_PASCALS}
         chartType={chartType}
-        showFor={showFor}
         sensorData={sensorData}
-        weatherData={weatherData}
+        citiesData={citiesData}
+        displayedCitiesData={displayedCitiesData}
         onChangeType={handleChangeType}
         onToggleVisibility={handleToggleVisibility}
     />

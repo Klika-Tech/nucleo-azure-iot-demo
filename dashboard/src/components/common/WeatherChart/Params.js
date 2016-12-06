@@ -26,7 +26,8 @@ class WeatherParams extends Component {
     }
     render() {
         const { setShowWeatherFor } = this;
-        const { chartType, units, weatherData, showFor, unitsSwitcher } = this.props;
+        const { chartType, units, citiesData, displayedCitiesData, unitsSwitcher } = this.props;
+        const displayedCitiesIds = displayedCitiesData.map(d => d.cityId);
         return (
             <div className="weather-chart-params">
                 <Form>
@@ -57,10 +58,10 @@ class WeatherParams extends Component {
                     )}
                     <FormGroup>
                         <ControlLabel>Weather Data</ControlLabel>
-                        {_(weatherData).sortBy(d => d.cityName).map(d => (
+                        {_(citiesData).sortBy(d => d.cityName).map(d => (
                             <Checkbox
                                 key={d.cityId}
-                                checked={_.includes(showFor, d.cityId)}
+                                checked={_.includes(displayedCitiesIds, d.cityId)}
                                 value={d.cityId}
                                 onChange={setShowWeatherFor}
                             >{d.cityName}</Checkbox>)).value()}
@@ -73,13 +74,16 @@ class WeatherParams extends Component {
 
 WeatherParams.propTypes = {
     chartType: PropTypes.string,
-    showFor: PropTypes.array,
     unitsSwitcher: PropTypes.bool,
     units: PropTypes.shape({
         key: PropTypes.string,
         label: PropTypes.string,
     }),
-    weatherData: PropTypes.arrayOf(PropTypes.shape({
+    citiesData: PropTypes.arrayOf(PropTypes.shape({
+        cityId: PropTypes.number,
+        cityName: PropTypes.string,
+    })),
+    displayedCitiesData: PropTypes.arrayOf(PropTypes.shape({
         cityId: PropTypes.number,
         cityName: PropTypes.string,
     })),
