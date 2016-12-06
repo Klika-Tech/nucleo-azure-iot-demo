@@ -7,6 +7,7 @@ import Chart from '../../common/Chart';
 import Axis from '../../common/Axis';
 import Area from '../../common/Area';
 import Line from '../../common/Line';
+import Curve from '../../common/Curve';
 import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
 import WeatherCursor from './Cursor';
@@ -34,6 +35,7 @@ class WeatherChart extends Component {
         };
         this.getDefaultFocusDomain = this.getDefaultFocusDomain.bind(this);
         this.getCursorState = this.getCursorState.bind(this);
+        this.calculateYDomain = this.calculateYDomain.bind(this);
         this.handleWheel = this.handleWheel.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);
@@ -42,7 +44,7 @@ class WeatherChart extends Component {
         this.handleBrush = this.handleBrush.bind(this);
         this.handleBrushEnd = this.handleBrushEnd.bind(this);
         this.updateContextDomains = this.updateContextDomains.bind(this);
-        this.updateFocusDomain = this.updateFocusDomain.bind(this);
+        this.updateFocusDomains = this.updateFocusDomains.bind(this);
         this.updateCursor = this.updateCursor.bind(this);
         this.updateDimension = this.updateDimension.bind(this);
         this.updateD3(props);
@@ -68,6 +70,16 @@ class WeatherChart extends Component {
         };
     }
 
+    calculateYDomain(data) {
+        const { type, units } = this.props;
+        const minY = d3.min(data.map(d => d[type][units.key]));
+        const maxY = d3.max(data.map(d => d[type][units.key]));
+        return [
+            Math.floor((minY - 0.3) * 30) / 30,
+            Math.ceil((maxY + 0.3) * 30) / 30,
+        ];
+    }
+
     updateD3(newProps, oldProps = {}) {
         const state = this.state;
         const isDataChanged = oldProps.data !== newProps.data;
@@ -77,11 +89,11 @@ class WeatherChart extends Component {
         const isCursorVisible = state.cursorVisible;
         const isCitiesChanged = oldProps.citiesData !== newProps.citiesData;
         const isUnitsChanged = oldProps.units !== newProps.units;
-        if (isDataChanged || isCitiesChanged || isUnitsChanged) {
+        if (isDataChanged || isUnitsChanged) {
             this.updateContextDomains(newProps, state);
         }
-        if (isBrush || isDataChanged || isUnitsChanged) {
-            this.updateFocusDomain(newProps, state);
+        if (isBrush || isDataChanged || isCitiesChanged || isUnitsChanged) {
+            this.updateFocusDomains(newProps, state);
         }
         if (isSizeChanged) {
             this.updateDimension(newProps, state);
@@ -92,38 +104,50 @@ class WeatherChart extends Component {
     }
 
     updateContextDomains(props) {
-        const { y, x2, y2 } = this;
-        const { type, data, citiesData, units } = props;
+        const { x2, y2 } = this;
+        const { data } = props;
         this.contextDomain = d3.extent(data.map(d => d.date));
-        const dataUnion = _(citiesData) // can be optimized
-            .map(d => d.data)
-            .push(data)
-            .flatten()
-            .value();
-        const minY = d3.min(dataUnion.map(d => d[type][units.key]));
-        const maxY = d3.max(dataUnion.map(d => d[type][units.key]));
-        this.yDomain = [
-            Math.floor((minY - 0.3) * 30) / 30,
-            Math.ceil((maxY + 0.3) * 30) / 30,
-        ];
-        y.domain(this.yDomain);
         x2.domain(this.contextDomain);
-        y2.domain(this.yDomain);
+        y2.domain(this.calculateYDomain(data));
     }
 
-    updateFocusDomain(props, state = {}) {
-        const { x, x2, getDefaultFocusDomain } = this;
+    updateFocusDomains(props, state = {}) {
+        const { y, x, x2, getDefaultFocusDomain } = this;
         const { selection } = state;
-        const { data } = props;
+        const { type, data, citiesData, units } = props;
         const fd = (selection) ? (selection.map(x2.invert)) : getDefaultFocusDomain();
         const [minX, maxX] = fd;
-        const focusData = data.slice(
+        this.focusData = data.slice(
             Math.max(0, bisector(data, minX) - 1),
             Math.min(data.length, bisector(data, maxX) + 1),
         );
-        this.focusDomain = d3.extent(focusData.map(d => d.date));
+        this.focusDomain = d3.extent(this.focusData.map(d => d.date));
         this.defaultSelection = this.focusDomain.map(d => x2(d));
         x.domain(this.focusDomain);
+        // ------------------ //
+        citiesData.forEach((i) => {
+            i.focus = {
+                data: i.data.slice(
+                    Math.max(0, bisector(i.data, minX) - 1),
+                    Math.min(i.data.length, bisector(i.data, maxX) + 1),
+                ),
+            };
+            if (i.focus.data.length >= 2) {
+                const last = i.focus.data[i.focus.data.length - 1];
+                const preLast = i.focus.data[i.focus.data.length - 2];
+                const diffValue = last[type][units.key] - preLast[type][units.key];
+                const dxDomainTime = this.focusDomain[1] - preLast.date;
+                let diffTime = last.date - preLast.date;
+                diffTime = diffTime || 1;
+                i.focus.labelYData = preLast[type][units.key] + (dxDomainTime * diffValue / diffTime);
+            }
+        });
+        const dataUnion = _(citiesData)
+            .map(d => d.focus.data)
+            .push(this.focusData)
+            .flatten()
+            .value();
+        y.domain(this.calculateYDomain(dataUnion));
     }
 
     updateCursor(props, state = {}) {
@@ -215,7 +239,7 @@ class WeatherChart extends Component {
 
     render() {
         const { containerWidth, containerHeight, data, citiesData, type, units, chartType } = this.props;
-        const { margin, margin2, x, y, x2, y2, height, height2, width, state } = this;
+        const { margin, margin2, x, y, x2, y2, focusData, height, height2, width, state } = this;
         return (
             <div>
                 <svg width={containerWidth} height={containerHeight}>
@@ -236,7 +260,7 @@ class WeatherChart extends Component {
                             {chartType === AREA_CHART && (
                                 <Area
                                     key={units.key}
-                                    data={data}
+                                    data={focusData}
                                     x={d => x(d.date)}
                                     y0={d => height}
                                     y1={d => y(d[type][units.key])}
@@ -245,16 +269,17 @@ class WeatherChart extends Component {
                             {chartType === LINE_CHART && (
                                 <Line
                                     key={units.key}
-                                    data={data}
+                                    data={focusData}
                                     x={d => x(d.date)}
                                     y={d => y(d[type][units.key])}
                                 />
                             )}
                             {citiesData.map(city => (
-                                <Line
+                                <Curve
                                     key={`${units.key}-${city.cityId}`}
+                                    type={d3.curveBasis}
                                     className={`city-${city.cityId}`}
-                                    data={city.data}
+                                    data={city.focus.data}
                                     x={d => x(d.date)}
                                     y={d => y(d[type][units.key])}
                                 />
@@ -263,13 +288,13 @@ class WeatherChart extends Component {
                         <Axis
                             type="x"
                             scale={x}
-                            data={data}
+                            data={focusData}
                             translate={[0, height]}
                         />
                         <Axis
                             type="y"
                             scale={y}
-                            data={data}
+                            data={focusData}
                             tickSize={width}
                             tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}
                         />
@@ -283,25 +308,14 @@ class WeatherChart extends Component {
                             onBrush={this.handleBrush}
                             onBrushEnd={this.handleBrushEnd}
                         >
-                            {chartType === AREA_CHART && (
-                                <Area
-                                    key={units.key}
-                                    data={data}
-                                    x={d => x2(d.date)}
-                                    y0={d => height2}
-                                    y1={d => y2(d[type][units.key])}
-                                    skipRenderCount={10}
-                                />
-                            )}
-                            {chartType === LINE_CHART && (
-                                <Line
-                                    key={units.key}
-                                    data={data}
-                                    x={d => x2(d.date)}
-                                    y={d => y2(d[type][units.key])}
-                                    skipRenderCount={10}
-                                />
-                            )}
+                            <Area
+                                key={units.key}
+                                data={data}
+                                x={d => x2(d.date)}
+                                y0={d => height2}
+                                y1={d => y2(d[type][units.key])}
+                                skipRenderCount={10}
+                            />
                         </BrushX>
                         <Axis
                             type="x"
@@ -328,7 +342,7 @@ class WeatherChart extends Component {
                         key={city.cityId}
                         data={city}
                         margin={margin}
-                        top={y(_.last(city.data)[type][units.key])}
+                        top={y(city.focus.labelYData)}
                     />
                 ))}
             </div>
