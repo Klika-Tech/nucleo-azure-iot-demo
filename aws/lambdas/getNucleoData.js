@@ -135,7 +135,7 @@ export function handler(event, context, callback) {
                 })
               
                 if (!cities.length)
-                    callback(null, {sensorData: sensorData, weatherData: weatherData})
+                    callback(null, {sensorData: sensorData, citiesData: weatherData})
                 else goThroughCities()
             })
         }
