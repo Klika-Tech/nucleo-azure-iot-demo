@@ -5,13 +5,15 @@ import DimensionsChart from '../common/DimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.gyroscope.data,
+    markersData: state.gyroscope.markersData,
 });
 
-const Gyroscope = ({ data }) => (
+const Gyroscope = ({ data, markersData }) => (
     <DimensionsChart
             type="gyroscope"
             units={DEGREES}
             data={data}
+            markersData={markersData}
     />
 );
 

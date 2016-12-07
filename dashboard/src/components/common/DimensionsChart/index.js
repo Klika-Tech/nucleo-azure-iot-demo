@@ -8,6 +8,8 @@ import Line from '../../common/Line';
 import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
 import DimensionsCursor from './Cursor';
+import FocusMarker from '../../common/FocusMarker';
+import ContextMarker from '../../common/ContextMarker';
 
 const bisector = d3.bisector(d => d.date).right;
 const zoomVelocity = 3;
@@ -205,8 +207,8 @@ class DimensionsChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, type, units } = this.props;
-        const { margin, margin2, x, y, x2, y2, height, height2, width, state } = this;
+        const { containerWidth, containerHeight, data, type, units, markersData } = this.props;
+        const { margin, margin2, x, y, x2, y2, height, height2, width, state, focusYDomain } = this;
         return (
             <div className="nucleo-chart-container">
                 <div className="dimensions-chart">
@@ -243,6 +245,13 @@ class DimensionsChart extends Component {
                                     x={d => x(d.date)}
                                     y={d => y(d[type].z)}
                                 />
+                                {markersData.map(d => (
+                                    <g key={d.date.toISOString()}>
+                                        <FocusMarker y={y(d[type].x)} x={x(d.date)} />
+                                        <FocusMarker y={y(d[type].y)} x={x(d.date)} />
+                                        <FocusMarker y={y(d[type].z)} x={x(d.date)} />
+                                    </g>
+                                ))}
                             </g>
                             <Axis
                                 type="x"
@@ -288,6 +297,14 @@ class DimensionsChart extends Component {
                                     y={d => y2(d[type].z)}
                                     skipRenderCount={10}
                                 />
+                                {markersData.map(d => (
+                                    <ContextMarker
+                                        key={d.date.toISOString()}
+                                        y1={y2(focusYDomain[0])}
+                                        y2={y2(focusYDomain[1])}
+                                        x={x2(d.date)}
+                                    />
+                                ))}
                             </BrushX>
                             <Axis
                                 type="x"
@@ -322,6 +339,9 @@ DimensionsChart.propTypes = {
         label: PropTypes.string,
     }),
     data: PropTypes.arrayOf(PropTypes.shape({
+        date: PropTypes.instanceOf(Date),
+    })),
+    markersData: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
 };

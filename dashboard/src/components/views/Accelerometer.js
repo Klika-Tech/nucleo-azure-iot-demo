@@ -5,13 +5,15 @@ import DimensionsChart from '../common/DimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.accelerometer.data,
+    markersData: state.accelerometer.markersData,
 });
 
-const Accelerometer = ({ data }) => (
+const Accelerometer = ({ data, markersData }) => (
     <DimensionsChart
             type="accelerometer"
             units={G}
             data={data}
+            markersData={markersData}
     />
 );
 

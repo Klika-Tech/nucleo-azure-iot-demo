@@ -5,13 +5,15 @@ import DimensionsChart from '../common/DimensionsChart';
 
 const mapStateToProps = state => ({
     data: state.magnetometer.data,
+    markersData: state.magnetometer.markersData,
 });
 
-const Magnetometer = ({ data }) => (
+const Magnetometer = ({ data, markersData }) => (
     <DimensionsChart
             type="magnetometer"
             units={TESLAS}
             data={data}
+            markersData={markersData}
     />
 );
 

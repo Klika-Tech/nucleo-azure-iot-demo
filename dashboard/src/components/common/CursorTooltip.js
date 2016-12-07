@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 const offsetX = 15;
 const offsetY = 20;
 
-const CursorTooltip = ({ children, cursorX, containerWidth }) => {
+const CursorTooltip = ({ children, cursorX, containerWidth, marker }) => {
     const isLeft = cursorX - containerWidth < -200;
     const style = {
         left: (isLeft) ? `${offsetX}px` : null,
@@ -11,7 +11,7 @@ const CursorTooltip = ({ children, cursorX, containerWidth }) => {
         top: `${-offsetY}px`,
     };
     return (
-        <div className="cursor-tooltip" style={style}>{children}</div>
+        <div className={`cursor-tooltip ${marker ? 'marker' : ''}`} style={style}>{children}</div>
     );
 };
 
@@ -19,6 +19,7 @@ CursorTooltip.propTypes = {
     cursorX: PropTypes.number,
     width: PropTypes.number,
     containerWidth: PropTypes.number,
+    marker: PropTypes.bool,
 };
 
 export default CursorTooltip;

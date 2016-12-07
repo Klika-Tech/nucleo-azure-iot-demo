@@ -3,7 +3,7 @@ import WeatherParams from './Params';
 import WeatherChart from './Chart';
 
 const WeatherChartContainer = ({
-    type, chartType, displayedCitiesData, units, sensorData, citiesData,
+    type, chartType, displayedCitiesData, units, sensorData, markersData, citiesData,
     onChangeType, onToggleVisibility, onChangeUnits,
 }) => (
     <div className="nucleo-chart-container">
@@ -23,6 +23,7 @@ const WeatherChartContainer = ({
                 chartType={chartType}
                 units={units}
                 data={sensorData}
+                markersData={markersData}
                 citiesData={displayedCitiesData}
             />
         </div>
@@ -37,6 +38,9 @@ WeatherChartContainer.propTypes = {
     }),
     chartType: PropTypes.string,
     sensorData: PropTypes.arrayOf(PropTypes.shape({
+        date: PropTypes.instanceOf(Date),
+    })),
+    markersData: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
     citiesData: PropTypes.arrayOf(PropTypes.shape({

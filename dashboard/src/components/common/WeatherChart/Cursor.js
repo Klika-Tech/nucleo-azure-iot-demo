@@ -15,8 +15,14 @@ function WeatherCursor({ data, cursorVisible, cursorX, margin, height, width, y,
             <CursorMarker
                 data={data}
                 y={d => y(d[type][units.key])}
+                marker={data ? data.marker : false}
             >
-                <CursorTooltip cursorX={cursorX} containerWidth={width} width={190}>
+                <CursorTooltip
+                    cursorX={cursorX}
+                    containerWidth={width}
+                    width={190}
+                    marker={data ? data.marker : false}
+                >
                     {label(type, data, units)}
                 </CursorTooltip>
 

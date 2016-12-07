@@ -12,6 +12,8 @@ import Focus from '../../common/Focus';
 import BrushX from '../../common/BrushX';
 import WeatherCursor from './Cursor';
 import CityLabel from './CityLabel';
+import FocusMarker from '../../common/FocusMarker';
+import ContextMarker from '../../common/ContextMarker';
 import { LINE_CHART, AREA_CHART } from '../../../chartTypes';
 
 const bisector = d3.bisector(d => d.date).right;
@@ -240,7 +242,7 @@ class WeatherChart extends Component {
     }
 
     render() {
-        const { containerWidth, containerHeight, data, citiesData, type, units, chartType } = this.props;
+        const { containerWidth, containerHeight, data, markersData, citiesData, type, units, chartType } = this.props;
         const {
             margin, margin2, x, y, x2, y2,
             focusData, focusYDomain, contextYDomain,
@@ -290,6 +292,13 @@ class WeatherChart extends Component {
                                     y={d => y(d[type][units.key])}
                                 />
                             ))}
+                            {markersData.map(d => (
+                                <FocusMarker
+                                    key={d.date.toISOString()}
+                                    y={y(d[type][units.key])}
+                                    x={x(d.date)}
+                                />
+                            ))}
                         </g>
                         <Axis
                             type="x"
@@ -322,6 +331,14 @@ class WeatherChart extends Component {
                                 y1={d => y2(d[type][units.key])}
                                 x={d => x2(d.date)}
                             />
+                            {markersData.map(d => (
+                                <ContextMarker
+                                    key={d.date.toISOString()}
+                                    y1={y2(contextYDomain[0])}
+                                    y2={y2(contextYDomain[1])}
+                                    x={x2(d.date)}
+                                />
+                            ))}
                         </BrushX>
                         <Axis
                             type="x"
@@ -364,6 +381,9 @@ WeatherChart.propTypes = {
         label: PropTypes.string,
     }),
     data: PropTypes.arrayOf(PropTypes.shape({
+        date: PropTypes.instanceOf(Date),
+    })),
+    markersData: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.instanceOf(Date),
     })),
     citiesData: PropTypes.arrayOf(PropTypes.shape({

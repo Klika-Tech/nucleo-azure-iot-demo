@@ -7,6 +7,7 @@ import { humidityChangeChartType, humidityToggleVisibility } from '../../actions
 const mapStateToProps = state => ({
     chartType: state.humidity.chartType,
     sensorData: state.humidity.sensorData,
+    markersData: state.humidity.markersData,
     citiesData: state.humidity.citiesData,
     displayedCitiesData: state.humidity.displayedCitiesData,
 });
@@ -21,13 +22,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Humidity = ({
-    sensorData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
+    sensorData, markersData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
 }) => (
     <WeatherChart
         type="humidity"
         units={PERCENTS}
         chartType={chartType}
         sensorData={sensorData}
+        markersData={markersData}
         citiesData={citiesData}
         displayedCitiesData={displayedCitiesData}
         onChangeType={handleChangeType}

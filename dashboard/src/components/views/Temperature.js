@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
     chartType: state.temperature.chartType,
     units: state.temperature.units,
     sensorData: state.temperature.sensorData,
+    markersData: state.temperature.markersData,
     citiesData: state.temperature.citiesData,
     displayedCitiesData: state.temperature.displayedCitiesData,
 });
@@ -28,14 +29,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Temperature = ({
-    sensorData, chartType, units, displayedCitiesData, citiesData,
-    handleChangeType, handleToggleVisibility, handleChangeUnits,
+    sensorData, markersData, chartType, units, displayedCitiesData,
+    citiesData, handleChangeType, handleToggleVisibility,
+    handleChangeUnits,
 }) => (
     <WeatherChart
         type="temperature"
         units={units}
         chartType={chartType}
         sensorData={sensorData}
+        markersData={markersData}
         citiesData={citiesData}
         displayedCitiesData={displayedCitiesData}
         onChangeType={handleChangeType}

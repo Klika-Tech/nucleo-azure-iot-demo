@@ -15,8 +15,9 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
             <CursorMarker
                 data={data}
                 y={d => y(d[type].x)}
+                marker={data ? data.marker : false}
             >
-                <CursorTooltip cursorX={cursorX} containerWidth={width}>
+                <CursorTooltip cursorX={cursorX} containerWidth={width} marker={data ? data.marker : false}>
                     {label(type, 'x', data, units)}
                 </CursorTooltip>
             </CursorMarker>
@@ -24,8 +25,9 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
             <CursorMarker
                 data={data}
                 y={d => y(d[type].y)}
+                marker={data ? data.marker : false}
             >
-                <CursorTooltip cursorX={cursorX} containerWidth={width}>
+                <CursorTooltip cursorX={cursorX} containerWidth={width} marker={data ? data.marker : false}>
                     {label(type, 'y', data, units)}
                 </CursorTooltip>
             </CursorMarker>
@@ -33,8 +35,9 @@ function DimensionsCursor({ data, cursorVisible, cursorX, margin, height, width,
             <CursorMarker
                 data={data}
                 y={d => y(d[type].z)}
+                marker={data ? data.marker : false}
             >
-                <CursorTooltip cursorX={cursorX} containerWidth={width}>
+                <CursorTooltip cursorX={cursorX} containerWidth={width} marker={data ? data.marker : false}>
                     {label(type, 'z', data, units)}
                 </CursorTooltip>
             </CursorMarker>

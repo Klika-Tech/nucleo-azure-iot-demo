@@ -7,6 +7,7 @@ import { pressureChangeChartType, pressureToggleVisibility } from '../../actions
 const mapStateToProps = state => ({
     chartType: state.pressure.chartType,
     sensorData: state.pressure.sensorData,
+    markersData: state.pressure.markersData,
     citiesData: state.pressure.citiesData,
     displayedCitiesData: state.pressure.displayedCitiesData,
 });
@@ -21,13 +22,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Barometer = ({
-    sensorData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
+    sensorData, markersData, chartType, displayedCitiesData, citiesData, handleChangeType, handleToggleVisibility,
 }) => (
     <WeatherChart
         type="pressure"
         units={HYPER_PASCALS}
         chartType={chartType}
         sensorData={sensorData}
+        markersData={markersData}
         citiesData={citiesData}
         displayedCitiesData={displayedCitiesData}
         onChangeType={handleChangeType}
