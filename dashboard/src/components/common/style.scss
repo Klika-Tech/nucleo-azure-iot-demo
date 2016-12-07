@@ -129,9 +129,13 @@
       pointer-events: none;
     }
 
-    .cursor-tooltip.marker {
-      background-color: #E76049;
-      border-color: #E76049;
+    .cursor-tooltip {
+      white-space: nowrap;
+
+      &.marker {
+        background-color: #E76049;
+        border-color: #E76049;
+      }
     }
 
     .city-label {
