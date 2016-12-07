@@ -47,11 +47,11 @@ class SimpleDimensionsChart extends Component {
             d => Math.min(d[type].x, d[type].y, d[type].z)));
         const maxY = d3.max(data.map(
             d => Math.max(d[type].x, d[type].y, d[type].z)));
-        this.yDomain = [
+        this.focusYDomain = [
             Math.floor((minY - 0.3) * 30) / 30,
             Math.ceil((maxY + 0.3) * 30) / 30,
         ];
-        y.domain(this.yDomain);
+        y.domain(this.focusYDomain);
         x.domain(getDefaultDomain());
     }
 

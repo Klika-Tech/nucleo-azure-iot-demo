@@ -108,7 +108,8 @@ class WeatherChart extends Component {
         const { data } = props;
         this.contextDomain = d3.extent(data.map(d => d.date));
         x2.domain(this.contextDomain);
-        y2.domain(this.calculateYDomain(data));
+        this.contextYDomain = this.calculateYDomain(data);
+        y2.domain(this.contextYDomain);
     }
 
     updateFocusDomains(props, state = {}) {
@@ -147,7 +148,8 @@ class WeatherChart extends Component {
             .push(this.focusData)
             .flatten()
             .value();
-        y.domain(this.calculateYDomain(dataUnion));
+        this.focusYDomain = this.calculateYDomain(dataUnion);
+        y.domain(this.focusYDomain);
     }
 
     updateCursor(props, state = {}) {
@@ -239,7 +241,11 @@ class WeatherChart extends Component {
 
     render() {
         const { containerWidth, containerHeight, data, citiesData, type, units, chartType } = this.props;
-        const { margin, margin2, x, y, x2, y2, focusData, height, height2, width, state } = this;
+        const {
+            margin, margin2, x, y, x2, y2,
+            focusData, focusYDomain, contextYDomain,
+            height, height2, width, state,
+        } = this;
         return (
             <div>
                 <svg width={containerWidth} height={containerHeight}>
@@ -259,27 +265,27 @@ class WeatherChart extends Component {
                         <g className="zoom">
                             {chartType === AREA_CHART && (
                                 <Area
-                                    key={units.key}
                                     data={focusData}
-                                    x={d => x(d.date)}
-                                    y0={d => height}
+                                    domain={focusYDomain}
+                                    y0={d => y(focusYDomain[0])}
                                     y1={d => y(d[type][units.key])}
+                                    x={d => x(d.date)}
                                 />
                             )}
                             {chartType === LINE_CHART && (
                                 <Line
-                                    key={units.key}
                                     data={focusData}
-                                    x={d => x(d.date)}
+                                    domain={focusYDomain}
                                     y={d => y(d[type][units.key])}
+                                    x={d => x(d.date)}
                                 />
                             )}
                             {citiesData.map(city => (
                                 <Curve
-                                    key={`${units.key}-${city.cityId}`}
-                                    type={d3.curveBasis}
+                                    key={city.cityId}
                                     className={`city-${city.cityId}`}
                                     data={city.focus.data}
+                                    domain={focusYDomain}
                                     x={d => x(d.date)}
                                     y={d => y(d[type][units.key])}
                                 />
@@ -295,6 +301,7 @@ class WeatherChart extends Component {
                             type="y"
                             scale={y}
                             data={focusData}
+                            domain={focusYDomain}
                             tickSize={width}
                             tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}
                         />
@@ -309,12 +316,11 @@ class WeatherChart extends Component {
                             onBrushEnd={this.handleBrushEnd}
                         >
                             <Area
-                                key={units.key}
                                 data={data}
-                                x={d => x2(d.date)}
-                                y0={d => height2}
+                                domain={contextYDomain}
+                                y0={d => y2(contextYDomain[0])}
                                 y1={d => y2(d[type][units.key])}
-                                skipRenderCount={10}
+                                x={d => x2(d.date)}
                             />
                         </BrushX>
                         <Axis

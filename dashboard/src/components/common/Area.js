@@ -1,20 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3 from 'd3';
+import _ from 'lodash';
 
 class Area extends Component {
     constructor(props) {
         super(props);
-        this.generator = d3.area()
-            .y0(this.props.y0)
-            .y1(this.props.y1)
-            .x(this.props.x);
+        this.generator = getGenerator(props);
         this.renderCounter = props.skipRenderCount;
     }
 
     shouldComponentUpdate(newProps, newState, nextContext) {
-        const shouldComponentUpdate = (this.props.data !== newProps.data)
-            || (this.context.containerWidth !== nextContext.containerWidth)
+        const isSizeChanged = (this.context.containerWidth !== nextContext.containerWidth)
             || (this.context.containerHeight !== nextContext.containerHeight);
+        const isDomainChanged = !_.isEqual(this.props.domain, newProps.domain);
+        const isDataChanged = (this.props.data !== newProps.data);
         let shouldRender = true;
         if (newProps.skipRenderCount !== undefined) {
             shouldRender = this.renderCounter <= 0;
@@ -24,7 +23,10 @@ class Area extends Component {
                 this.renderCounter -= 1;
             }
         }
-        return shouldComponentUpdate && shouldRender;
+        if (isDomainChanged) {
+            this.generator = getGenerator(newProps);
+        }
+        return isSizeChanged || isDomainChanged || (isDataChanged && shouldRender);
     }
 
     render() {
@@ -36,9 +38,10 @@ class Area extends Component {
 
 Area.propTypes = {
     data: PropTypes.array,
-    x: PropTypes.func,
+    domain: PropTypes.arrayOf(PropTypes.number),
     y0: PropTypes.func,
     y1: PropTypes.func,
+    x: PropTypes.func,
     skipRenderCount: PropTypes.number,
 };
 
@@ -46,5 +49,12 @@ Area.contextTypes = {
     containerHeight: PropTypes.number,
     containerWidth: PropTypes.number,
 };
+
+function getGenerator(props) {
+    return d3.area()
+        .y0(props.y0)
+        .y1(props.y1)
+        .x(props.x);
+}
 
 export default Area;

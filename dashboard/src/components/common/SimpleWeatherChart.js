@@ -52,11 +52,11 @@ class SimpleWeatherChart extends Component {
         );
         const minY = d3.min(this.focusData.map(d => d[type][units.key]));
         const maxY = d3.max(this.focusData.map(d => d[type][units.key]));
-        this.yDomain = [
+        this.focusYDomain = [
             Math.floor((minY - 0.3) * 30) / 30,
             Math.ceil((maxY + 0.3) * 30) / 30,
         ];
-        y.domain(this.yDomain);
+        y.domain(this.focusYDomain);
         x.domain(focusDomain);
     }
 
@@ -71,7 +71,7 @@ class SimpleWeatherChart extends Component {
 
     render() {
         const { containerWidth, containerHeight, type, units } = this.props;
-        const { margin, x, y, height, width, focusData } = this;
+        const { margin, x, y, height, width, focusData, focusYDomain } = this;
         return (
             <div className="nucleo-chart-container">
                 <div className="weather-chart">
@@ -88,9 +88,10 @@ class SimpleWeatherChart extends Component {
                             <g className="zoom">
                                 <Area
                                     data={focusData}
-                                    x={d => x(d.date)}
-                                    y0={() => height}
+                                    domain={focusYDomain}
+                                    y0={d => y(focusYDomain[0])}
                                     y1={d => y(d[type][units.key])}
+                                    x={d => x(d.date)}
                                 />
                             </g>
                             <Axis
@@ -104,6 +105,7 @@ class SimpleWeatherChart extends Component {
                                 type="y"
                                 scale={y}
                                 data={focusData}
+                                domain={focusYDomain}
                                 tickSize={0}
                                 ticks={4}
                                 tickFormat={v => (`${y.tickFormat()(v)}${units.label}`)}

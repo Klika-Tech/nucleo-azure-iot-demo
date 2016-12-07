@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 import { axisBottom, axisRight } from 'd3-axis';
+import _ from 'lodash';
 
 class Axis extends Component {
     constructor(props) {
@@ -15,9 +16,10 @@ class Axis extends Component {
     componentDidMount() { this.renderAxis(); }
 
     shouldComponentUpdate(newProps, newState, nextContext) {
-        const shouldComponentUpdate = (this.props.data !== newProps.data)
-            || (this.context.containerWidth !== nextContext.containerWidth)
+        const isSizeChanged = (this.context.containerWidth !== nextContext.containerWidth)
             || (this.context.containerHeight !== nextContext.containerHeight);
+        const isDomainChanged = !_.isEqual(this.props.domain, newProps.domain);
+        const isDataChanged = (this.props.data !== newProps.data);
         let shouldRender = true;
         if (newProps.skipRenderCount !== undefined) {
             shouldRender = this.renderCounter <= 0;
@@ -27,10 +29,10 @@ class Axis extends Component {
                 this.renderCounter -= 1;
             }
         }
-        return shouldComponentUpdate && shouldRender;
+        return isSizeChanged || isDomainChanged || (isDataChanged && shouldRender);
     }
 
-    componentDidUpdate() {
+    componentWillUpdate() {
         this.renderAxis();
     }
 
@@ -68,6 +70,7 @@ class Axis extends Component {
 Axis.propTypes = {
     data: PropTypes.array,
     type: PropTypes.oneOf(['x', 'y']),
+    domain: PropTypes.arrayOf(PropTypes.number),
     scale: PropTypes.func,
     tickFormat: PropTypes.func,
     tickSize: PropTypes.number,
