@@ -1,0 +1,19 @@
+{
+  "name": "nucleo-azure-device-emulator",
+  "version": "0.0.1",
+  "description": "Nucleo Demo Azure Device Emulator",
+  "license": "MIT",
+  "dependencies": {
+    "azure-iot-device": "1.1.1",
+    "azure-iot-device-mqtt": "1.1.1",
+    "lodash": "4.17.2"
+  },
+  "devDependencies": {
+    "eslint": "3.11.1"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm -s run lint",
+    "start": "node emulator.js"
+  }
+}
