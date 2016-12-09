@@ -1,0 +1,14 @@
+{
+  "disabled":false,
+  "bindings":[
+    {
+      "name": "nucleoData",
+      "type": "documentDB",
+      "databaseName": "NucleoDatabase",
+      "collectionName": "metrics",
+      "createIfNotExists": true,
+      "connection": "<Value of AccountEndpoint in Application Setting - see below>",
+      "direction": "out"
+    }
+  ]
+}
