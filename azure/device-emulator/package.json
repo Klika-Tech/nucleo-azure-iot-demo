@@ -6,6 +6,7 @@
   "dependencies": {
     "azure-iot-device": "1.1.1",
     "azure-iot-device-mqtt": "1.1.1",
+    "azure-iothub": "1.1.1",
     "lodash": "4.17.2"
   },
   "devDependencies": {
@@ -14,6 +15,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm -s run lint",
-    "start": "node emulator.js"
+    "create": "node create.js",
+    "emulate": "node emulator.js"
   }
 }
