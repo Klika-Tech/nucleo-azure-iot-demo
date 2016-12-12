@@ -57,8 +57,9 @@ function connectCallback(err) {
         });
 
         const sendInterval = setInterval(function () {
-            const data = JSON.stringify({ topic: 'Nucleo/data', payload: generateSensorsData() });
+            const data = JSON.stringify(generateSensorsData());
             const message = new Message(data);
+            message.properties.add('Topic Name', 'Nucleo/data');
             console.log('Sending message: ' + message.getData());
             client.sendEvent(message, printResultFor('send'));
         }, SEND_MESSAGE_INTERVAL);
