@@ -15,7 +15,6 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm -s run lint",
-    "create": "node create.js",
-    "emulate": "node emulator.js"
+    "start": "node emulator.js"
   }
 }

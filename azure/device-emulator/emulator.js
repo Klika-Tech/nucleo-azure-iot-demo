@@ -1,10 +1,50 @@
 const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
-const { connectionString } = require('./config.js');
+const iothub = require('azure-iothub');
 const _ = require('lodash');
+const { connectionString, deviceId } = require('./config.js');
 
-const client = Client.fromConnectionString(connectionString, Mqtt);
-client.open(connectCallback);
+const registry = iothub.Registry.fromConnectionString(connectionString);
+const device = {
+    deviceId: deviceId
+};
+let client;
+const SEND_MESSAGE_INTERVAL = 5 * 1000;
+
+const getDeviceInfoPromise = new Promise((resolve, reject) => {
+    registry.get(device.deviceId, (err, deviceInfo) => {
+        if (err) {
+            console.log('GET device: ' + err.toString());
+            reject(err)
+        }
+        if (deviceInfo) resolve(deviceInfo)
+    });
+});
+
+const getOrCreateDevicePromise = getDeviceInfoPromise.catch((e) => {
+    return new Promise((resolve, reject) => {
+        registry.create(device, function(err, deviceInfo, res) {
+            if (err) {
+                console.log('CREATE device: ' + err.toString());
+                reject(err);
+            }
+            if (deviceInfo) resolve(deviceInfo);
+        });
+    })
+});
+
+getOrCreateDevicePromise.then((deviceInfo) => {
+   const deviceConnectionString = getDeviceConnectionString(connectionString, deviceId, deviceInfo);
+   console.log('ConnectionString:', deviceConnectionString);
+    client = Client.fromConnectionString(deviceConnectionString, Mqtt);
+    client.open(connectCallback);
+});
+
+function getDeviceConnectionString(connectionString, deviceId, deviceInfo) {
+    const HostName =  connectionString.match(/([^=;]*)=([^=;]*)/m)[2];
+    const SharedAccessKey =  deviceInfo.authentication.symmetricKey.primaryKey;
+    return `HostName=${HostName};DeviceId=${deviceId};SharedAccessKey=${SharedAccessKey}`;
+}
 
 function connectCallback(err) {
     if (err) {
@@ -21,7 +61,7 @@ function connectCallback(err) {
             const message = new Message(data);
             console.log('Sending message: ' + message.getData());
             client.sendEvent(message, printResultFor('send'));
-        }, 2000);
+        }, SEND_MESSAGE_INTERVAL);
 
         client.on('error', function (err) {
             console.error(err.message);
