@@ -1,4 +1,10 @@
-module.exports = function (context) {
+module.exports = function (context, timer, db) {
+    var config = {
+        owmApiKey: '<open weather map api key>'
+    };
+    if(timer.isPastDue) {
+        context.log('JavaScript is running late!');
+    }
     var http = require('http');
     var cities = [
         {name: 'Minsk', id: 625144},
@@ -21,13 +27,20 @@ module.exports = function (context) {
     var cityIds = cities
         .map(function(d) {return d.id})
         .reduce(function(prev,cur) { return prev + ',' + cur });
-    http.get('http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + config.owmApiKey,
+
+    var timeStamp = new Date().toISOString();
+
+    var apiUrl = 'http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + config.owmApiKey;
+    context.log('Fetch url:', apiUrl);
+
+    http.get(apiUrl,
         function(res) {
             var data = '';
             res.on('data', function(chunk) {
                 data += chunk
             });
             res.on('end', function() {
+                context.log('Data fetched successfully:', timeStamp);
                 data = JSON.parse(data);
                 data = data.list.map(function(d) {
                     return {
@@ -38,14 +51,13 @@ module.exports = function (context) {
                         pressure: d.main.pressure
                     }
                 });
-
-                context.bindings.nucleoData = JSON.stringify(data);
+                context.bindings.db = JSON.stringify(data);
                 context.done();
-
             });
 
         }).on('error', function(err) {
-            console.log('Error:', err);
+        console.log('Data fetch error:', err);
+        context.done();
     });
-};
 
+};

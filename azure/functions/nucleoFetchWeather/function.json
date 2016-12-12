@@ -1,14 +1,20 @@
 {
-  "disabled":false,
-  "bindings":[
+  "bindings": [
     {
-      "name": "nucleoData",
+      "name": "timer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 */5 * * * *"
+    },
+    {
       "type": "documentDB",
-      "databaseName": "NucleoDatabase",
-      "collectionName": "metrics",
-      "createIfNotExists": true,
-      "connection": "<Value of AccountEndpoint in Application Setting - see below>",
+      "name": "db",
+      "databaseName": "nucleo-data",
+      "collectionName": "nucleo-weather",
+      "createIfNotExists": false,
+      "connection": "<connection>",
       "direction": "out"
     }
-  ]
+  ],
+  "disabled": false
 }
