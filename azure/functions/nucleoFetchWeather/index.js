@@ -29,13 +29,13 @@ const cityIds = cities
     });
 
 function getColLink() {
-    return `dbs/${config.dbName}/colls/${config.collectionName}`;
+    return 'dbs/nucleo-data/colls/weather';
 }
 
 function insertDocuments(client, collLink, documents) {
     const promises = documents.map(document => {
         return new Promise((resolve, reject) => {
-            client.createDocument(collLink, document, function (err, doc) {
+            client.upsertDocument(collLink, document, function (err, doc) {
                 if (err) {
                     reject(err);
                 } else {
@@ -65,9 +65,10 @@ module.exports = function (context, timer) {
                 context.log('Data fetched successfully:', timeStamp);
                 data = JSON.parse(data);
                 data = data.list.map(function(d) {
+                    const dateTime = new Date(d.dt * 1000);
                     return {
                         city: d.id,
-                        timestamp: d.dt,
+                        timestamp: dateTime.toISOString(),
                         temperature: d.main.temp,
                         humidity: d.main.humidity,
                         pressure: d.main.pressure
