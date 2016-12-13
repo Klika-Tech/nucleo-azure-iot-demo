@@ -5,15 +5,6 @@
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 */5 * * * *"
-    },
-    {
-      "type": "documentDB",
-      "name": "db",
-      "databaseName": "nucleo-data",
-      "collectionName": "nucleo-weather",
-      "createIfNotExists": false,
-      "connection": "<connection>",
-      "direction": "out"
     }
   ],
   "disabled": false

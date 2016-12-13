@@ -1,0 +1,15 @@
+{
+  "name": "nucleo-fetch-weather",
+  "version": "0.0.1",
+  "description": "Nucleo Demo Azure Function Fetch OpenWeatherApi",
+  "license": "MIT",
+  "dependencies": {
+    "documentdb": "1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "3.11.1"
+  },
+  "scripts": {
+    "test": "eslint ."
+  }
+}

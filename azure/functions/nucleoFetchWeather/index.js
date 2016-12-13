@@ -1,41 +1,63 @@
-module.exports = function (context, timer, db) {
-    var config = {
-        owmApiKey: '<open weather map api key>'
-    };
+const http = require('http');
+const { DocumentClient } = require('documentdb');
+const config = require('./config');
+const timeStamp = new Date().toISOString();
+const cities = [
+    { name: 'Minsk', id: 625144 },
+    { name: 'New York', id: 5128638 },
+    { name: 'Los Angeles', id: 5368361 },
+    { name: 'Seattle', id: 5809844 },
+    { name: 'Chicago', id: 4887398 },
+    { name: 'Washington DC', id: 4140963 },
+    { name: 'Miami', id: 4164138 },
+    { name: 'San Francisco', id: 5391959 },
+    { name: 'London', id: 2643743 },
+    { name: 'Madrid', id: 3117735 },
+    { name: 'Milan', id: 3173435 },
+    { name: 'Rome', id: 3169070 },
+    { name: 'Berlin', id: 2950158 },
+    { name: 'Prague', id: 3067696 },
+    { name: 'Paris', id: 2988507 },
+    { name: 'Moscow', id: 524901 }
+];
+const cityIds = cities
+    .map(function (d) {
+        return d.id
+    })
+    .reduce(function (prev, cur) {
+        return prev + ',' + cur
+    });
+
+function getColLink() {
+    return `dbs/${config.dbName}/colls/${config.collectionName}`;
+}
+
+function insertDocuments(client, collLink, documents) {
+    const promises = documents.map(document => {
+        return new Promise((resolve, reject) => {
+            client.createDocument(collLink, document, function (err, doc) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doc)
+                }
+            });
+        })
+    });
+    return Promise.all(promises);
+}
+
+module.exports = function (context, timer) {
     if(timer.isPastDue) {
-        context.log('JavaScript is running late!');
+        context.log('Function is running late!');
     }
-    var http = require('http');
-    var cities = [
-        {name: 'Minsk', id: 625144},
-        {name: 'New York', id: 5128638},
-        {name: 'Los Angeles', id: 5368361},
-        {name: 'Seattle', id: 5809844},
-        {name: 'Chicago', id: 4887398},
-        {name: 'Washington DC', id: 4140963},
-        {name: 'Miami', id: 4164138},
-        {name: 'San Francisco', id: 5391959},
-        {name: 'London', id: 2643743},
-        {name: 'Madrid', id: 3117735},
-        {name: 'Milan', id: 3173435},
-        {name: 'Rome', id: 3169070},
-        {name: 'Berlin', id: 2950158},
-        {name: 'Prague', id: 3067696},
-        {name: 'Paris', id: 2988507},
-        {name: 'Moscow', id: 524901}
-    ];
-    var cityIds = cities
-        .map(function(d) {return d.id})
-        .reduce(function(prev,cur) { return prev + ',' + cur });
-
-    var timeStamp = new Date().toISOString();
-
-    var apiUrl = 'http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + config.owmApiKey;
+    const client = new DocumentClient(config.dbHost, {masterKey: config.dbMasterKey});
+    const apiUrl = 'http://api.openweathermap.org/data/2.5/group?id=' + cityIds + '&units=metric&appid=' + config.owmApiKey;
     context.log('Fetch url:', apiUrl);
-
-    http.get(apiUrl,
-        function(res) {
-            var data = '';
+    http.get(
+        apiUrl,
+        (res) => {
+            let data = '';
             res.on('data', function(chunk) {
                 data += chunk
             });
@@ -51,13 +73,21 @@ module.exports = function (context, timer, db) {
                         pressure: d.main.pressure
                     }
                 });
-                context.bindings.db = JSON.stringify(data);
-                context.done();
+                insertDocuments(client, getColLink(), data).then(
+                    (inserted) => {
+                        context.log('Data inserted successfully:', inserted.length);
+                        context.done();
+                    },
+                    (error) => {
+                        context.log('Data insert error:', JSON.stringify(error));
+                        context.done();
+                    }
+                );
             });
 
-        }).on('error', function(err) {
+        }).on('error', (err) => {
         console.log('Data fetch error:', err);
         context.done();
     });
-
 };
+
