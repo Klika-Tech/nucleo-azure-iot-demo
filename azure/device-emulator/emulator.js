@@ -2,14 +2,13 @@ const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const _ = require('lodash');
-const { connectionString, deviceId } = require('./config.js');
+const { connectionString, deviceId, sendMessageIntervalMs } = require('./config.js');
 
 const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
     deviceId: deviceId
 };
 let client;
-const SEND_MESSAGE_INTERVAL = 5 * 1000;
 
 const getDeviceInfoPromise = new Promise((resolve, reject) => {
     registry.get(device.deviceId, (err, deviceInfo) => {
@@ -62,7 +61,7 @@ function connectCallback(err) {
             message.properties.add('Topic Name', 'Nucleo/data');
             console.log('Sending message: ' + message.getData());
             client.sendEvent(message, printResultFor('send'));
-        }, SEND_MESSAGE_INTERVAL);
+        }, sendMessageIntervalMs);
 
         client.on('error', function (err) {
             console.error(err.message);
