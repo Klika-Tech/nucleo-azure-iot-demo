@@ -1,7 +1,7 @@
 import { compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import mqtt from './mqtt';
-import aws from './aws';
+import aws from './azure';
 import config from '../config';
 
 export default compose(

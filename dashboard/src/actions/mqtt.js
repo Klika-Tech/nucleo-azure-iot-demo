@@ -4,13 +4,10 @@ import {
     MQTT_DISCONNECTED,
 } from '../actionTypes';
 
-export function connect(url, reconnectPeriod) {
+export function connect(options) {
     return {
         type: MQTT_CONNECT,
-        payload: {
-            url,
-            reconnectPeriod,
-        },
+        payload: options,
     };
 }
 

@@ -6,7 +6,7 @@ import config from '../config';
 
 const mqttMiddleware = (function () {
     let url = null;
-    let reconnectPeriod = null;
+    let options = null;
     let client = null;
     let interval = null;
 
@@ -27,10 +27,10 @@ const mqttMiddleware = (function () {
                     client.end();
                 }
                 url = action.payload.url;
-                reconnectPeriod = action.payload.reconnectPeriod;
-                client = mqtt.connect(url, { reconnectPeriod });
+                options = action.payload.options;
+                client = mqtt.connect(url, options);
                 client.on('connect', () => {
-                    if (config.debug) console.log('MQTT: client connected');
+                    console.log('MQTT: client connected');
                     store.dispatch(connected());
                     client.subscribe(config.mqttTopic);
                     setTimeout(() => {
@@ -44,10 +44,10 @@ const mqttMiddleware = (function () {
                 });
                 client.on('message', (topic, msg) => {
                     const message = msg.toString();
-                    if (config.debug) console.info('MQTT: Message recieved.\nTopic: %s\nPayload: %s', topic, message);
-                    if (topic === config.mqttTopic) {
-                        messages.push(JSON.parse(message));
-                    }
+                    console.info('MQTT: Message recieved.\nTopic: %s\nPayload: %s', topic, message);
+                    // if (topic === config.mqttTopic) {
+                    //     messages.push(JSON.parse(message));
+                    // }
                 });
                 break;
             default:

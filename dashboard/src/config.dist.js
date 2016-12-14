@@ -1,8 +1,9 @@
 module.exports = {
-    awsRegion: 'us-east-1',
-    apiUrl: 'https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/',
-    cognitoIdentityPool: 'us-east-1:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    iotEndpoint: 'data.iot.us-east-1.amazonaws.com',
+    fetchApiUrl: 'https://xxxxxxxxxxx.azurewebsites.net/api/getNucleoData',
+    fetchApiKey: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    iotEndpoint: 'xxxxxx.azure-devices.net',
+    iotDeviceId: 'dashboard',
+    iotDeviceToken: 'xxxxxxxxxxxxxxxxxxx',
     mqttTopic: 'Nucleo/data',
     debug: true,
 };

@@ -22,7 +22,7 @@ import {
     OverlayTrigger,
 } from '@sketchpixy/rubix';
 import classNames from 'classnames';
-import { AWS_CONNECT } from '../../../actionTypes';
+import { AZURE_CONNECT } from '../../../actionTypes';
 import Loader from '../../common/Loader';
 import Menu from './Menu';
 import '../../../rubix/sass/main.scss';
@@ -39,7 +39,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch({ type: AWS_CONNECT });
+        dispatch({ type: AZURE_CONNECT });
     }
 
     render() {

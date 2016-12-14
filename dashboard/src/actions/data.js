@@ -44,14 +44,15 @@ function prepareData(data) {
         d.humidityData = _.map(d.humidityData, prepareDataItem);
         d.pressureData = _.map(d.pressureData, prepareDataItem);
     });
+    data.sensorData = _.map(data.sensorData, prepareDataItem);
     return data;
 }
 
 function prepareDataItem(dataItem) {
     const result = {
-        timestamp: dataItem.timestamp === undefined
-            ? Math.round(Date.now() / 1000)
-            : +dataItem.timestamp,
+        timestamp: (typeof dataItem.timestamp === 'string')
+            ? Math.round((new Date(dataItem.timestamp)).getTime() / 1000)
+            : Math.round(Date.now() / 1000),
         marker: dataItem.marker,
     };
 

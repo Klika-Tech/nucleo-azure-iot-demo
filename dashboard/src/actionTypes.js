@@ -1,4 +1,4 @@
-export const AWS_CONNECT = 'aws_connect';
+export const AZURE_CONNECT = 'azure_connect';
 
 export const MQTT_CONNECT = 'mqtt_connect';
 export const MQTT_CONNECTED = 'mqtt_connected';

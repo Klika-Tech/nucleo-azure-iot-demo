@@ -2,7 +2,7 @@ const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const _ = require('lodash');
-const { connectionString, deviceId, sendMessageIntervalMs } = require('./config.js');
+const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers } = require('./config.js');
 
 const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
@@ -125,7 +125,7 @@ function generateSensorsData() {
         return deviateSensor(sensorConfig)
     });
     const rnd = Math.random();
-    if(rnd > .25) {
+    if(generateMarkers && (rnd > .25)) {
         newSensorValues.marker = true;
     }
     return newSensorValues;
