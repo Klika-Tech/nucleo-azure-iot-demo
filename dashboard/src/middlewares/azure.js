@@ -8,10 +8,13 @@ import { connect } from '../actions/mqtt';
 const awsMiddleware = store => next => (action) => {
     switch (action.type) {
     case AZURE_CONNECT:
-        FetchService.fetchMetrics(config).then((data) => {
-            store.dispatch(fetchData(data));
-            identifyAndConnect(store.dispatch, config);
-        });
+        // FetchService.fetchMetrics(config).then((data) => {
+        //     store.dispatch(fetchData(data));
+        //     identifyAndConnect(store.dispatch, config);
+        // });
+
+        identifyAndConnect(store.dispatch, config);
+
         break;
     case MQTT_DISCONNECTED:
         setTimeout(() => {
