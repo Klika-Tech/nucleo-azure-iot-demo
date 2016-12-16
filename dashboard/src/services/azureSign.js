@@ -1,8 +1,8 @@
-import CryptoJS from 'crypto-js';
+const crypto = require('crypto-browserify');
 
 export function generateMqttSettings(endpoint, deviceId, accessKey) {
     return {
-        url: `mqtts://${endpoint}:8883`,
+        url: `mqtts://${endpoint}`,
         options: {
             protocolId: 'MQTT',
             protocolVersion: 4,
@@ -11,7 +11,7 @@ export function generateMqttSettings(endpoint, deviceId, accessKey) {
             rejectUnauthorized: true,
             reconnectPeriod: 0,
             username: getDeviceUserName(endpoint, deviceId),
-            password: generateIotToken(endpoint, deviceId, accessKey),
+            password: new Buffer(generateIotToken(endpoint, deviceId, accessKey)),
         },
     };
 }
@@ -65,8 +65,10 @@ SharedAccessSignature.prototype.toString = function () {
     return sas;
 };
 
-function hmacHash(password, sts) {
-    return CryptoJS.HmacSHA256(sts, password).toString();
+function hmacHash(password, stringToSign) {
+    const hmac = crypto.createHmac('sha256', new Buffer(password, 'base64'));
+    hmac.update(stringToSign);
+    return hmac.digest('base64');
 }
 
 function encodeUriComponentStrict(str) {

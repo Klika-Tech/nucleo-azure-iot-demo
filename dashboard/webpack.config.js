@@ -34,6 +34,10 @@ module.exports = {
                 test: /\.(woff2?|png|gif)$/,
                 loader: 'file',
             },
+            {
+                test: /\.json$/,
+                loader: "json",
+            }
         ],
         noParse: [
             /aws-sdk/,
