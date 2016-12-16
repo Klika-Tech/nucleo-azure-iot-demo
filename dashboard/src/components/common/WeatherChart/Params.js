@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import { Form, FormGroup, ControlLabel, Radio, Checkbox } from '@sketchpixy/rubix';
-import './index.scss';
+import './style.scss';
 import { LINE_CHART, AREA_CHART } from '../../../chartTypes';
 import { CELSIUS, FAHRENHEITS } from '../../../scaleUnits';
 

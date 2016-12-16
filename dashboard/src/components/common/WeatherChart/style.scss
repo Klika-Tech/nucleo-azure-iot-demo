@@ -4,6 +4,19 @@
     float: right;
     width: 130px;
     font-size: small;
+
+    .form-group {
+      margin-bottom: 5px;
+
+      .control-label {
+        margin-bottom: 0;
+      }
+
+      .radio, .checkbox {
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
+    }
   }
 
   .weather-chart {
