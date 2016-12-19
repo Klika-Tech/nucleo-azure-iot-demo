@@ -1,25 +1,21 @@
-import { AZURE_CONNECT, MQTT_DISCONNECTED } from '../actionTypes';
+import { AZURE_CONNECT, WS_DISCONNECTED } from '../actionTypes';
 import * as FetchService from '../services/fetch';
 import config from '../config';
 import { fetchData } from '../actions/data';
-import { generateMqttSettings } from '../services/azureSign';
-import { connect } from '../actions/mqtt';
+import { connect } from '../actions/socket';
 
-const awsMiddleware = store => next => (action) => {
+const azureMiddleware = store => next => (action) => {
     switch (action.type) {
     case AZURE_CONNECT:
-        // FetchService.fetchMetrics(config).then((data) => {
-        //     store.dispatch(fetchData(data));
-        //     identifyAndConnect(store.dispatch, config);
-        // });
-
-        identifyAndConnect(store.dispatch, config);
-
+        FetchService.fetchMetrics(config).then((data) => {
+            store.dispatch(fetchData(data));
+            identifyAndConnect(store.dispatch, config);
+        });
         break;
-    case MQTT_DISCONNECTED:
+    case WS_DISCONNECTED:
         setTimeout(() => {
-            if (config.debug) console.log('MQTT: Reconnect...');
-            //identifyAndConnect(store.dispatch, config);
+            if (config.debug) console.log('WS: Reconnect...');
+            identifyAndConnect(store.dispatch, config);
         }, 1000);
         break;
     default:
@@ -27,10 +23,8 @@ const awsMiddleware = store => next => (action) => {
     }
 };
 
-export default awsMiddleware;
+export default azureMiddleware;
 
-function identifyAndConnect(dispatch, { iotEndpoint, iotDeviceId, iotDeviceToken }) {
-    const settings = generateMqttSettings(iotEndpoint, iotDeviceId, iotDeviceToken);
-    console.log('identifyAndConnect:', settings);
-    dispatch(connect(settings));
+function identifyAndConnect(dispatch, { eventNotifierUri }) {
+    dispatch(connect({ url: eventNotifierUri }));
 }

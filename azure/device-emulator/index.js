@@ -40,7 +40,7 @@ getOrCreateDevicePromise.then((deviceInfo) => {
 });
 
 function getDeviceConnectionString(connectionString, deviceId, deviceInfo) {
-    const HostName =  connectionString.match(/([^=;]*)=([^=;]*)/m)[2];
+    const HostName = connectionString.match(/([^=;]*)=([^=;]*)/m)[2];
     const SharedAccessKey =  deviceInfo.authentication.symmetricKey.primaryKey;
     return `HostName=${HostName};DeviceId=${deviceId};SharedAccessKey=${SharedAccessKey}`;
 }
@@ -58,7 +58,7 @@ function connectCallback(err) {
         const sendInterval = setInterval(function () {
             const data = JSON.stringify(generateSensorsData());
             const message = new Message(data);
-            message.properties.add('Topic Name', 'Nucleo/data');
+            message.properties.add('dataType', 'telemetry');
             console.log('Sending message: ' + message.getData());
             client.sendEvent(message, printResultFor('send'));
         }, sendMessageIntervalMs);

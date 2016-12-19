@@ -1,13 +1,11 @@
 {
-  "name": "nucleo-azure-device-emulator",
+  "name": "nucleo-azure-messege-publisher",
   "version": "0.0.1",
-  "description": "Nucleo Demo Azure Device Emulator",
+  "description": "Nucleo Demo Azure Publish Message",
   "license": "MIT",
   "dependencies": {
-    "azure-iot-device": "1.1.1",
-    "azure-iot-device-mqtt": "1.1.1",
-    "azure-iothub": "1.1.1",
-    "lodash": "4.17.2"
+    "azure-event-hubs": "0.0.4",
+    "ws": "1.1.1"
   },
   "devDependencies": {
     "eslint": "3.11.1"

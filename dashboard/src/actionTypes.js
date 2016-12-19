@@ -1,8 +1,8 @@
 export const AZURE_CONNECT = 'azure_connect';
 
-export const MQTT_CONNECT = 'mqtt_connect';
-export const MQTT_CONNECTED = 'mqtt_connected';
-export const MQTT_DISCONNECTED = 'mqtt_disconnected';
+export const WS_CONNECT = 'ws_connect';
+export const WS_CONNECTED = 'ws_connected';
+export const WS_DISCONNECTED = 'ws_disconnected';
 
 export const DATA_FETCHED = 'data_fetched';
 
