@@ -42,8 +42,10 @@ const socketMiddleware = (function () {
                 client.onmessage = (e) => {
                     if (e.type === 'message') {
                         const msg = JSON.parse(e.data);
-                        console.info('WS: Message received.', msg);
-                        messages.push(msg);
+                        if (msg.type !== 'Buffer' || !msg.error) { // ignore errors or buffered messages
+                            console.info('WS: Message received.', msg);
+                            messages.push(msg);
+                        }
                     }
                 };
 
