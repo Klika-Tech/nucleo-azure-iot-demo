@@ -26,22 +26,23 @@ const socketMiddleware = (function () {
 
                 client = new WebSocket(action.payload.url);
                 client.onopen = (e) => {
-                    if (config.debug) console.log('WS: client connected');
+                    console.log('WS: client connected');
                     store.dispatch(connected());
                     setTimeout(() => {
                         client.close();
+                        client = null;
                     }, 270000); // 4.5 minutes
                 };
 
                 client.onclose = (e) => {
-                    if (config.debug) console.log('WS: client disconnected');
+                    console.log('WS: client disconnected');
                     store.dispatch(disconnected());
                 };
 
                 client.onmessage = (e) => {
                     if (e.type === 'message') {
                         const msg = JSON.parse(e.data);
-                        if (config.debug) { console.info('WS: Message received.', msg); }
+                        console.info('WS: Message received.', msg);
                         messages.push(msg);
                     }
                 };
