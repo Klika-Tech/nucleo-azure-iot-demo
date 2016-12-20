@@ -6,7 +6,7 @@ function truncate(prefix) {
     // Query documents and take 1st item.
     var isAccepted = collection.queryDocuments(
         collection.getSelfLink(),
-        'SELECT TOP 10000 * FROM root r',
+        'SELECT TOP 10000 * FROM root r ORDER BY r.timestamp DESC',
         function (err, feed, options) {
             if (err) throw err;
 

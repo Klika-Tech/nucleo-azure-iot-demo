@@ -9,7 +9,7 @@ const azureMiddleware = store => next => (action) => {
     case AZURE_CONNECT:
         FetchService.fetchMetrics(config).then((data) => {
             store.dispatch(fetchData(data));
-            identifyAndConnect(store.dispatch, config);
+            // identifyAndConnect(store.dispatch, config);
         });
         break;
     case WS_DISCONNECTED:

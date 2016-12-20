@@ -1,8 +1,9 @@
+const { DocumentClient } = require('documentdb');
 const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const _ = require('lodash');
-const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers } = require('./config.js');
+const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers, dbHost, dbMasterKey } = require('./config.js');
 
 const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
@@ -55,12 +56,19 @@ function connectCallback(err) {
             client.complete(msg, printResultFor('completed'));
         });
 
+        const dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
+
         const sendInterval = setInterval(function () {
-            const data = JSON.stringify(generateSensorsData());
-            const message = new Message(data);
-            message.properties.add('dataType', 'telemetry');
-            console.log('Sending message: ' + message.getData());
-            client.sendEvent(message, printResultFor('send'));
+
+            getLastSensorsData(dbClient).then((results) => {
+                const tail = results[0] || {};
+                //console.log('Previous message: ', tail);
+                const data = JSON.stringify(generateSensorsData(tail));
+                const message = new Message(data);
+                message.properties.add('dataType', 'telemetry');
+                client.sendEvent(message, printResultFor('send'));
+            });
+
         }, sendMessageIntervalMs);
 
         client.on('error', function (err) {
@@ -82,7 +90,7 @@ function printResultFor(op) {
     };
 }
 
-function generateSensorsData() {
+function generateSensorsData(lastValue) {
     const sensors = {
         temperature: {
             initial: 20,
@@ -121,8 +129,8 @@ function generateSensorsData() {
             max: 1060
         }
     };
-    const newSensorValues = _.mapValues(sensors, (sensorConfig, sensor) => {
-        return deviateSensor(sensorConfig)
+    const newSensorValues = _.mapValues(sensors, (config, key) => {
+        return (lastValue) ? deviateSensor(config, lastValue[key]) : deviateSensor(config);
     });
     const rnd = Math.random();
     if(generateMarkers && (rnd > .25)) {
@@ -132,11 +140,14 @@ function generateSensorsData() {
 }
 
 function deviateSensor(sensorConfig, currentValue) {
+
     if (currentValue === undefined) currentValue = sensorConfig.initial;
+
     if (_.isArray(currentValue))
         return _.map(currentValue, v => {
             return deviateSensor(sensorConfig, v)
         });
+
     let newValue = currentValue;
 
     const rnd = Math.random();
@@ -148,4 +159,32 @@ function deviateSensor(sensorConfig, currentValue) {
     if (rnd < .3) newValue = newValue + Math.random() * sensorConfig.maxDelta * 2 - shift;
 
     return newValue
+}
+
+function getLastSensorsData(client) {
+    const link = 'dbs/nucleo-data/colls/metric';
+    const query = `SELECT TOP 1 * FROM metric AS m ORDER BY m.timestamp DESC`;
+    const loadPromise = new Promise((resolve, reject) => {
+        client.queryDocuments(link, query).toArray((err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+    return loadPromise.then((results) => {
+        const metrics = ['temperature', 'humidity', 'pressure', 'accelerometer', 'gyroscope', 'magnetometer'];
+        return results.map((x) => {
+            const result = {
+                timestamp: x.timestamp
+            };
+            metrics.forEach((metric) => {
+                if (x[metric] !== undefined)
+                    result[metric] = x[metric]
+            });
+            if (x.marker !== undefined && x.marker) result.marker = true;
+            return result;
+        });
+    });
 }
