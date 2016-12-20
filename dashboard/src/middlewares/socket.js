@@ -21,7 +21,7 @@ const socketMiddleware = (function () {
             switch (action.type) {
             case WS_CONNECT:
                 if (client != null) {
-                    client.end();
+                    client.close();
                 }
 
                 client = new WebSocket(action.payload.url);
