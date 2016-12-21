@@ -2,6 +2,7 @@ const { DocumentClient } = require('documentdb');
 const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
+const Random = require('random-js');
 const _ = require('lodash');
 const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers, dbHost, dbMasterKey } = require('./config.js');
 
@@ -9,10 +10,11 @@ const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
     deviceId: deviceId
 };
+const random = new Random(Random.engines.nativeMath);
+
 let client;
 let messageSendInterval;
-let dbClient;
-let dbReconnectInterval;
+let lastGeneratedData;
 
 const getDeviceInfoPromise = new Promise((resolve, reject) => {
     registry.get(device.deviceId, (err, deviceInfo) => {
@@ -59,22 +61,12 @@ function connectCallback(err) {
             client.complete(msg, printResultFor('completed'));
         });
 
-        if(!dbClient) dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
-        dbReconnectInterval = setInterval(() => {
-            console.log('Reconnect to db ...');
-            dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
-        }, (sendMessageIntervalMs * 50) + (sendMessageIntervalMs / 2));
-
         messageSendInterval = setInterval(() => {
-            getLastSensorsData(dbClient).then((results) => {
-                const tail = results[0] || {};
-                const data = JSON.stringify(generateSensorsData(tail));
-                const message = new Message(data);
-                message.properties.add('dataType', 'telemetry');
-                client.sendEvent(message, printResultFor('send'));
-            }, (err) => {
-                console.error('Error on load last values:', JSON.stringify(err));
-            });
+            const data = generateSensorsData(lastGeneratedData);
+            const message = new Message(JSON.stringify(data));
+            message.properties.add('dataType', 'telemetry');
+            client.sendEvent(message, printResultFor('send'));
+            lastGeneratedData = data;
         }, sendMessageIntervalMs);
 
         client.on('error', function (err) {
@@ -83,7 +75,6 @@ function connectCallback(err) {
 
         client.on('disconnect', function () {
             clearInterval(messageSendInterval);
-            clearInterval(dbReconnectInterval);
             client.removeAllListeners();
             client.open(connectCallback);
         });
@@ -97,8 +88,8 @@ function printResultFor(op) {
     };
 }
 
-function generateSensorsData(lastValue) {
-    const sensors = {
+function generateSensorsData(lastValue = {}) {
+    const sensorsConfig = {
         temperature: {
             initial: 20,
             maxDelta: .03,
@@ -110,6 +101,12 @@ function generateSensorsData(lastValue) {
             maxDelta: .03,
             min: 10,
             max: 99
+        },
+        pressure: {
+            initial: 1000,
+            maxDelta: .1,
+            min: 800,
+            max: 1060
         },
         accelerometer: {
             initial: [0, 0, 1],
@@ -128,21 +125,19 @@ function generateSensorsData(lastValue) {
             maxDelta: .005,
             min: -.6,
             max: .6
-        },
-        pressure: {
-            initial: 1000,
-            maxDelta: .1,
-            min: 800,
-            max: 1060
         }
     };
-    const newSensorValues = _.mapValues(sensors, (config, key) => {
+
+    const newSensorValues = _.mapValues(sensorsConfig, (config, key) => {
         return (lastValue) ? deviateSensor(config, lastValue[key]) : deviateSensor(config);
     });
-    const rnd = Math.random();
-    if(generateMarkers && (rnd > .25)) {
+
+    const rnd1 = random.real(0, 1);
+    const rnd2 = random.real(0, 1);
+    if(generateMarkers && (rnd1 < .25 && rnd2 < .25)) {
         newSensorValues.marker = true;
     }
+
     return newSensorValues;
 }
 
@@ -157,41 +152,13 @@ function deviateSensor(sensorConfig, currentValue) {
 
     let newValue = currentValue;
 
-    const rnd = Math.random();
+    const rnd = random.real(0, 1);
     let shift = sensorConfig.maxDelta;
 
     if (currentValue > sensorConfig.max) shift *= 2;
     else if (currentValue < sensorConfig.min) shift *= -2;
 
-    if (rnd < .3) newValue = newValue + Math.random() * sensorConfig.maxDelta * 2 - shift;
+    if (rnd < .3) newValue = newValue + random.real(0, 1) * sensorConfig.maxDelta * 2 - shift;
 
     return newValue
-}
-
-function getLastSensorsData(client) {
-    const link = 'dbs/nucleo-data/colls/metric';
-    const query = `SELECT TOP 1 * FROM metric AS m ORDER BY m.timestamp DESC`;
-    const loadPromise = new Promise((resolve, reject) => {
-        client.queryDocuments(link, query).toArray((err, results) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-    return loadPromise.then((results) => {
-        const metrics = ['temperature', 'humidity', 'pressure', 'accelerometer', 'gyroscope', 'magnetometer'];
-        return results.map((x) => {
-            const result = {
-                timestamp: x.timestamp
-            };
-            metrics.forEach((metric) => {
-                if (x[metric] !== undefined)
-                    result[metric] = x[metric]
-            });
-            if (x.marker !== undefined && x.marker) result.marker = true;
-            return result;
-        });
-    });
 }
