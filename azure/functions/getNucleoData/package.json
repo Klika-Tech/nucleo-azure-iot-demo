@@ -1,5 +1,5 @@
 {
-  "name": "azure-get-nucleo-data",
+  "name": "nucleo-get-nucleo-data",
   "version": "0.0.1",
   "description": "Nucleo Demo Azure Function get init data",
   "license": "MIT",
