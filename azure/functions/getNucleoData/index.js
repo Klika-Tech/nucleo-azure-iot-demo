@@ -20,8 +20,8 @@ const cities = [
 ];
 
 function getCityData(client, since, city) {
-    const link = 'dbs/nucleo-data/colls/weather';
-    const query = `SELECT TOP 10000 * FROM weather AS w WHERE w.timestamp>='${since}' AND w.city=${city.id} ORDER BY w.timestamp ASC`;
+    const link = `dbs/${config.dbName}/colls/${config.dbCitiesCollection}`;
+    const query = `SELECT TOP 10000 * FROM ${config.dbCitiesCollection} AS w WHERE w.timestamp>='${since}' AND w.city=${city.id} ORDER BY w.timestamp ASC`;
     return new Promise((resolve, reject) => {
         client.queryDocuments(link, query).toArray((err, results) => {
             if (err) {
@@ -56,8 +56,8 @@ function getCitesData(client, since) {
 }
 
 function getSensorsData(client, since) {
-    const link = 'dbs/nucleo-data/colls/metric';
-    const query = `SELECT TOP 10000 * FROM metric AS m WHERE m.timestamp>='${since}' ORDER BY m.timestamp ASC`;
+    const link = `dbs/${config.dbName}/colls/${config.dbSensorsCollection}`;
+    const query = `SELECT TOP 10000 * FROM ${config.dbSensorsCollection} AS m WHERE m.timestamp>='${since}' ORDER BY m.timestamp ASC`;
     const loadPromise = new Promise((resolve, reject) => {
         client.queryDocuments(link, query).toArray((err, results) => {
             if (err) {
