@@ -10,7 +10,6 @@ import { temperatureFetch, temperaturePush } from './temperature';
 
 export function fetchData(data) {
     return (dispatch) => {
-        console.log('data:', data);
         const pd = prepareData(data);
         dispatch(batchActions([
             accelerometerFetch(pd),
