@@ -10,6 +10,9 @@ const device = {
     deviceId: deviceId
 };
 let client;
+let messageSendInterval;
+let dbClient;
+let dbReconnectInterval;
 
 const getDeviceInfoPromise = new Promise((resolve, reject) => {
     registry.get(device.deviceId, (err, deviceInfo) => {
@@ -56,27 +59,31 @@ function connectCallback(err) {
             client.complete(msg, printResultFor('completed'));
         });
 
-        const dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
+        if(!dbClient) dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
+        dbReconnectInterval = setInterval(() => {
+            console.log('Reconnect to db ...');
+            dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
+        }, (sendMessageIntervalMs * 50) + (sendMessageIntervalMs / 2));
 
-        const sendInterval = setInterval(function () {
-
+        messageSendInterval = setInterval(() => {
             getLastSensorsData(dbClient).then((results) => {
                 const tail = results[0] || {};
-                //console.log('Previous message: ', tail);
                 const data = JSON.stringify(generateSensorsData(tail));
                 const message = new Message(data);
                 message.properties.add('dataType', 'telemetry');
                 client.sendEvent(message, printResultFor('send'));
+            }, (err) => {
+                console.error('Error on load last values:', JSON.stringify(err));
             });
-
         }, sendMessageIntervalMs);
 
         client.on('error', function (err) {
-            console.error(err.message);
+            console.error('Error on send message:', JSON.stringify(err));
         });
 
         client.on('disconnect', function () {
-            clearInterval(sendInterval);
+            clearInterval(messageSendInterval);
+            clearInterval(dbReconnectInterval);
             client.removeAllListeners();
             client.open(connectCallback);
         });
