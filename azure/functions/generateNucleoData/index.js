@@ -90,8 +90,12 @@ const generateSensorsData = (lastValue = {}) => {
     return newSensorValues;
 };
 
+const getCollectionLink = () => {
+    return `dbs/${dbName}/colls/${dbCollectionName}`;
+};
+
 const getDocumentLink = () => {
-    return `dbs/${dbName}/colls/${dbCollectionName}/docs/${RECORD_ID}`;
+    return `${getCollectionLink()}/docs/${RECORD_ID}`;
 };
 
 const getDeviceConnectionString = (connectionString, deviceId, deviceInfo) => {
@@ -138,10 +142,10 @@ const sendData = (context, client) => (data) =>  {
     return defer.promise;
 };
 
-const replaceDocument = (context, link) => (document) => {
+const upsertDocument = (context, link) => (document) => {
     const defer = Q.defer();
     document.id = RECORD_ID;
-    dbClient.replaceDocument(link, document, function (err, doc) {
+    dbClient.upsertDocument(link, document, function (err, doc) {
         if (err) {
             context.log('Replace error: ' + JSON.stringify(err));
             defer.reject(err);
@@ -194,10 +198,9 @@ module.exports = function (context) {
                 context.done();
             } else {
                 context.log('Client connected!');
-                const documentLink = getDocumentLink();
-                getGeneratedValue(context, documentLink)
+                getGeneratedValue(context, getDocumentLink())
                     .then(sendData(context, client))
-                    .then(replaceDocument(context, documentLink))
+                    .then(upsertDocument(context, getCollectionLink()))
                     .then((data) => {
                         context.done();
                     }, (err) => {

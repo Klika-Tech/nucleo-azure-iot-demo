@@ -19,7 +19,6 @@
   },
   "scripts": {
     "test": "eslint .",
-    "build": "node_modules/webpack/bin/webpack.js -p",
-    "zip": "cd dist && (for f in *.js; do cp $f index.js && chmod a+r index.js && zip $f.zip index.js && rm index.js; done)"
+    "build": "node_modules/webpack/bin/webpack.js -p"
   }
 }

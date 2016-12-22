@@ -102,9 +102,11 @@ module.exports = function(context, req) {
     const promise = Promise.all([weatherDataPromise, sensorDataPromise]);
     promise.then(
         (data) => {
+            context.log('All is ok!');
             sendJson(context, {weatherData: data[0], sensorData: data[1]});
         },
         (err) => {
+            context.log('Error: ' + JSON.stringify(err));
             sendJson(context, {error: err});
         }
     );
