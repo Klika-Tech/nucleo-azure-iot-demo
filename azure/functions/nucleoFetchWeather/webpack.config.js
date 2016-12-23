@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './index.js',
@@ -10,7 +11,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         library: '[name]',
         libraryTarget: 'commonjs2',
-        filename: '[name].js'
+        filename: 'index.js'
     },
     target: 'node',
     module: {
@@ -33,6 +34,9 @@ module.exports = {
         new WebpackShellPlugin({
             onBuildStart: ['npm install; npm prune']
         }),
-        new CleanWebpackPlugin(['dist'])
+        new CleanWebpackPlugin(['dist']),
+        new CopyWebpackPlugin([
+            { from: 'function.json', to: 'function.json' }
+        ])
     ]
 };

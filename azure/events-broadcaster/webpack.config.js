@@ -10,8 +10,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         library: '[name]',
-        libraryTarget: 'commonjs2',
-        filename: 'index.js'
+        filename: 'app.js'
     },
     target: 'node',
     module: {
@@ -36,7 +35,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin(['dist']),
         new CopyWebpackPlugin([
-            { from: 'function.json', to: 'function.json' }
+            { from: 'web.config', to: 'web.config' }
         ])
     ]
 };

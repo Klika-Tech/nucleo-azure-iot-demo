@@ -25,9 +25,11 @@ module.exports = class AzureEventsProvider {
     }
 
     broadcast(message) {
+        const str = JSON.stringify(message);
         this.wss.clients.forEach(function each(client) {
-            client.send(JSON.stringify(message));
+            client.send(str);
         });
+        console.log(`Send message ${str} to ${this.wss.clients.length} clients.`);
     }
 
     bindWss(wss) {
