@@ -1,7 +1,7 @@
 /**
  * You need to add following `Application Settings` to your Azure Web App:
- * EVENT_HUB_CONNECTION_STRING = HostName=<iothub_host_name>;SharedAccessKeyName=<key_name>;SharedAccessKey=<access_key>;EntityPath=<entity_path>
- * HUB_NAME = <hub_name>
+ * EVENT_HUB_CONNECTION_STRING = Endpoint=<iothub_compatible_endpoint>;SharedAccessKeyName=<key_name>;SharedAccessKey=<access_key>;EntityPath=<iothub_compatible_name>
+ * HUB_NAME = <iothub_compatible_name>
  * For details see section `Application Settings`
  * */
 
