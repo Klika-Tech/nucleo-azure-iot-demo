@@ -6,14 +6,9 @@
  * */
 
 const config = {
-    connectionString: 'Endpoint=sb://iothub-ns-nucleo-93253-9d00d24fff.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=nnNsWCqvti+Y0zEuVJony0jqWQbeKIpS/ZFEyAgtZH4=;EntityPath=nucleo',
-    hubName: 'nucleo'
+    connectionString: process.env.EVENT_HUB_CONNECTION_STRING,
+    hubName: process.env.HUB_NAME,
 };
-
-// const config = {
-//     connectionString: process.env.EVENT_HUB_CONNECTION_STRING,
-//     hubName: process.env.HUB_NAME,
-// };
 
 const EventsProvider = require('./EventsProvider');
 const provider = new EventsProvider(config);
