@@ -7,7 +7,6 @@
     "azure-iot-device": "1.1.1",
     "azure-iot-device-mqtt": "1.1.1",
     "azure-iothub": "1.1.1",
-    "documentdb": "1.10.0",
     "lodash": "4.17.2",
     "q": "^1.4.1",
     "random-js": "1.0.8"

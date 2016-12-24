@@ -1,19 +1,18 @@
-const { DocumentClient } = require('documentdb');
 const { Mqtt } = require('azure-iot-device-mqtt');
 const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const Random = require('random-js');
 const Q = require('q');
+const fs = require('fs');
 const _ = require('lodash');
-const { connectionString, deviceId, generateMarkers, dbHost, dbMasterKey, dbName, dbCollectionName } = require('./config.js');
+const { connectionString, deviceId, generateMarkers, generateMarkerEachMinutes } = require('./config.js');
 
-const RECORD_ID = "unique_record_id";
+const storageFilePath = 'D:/local/Temp/functionStorage.txt';
 const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
     deviceId: deviceId
 };
 const random = new Random(Random.engines.nativeMath);
-const dbClient = new DocumentClient(dbHost, {masterKey: dbMasterKey});
 
 const deviateSensor = (sensorConfig, currentValue) => {
 
@@ -37,7 +36,7 @@ const deviateSensor = (sensorConfig, currentValue) => {
     return newValue
 };
 
-const generateSensorsData = (lastValue = {}) => {
+const generateSensorsData = (context, document) => {
     const sensorsConfig = {
         temperature: {
             initial: 20,
@@ -78,24 +77,23 @@ const generateSensorsData = (lastValue = {}) => {
     };
 
     const newSensorValues = _.mapValues(sensorsConfig, (config, key) => {
-        return (lastValue) ? deviateSensor(config, lastValue[key]) : deviateSensor(config);
+        return (document.value[key]) ? deviateSensor(config, document.value[key]) : deviateSensor(config);
     });
 
-    const rnd1 = random.real(0, 1);
-    const rnd2 = random.real(0, 1);
-    if(generateMarkers && (rnd1 < .25 && rnd2 < .25)) {
-        newSensorValues.marker = true;
+    if(generateMarkers) {
+        const now = Date.now();
+        const checkMarkerAt = now - generateMarkerEachMinutes * 60 * 1000;
+        if(!document.meta.lastMarkerAt || document.meta.lastMarkerAt < checkMarkerAt) {
+            context.log('Set marker at: '+ now);
+            newSensorValues.marker = true;
+            document.meta.lastMarkerAt = now;
+        }
     }
 
-    return newSensorValues;
-};
-
-const getCollectionLink = () => {
-    return `dbs/${dbName}/colls/${dbCollectionName}`;
-};
-
-const getDocumentLink = () => {
-    return `${getCollectionLink()}/docs/${RECORD_ID}`;
+    return {
+        value: newSensorValues,
+        meta: document.meta
+    };
 };
 
 const getDeviceConnectionString = (connectionString, deviceId, deviceInfo) => {
@@ -104,15 +102,15 @@ const getDeviceConnectionString = (connectionString, deviceId, deviceInfo) => {
     return `HostName=${HostName};DeviceId=${deviceId};SharedAccessKey=${SharedAccessKey}`;
 };
 
-const getDocument = (context, link) => {
+const getDocument = (context) => {
     const defer = Q.defer();
-    dbClient.readDocument(link, function (err, doc) {
-        if (err) {
-            context.log('Loaded error: ' + JSON.stringify(err));
+    fs.readFile(storageFilePath, 'utf8', (err, data) => {
+        if (err || data === null) {
+            context.log('Loaded error: ' + JSON.stringify(err || { message: 'File are empty!' }));
             defer.reject(err);
         } else {
-            context.log('Loaded success: ' + JSON.stringify(doc));
-            defer.resolve(doc)
+            context.log('Loaded success: ' + data);
+            defer.resolve(JSON.parse(data));
         }
     });
     return defer.promise;
@@ -120,38 +118,39 @@ const getDocument = (context, link) => {
 
 const getGeneratedValue = (context, link) => {
     const documentPromise = getDocument(context, link);
-    return documentPromise.then((doc) => {
-        return generateSensorsData(doc);
+    return documentPromise.then((document) => {
+        return generateSensorsData(context, document);
     }, (err) => {
-        context.log('Last value not founded generate new: ' + JSON.stringify(err));
-        return Q.resolve(generateSensorsData())
+        const newDocument = generateSensorsData(context, { value: {}, meta: {}});
+        context.log('Last value not founded generate new: ' + JSON.stringify(newDocument));
+        return Q.resolve(newDocument)
     });
 };
 
-const sendData = (context, client) => (data) =>  {
+const sendData = (context, client) => (document) =>  {
     const defer = Q.defer();
-    const message = new Message(JSON.stringify(data));
-    client.sendEvent(message, function (err, res) {
+    const message = new Message(JSON.stringify(document.value));
+    client.sendEvent(message, (err, res) => {
         if (err) {
             context.log('Send new value error: ' + JSON.stringify(err));
             defer.reject(err);
+        } else {
+            context.log('Send status: ' + res.constructor.name);
+            defer.resolve(document);
         }
-        context.log('Send status: ' + res.constructor.name);
-        defer.resolve(data);
     });
     return defer.promise;
 };
 
-const upsertDocument = (context, link) => (document) => {
+const upsertDocument = (context) => (document) => {
     const defer = Q.defer();
-    document.id = RECORD_ID;
-    dbClient.upsertDocument(link, document, function (err, doc) {
+    fs.writeFile(storageFilePath, JSON.stringify(document), 'utf8', (err, data) => {
         if (err) {
             context.log('Replace error: ' + JSON.stringify(err));
             defer.reject(err);
         } else {
-            context.log('Replace success: ' + JSON.stringify(doc));
-            defer.resolve(doc)
+            context.log('Replace success: ' + JSON.stringify(document));
+            defer.resolve(data)
         }
     });
     return defer.promise;
@@ -198,17 +197,19 @@ module.exports = function (context) {
                 context.done();
             } else {
                 context.log('Client connected!');
-                getGeneratedValue(context, getDocumentLink())
+                getGeneratedValue(context)
                     .then(sendData(context, client))
-                    .then(upsertDocument(context, getCollectionLink()))
+                    .then(upsertDocument(context))
                     .then((data) => {
                         context.done();
                     }, (err) => {
+                        context.log('Bubbled error:' + JSON.stringify(err));
                         context.done();
                     });
             }
         });
-    }, () => {
+    }, (err) => {
+        context.log('IoT Hub error:' + JSON.stringify(err));
         context.done();
     });
 };

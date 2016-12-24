@@ -1,5 +1,7 @@
+const { DefinePlugin } = require('webpack');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: ['babel-polyfill', './src/'],
@@ -7,7 +9,6 @@ module.exports = {
         path: `${__dirname}/dist`,
         filename: 'bundle.js',
     },
-    devtool: 'source-map',
     devServer: {
         host: '0.0.0.0',
         port: 8080,
@@ -36,17 +37,25 @@ module.exports = {
             },
             {
                 test: /\.json$/,
-                loader: "json",
-            }
+                loader: 'json',
+            },
         ],
         noParse: [
             /aws-sdk/,
         ],
     },
     plugins: [
+        new DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production'),
+            },
+        }),
         new WebpackShellPlugin({
             onBuildStart: ['npm install; npm prune'],
         }),
         new CleanWebpackPlugin(['dist']),
+        new CopyWebpackPlugin([
+            { from: 'web.config', to: 'web.config' },
+        ]),
     ],
 };
