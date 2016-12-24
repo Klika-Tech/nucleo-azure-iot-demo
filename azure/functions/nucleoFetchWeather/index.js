@@ -29,7 +29,7 @@ const cityIds = cities
     });
 
 function getColLink() {
-    return 'dbs/nucleo-data/colls/weather';
+    return `dbs/${config.dbName}/colls/${config.dbCollectionName}`;
 }
 
 function insertDocuments(client, collLink, documents) {

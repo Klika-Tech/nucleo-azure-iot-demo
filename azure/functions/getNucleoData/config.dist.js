@@ -1,6 +1,6 @@
 module.exports = {
-    dbHost: '<documentdb endpoint>',
-    dbMasterKey: '<documentdb endpoint>',
+    dbHost: '<documentdb host>',
+    dbMasterKey: '<documentdb key>',
     dbName: 'nucleo-data',
     dbSensorsCollection: 'metric',
     dbCitiesCollection: 'weather',
