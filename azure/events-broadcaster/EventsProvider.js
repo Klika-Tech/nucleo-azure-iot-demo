@@ -11,7 +11,7 @@ module.exports = class {
             }, (err) => {
                 console.log('ERROR on close:' + JSON.stringify(err))
             });
-        }, 10*60*1000);
+        }, 5*60*1000);
     }
 
     connect({connectionString, hubName}) {
