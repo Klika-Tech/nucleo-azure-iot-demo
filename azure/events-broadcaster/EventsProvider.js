@@ -1,8 +1,20 @@
 const EventHubClient = require('azure-event-hubs').Client;
 
-module.exports = class AzureEventsProvider {
+module.exports = class {
 
     constructor({connectionString, hubName}) {
+        this.client = this.connect({connectionString, hubName});
+        setInterval(() => {
+            this.client.close().then(() => {
+                console.log('Reconnect ....');
+                this.client = this.connect({connectionString, hubName});
+            }, (err) => {
+                console.log('ERROR on close:' + JSON.stringify(err))
+            });
+        }, 10*60*1000);
+    }
+
+    connect({connectionString, hubName}) {
         const client = EventHubClient.fromConnectionString(connectionString, hubName);
         const receiveAfterTime = Date.now() - 5000;
         client.open()
@@ -21,7 +33,10 @@ module.exports = class AzureEventsProvider {
                         });
                     });
                 }));
+            }, (err) => {
+                console.log('ERROR on connect:' + JSON.stringify(err))
             });
+        return client;
     }
 
     broadcast(message) {
