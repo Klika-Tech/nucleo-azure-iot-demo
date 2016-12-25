@@ -1,5 +1,7 @@
+@import "../../../variables";
+
 body {
-  font-family: Lato, sans-serif;
+  font-family: $theme-font-family;
   margin: 0;
 }
 
@@ -50,16 +52,52 @@ body {
 }
 
 .online-status {
-  color: #89949B;
+  color: $default-color;
   padding: 14px 0;
   font-size: 27px;
   height: 75px;
 
   &.online {
-    color: #2EB398;
+    color:  $theme-color;
   }
 }
 
 * {
   transition: initial ! important;
+}
+
+.rubix-panel-container {
+  border-top-left-radius: $theme-border-radius;
+  border-top-right-radius: $theme-border-radius;
+
+  .rubix-panel-header {
+    background-color:  $theme-color !important;
+    h4 {
+      font-family: $theme-font-family;
+    }
+  }
+
+  .rubix-panel-header {
+    border-radius: 0 !important;
+  }
+}
+
+.navbar-header {
+  .product-name {
+    float: left;
+    margin-right: 5px;
+  }
+  .powered-by {
+    font-size: 15px;
+    a {
+      color: $theme-color;
+    }
+  }
+}
+
+.navbar-nav > .sidebar-btn > a {
+  background: $theme-color !important;
+  &:hover {
+    background: lighten($theme-color, 15%) !important;
+  }
 }

@@ -112,7 +112,14 @@ class Main extends React.Component {
                                         </Col>
                                         <Col xs={6} sm={4}>
                                             <NavbarHeader>
-                                                <NavbarBrand>Nucleo Board</NavbarBrand>
+                                                <NavbarBrand>
+                                                    <span className="product-name">Nucleo Board</span>
+                                                    <span className="hidden-xs powered-by">
+                                                        powered by <a
+                                                            href="https://azure.microsoft.com"
+                                                        >Microsoft Azure</a>
+                                                    </span>
+                                                </NavbarBrand>
                                             </NavbarHeader>
                                         </Col>
                                         <Col xs={3} sm={8}>

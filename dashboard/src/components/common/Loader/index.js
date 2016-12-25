@@ -1,11 +1,11 @@
 import React from 'react';
 import './style.scss';
 
-const oval = require('./oval.svg');
+const loader = require('./bars.svg');
 
 const Loader = () => (
     <svg>
-        <use xlinkHref={oval} />
+        <use xlinkHref={loader} />
     </svg>
 );
 
