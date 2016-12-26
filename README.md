@@ -26,7 +26,7 @@ The back-end is entirely powered by Microsoft Azure Cloud. The following service
 1. [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) is used to communicate with the Nucleo board as well as process data coming from the device.
 1. [Azure Stream Analytics](https://azure.microsoft.com/en-us/services/stream-analytics/) is used to automatically process data from [IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and save processed data in [DocumentDB](https://azure.microsoft.com/en-us/services/documentdb/).
 1. [Azure DocumentDB](https://azure.microsoft.com/en-us/services/documentdb/) is a key-value storage where the data is persisted by the Steam Analytics engine and [Functions](https://azure.microsoft.com/en-us/services/functions/).
-1. [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) is the computing component of the platform. [Functions](https://azure.microsoft.com/en-us/services/functions/) are used to process the data by the IoT Hub and to implement business logic for the API. There is also a "bot" implemented on Funcions. The bot emulates the Nucleo board and can be used when the board is not available and for debugging. In addition to processing the Nucleo board data a [Functions](https://azure.microsoft.com/en-us/services/functions/) is used to fetch weather data for a number of cities from [OpenWeatherMap API](http://openweathermap.org/).
+1. [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) is the computing component of the platform. [Functions](https://azure.microsoft.com/en-us/services/functions/) are used to process the data by the IoT Hub and to implement business logic for the API. There is also a "bot" implemented on Functions. The bot emulates the Nucleo board and can be used when the board is not available and for debugging. In addition to processing the Nucleo board data a [Functions](https://azure.microsoft.com/en-us/services/functions/) is used to fetch weather data for a number of cities from [OpenWeatherMap API](http://openweathermap.org/).
 Also Functions provide build-in scheduler and HTTP API.
 1. [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) is used to provide read-only public access to IoT data streams via Websockets for the web dashboard.
 1. The web dashboard is hosted as [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
@@ -41,4 +41,4 @@ On the application start, initial data set is fetched from a public API endpoint
 
 The charts have two visualization modes: line and area. There is also an online/offline indicator for the Nucleo board.
 
-Please see the web dashboard [source code](dashboard/) for the implementations details, configuration and build instructions.
+Please see the web dashboard [source code](dashboard/) for the implementations details and [build instruction](./dashboard/README.md).

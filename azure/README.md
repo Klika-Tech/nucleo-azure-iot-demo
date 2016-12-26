@@ -26,7 +26,7 @@ Create the weather data collection with the following parameters:
 
 In fact, you can use any collection names but don't forget to change them in Functions code as well.
 
-Also for support needs you can setup following stored procedures:
+Also for support needs you can use following stored procedures:
 - [Truncate collection](./documentdb/truncate_v_1_0.js)
 
 ## Azure IoT Hub
@@ -42,16 +42,19 @@ All incoming messages by default handled by `messages/events` endpoint._
 
 Azure Stream Analytics job works for processing and saving [IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) data stream in [DocumentDB](https://azure.microsoft.com/en-us/services/documentdb/)
 Create new Stream Analytics job. For example see guide [here](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-add-inputs).
+
 Add input with the following parameters:
 - Name: iot;
 - Type: IoT Hub;
 - Consumer group: $Default;
 - Event serialization format: JSON;
 - Encoding: UTF-8;
+
 Add output with the following parameters:
 - Name: database;
 - Database: nucleo-data;
 - Collection name pattern: metric
+
 Add query, see body of query [here](./stream-analytics/processIotHub.saq).
 
 In fact, you can use any collection names but don't forget to change them in Functions code as well.
@@ -134,13 +137,13 @@ For deploy app to do following:
     - Web sockets: On;
     - Always On: On;
 1. Add following environment variables (see `App settings` subsection):
-    - EVENT_HUB_CONNECTION_STRING=Endpoint=<iothub_compatible_endpoint>;SharedAccessKeyName=<key_name>;SharedAccessKey=<access_key>;EntityPath=<iothub_compatible_name>
-    - HUB_NAME=<iothub_compatible_name>
+    - EVENT_HUB_CONNECTION_STRING= 'Endpoint=sb://iothub_compatible_endpoint;SharedAccessKeyName=key_name;SharedAccessKey=access_key;EntityPath=iothub_compatible_name';
+    - HUB_NAME='iothub_compatible_name';
 1. Setup FTP Access, see [guide](https://blogs.msdn.microsoft.com/kaushal/2014/08/01/microsoft-azure-web-site-connect-to-your-site-via-ftp-and-uploaddownload-files/);
 1. Upload all files from local folder `dist/` of `events-broadcaster` to remote folder `/site/wwwroot`;
 
 _Notice: For create Event Hub compatible connection string use following pattern:
-`Endpoint=<iothub_compatible_endpoint>;SharedAccessKeyName=<key_name>;SharedAccessKey=<access_key>;EntityPath=<iothub_compatible_name>`_
+`Endpoint=sb://iothub_compatible_endpoint;SharedAccessKeyName=key_name;SharedAccessKey=access_key;EntityPath=iothub_compatible_name`_
 
 ### Web dashboard
 
