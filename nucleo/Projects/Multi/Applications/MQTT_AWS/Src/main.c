@@ -61,7 +61,7 @@ int main(void)
 	UART_Msg_Gpio_Init();
 	USART_PRINT_MSG_Configuration(115200);
 #endif  
-
+	
 	wifi_main();
 	
 	HAL_Delay(500);

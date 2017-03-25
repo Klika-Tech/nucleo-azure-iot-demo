@@ -1,4 +1,4 @@
-Component: ARM Compiler 5.06 update 1 (build 61) Tool: armlink [4d35a8]
+Component: ARM Compiler 5.06 update 4 (build 422) Tool: armlink [4d35d2]
 
 ==============================================================================
 
@@ -4371,223 +4371,223 @@ Image Symbol Table
     i.__scatterload_zeroinit                 0x0800ad18   Section       14  handlers.o(i.__scatterload_zeroinit)
     i.__set_errno                            0x0800ad28   Section        0  errno.o(i.__set_errno)
     i._fp_digits                             0x0800ad34   Section        0  printfa.o(i._fp_digits)
-    _fp_digits                               0x0800ad35   Thumb Code   334  printfa.o(i._fp_digits)
-    i._printf_core                           0x0800ae98   Section        0  printfa.o(i._printf_core)
-    _printf_core                             0x0800ae99   Thumb Code  1744  printfa.o(i._printf_core)
-    i._printf_post_padding                   0x0800b574   Section        0  printfa.o(i._printf_post_padding)
-    _printf_post_padding                     0x0800b575   Thumb Code    36  printfa.o(i._printf_post_padding)
-    i._printf_pre_padding                    0x0800b598   Section        0  printfa.o(i._printf_pre_padding)
-    _printf_pre_padding                      0x0800b599   Thumb Code    46  printfa.o(i._printf_pre_padding)
-    i._sputc                                 0x0800b5c6   Section        0  printfa.o(i._sputc)
-    _sputc                                   0x0800b5c7   Thumb Code    10  printfa.o(i._sputc)
-    i.aws_iot_mqtt_connect                   0x0800b5d0   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_connect)
-    i.aws_iot_mqtt_disconnect                0x0800b700   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_disconnect)
-    i.aws_iot_mqtt_publish                   0x0800b720   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_publish)
-    i.aws_iot_mqtt_subscribe                 0x0800b760   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_subscribe)
-    i.aws_iot_mqtt_yield                     0x0800b788   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_yield)
-    i.aws_main                               0x0800b7a4   Section        0  aws_main.o(i.aws_main)
-    i.bufchar                                0x0800c3d8   Section        0  mqttpacket.o(i.bufchar)
-    i.countdown                              0x0800c400   Section        0  time_nucleo_wrapper.o(i.countdown)
-    i.countdown_ms                           0x0800c416   Section        0  time_nucleo_wrapper.o(i.countdown_ms)
-    i.create_global_timers                   0x0800c43c   Section        0  time_nucleo_wrapper.o(i.create_global_timers)
-    i.cycle                                  0x0800c478   Section        0  mqttclient.o(i.cycle)
-    i.data_ind_wifi_socket_client_remote_server_closed 0x0800c5d8   Section        0  app_wifi_read.o(i.data_ind_wifi_socket_client_remote_server_closed)
-    i.data_ind_wifi_socket_data_received     0x0800c604   Section        0  app_wifi_read.o(i.data_ind_wifi_socket_data_received)
-    i.decodePacket                           0x0800c62a   Section        0  mqttclient.o(i.decodePacket)
-    i.deliverMessage                         0x0800c694   Section        0  mqttclient.o(i.deliverMessage)
-    i.disconnectCallbackHandler              0x0800c744   Section        0  aws_main.o(i.disconnectCallbackHandler)
-    i.empty                                  0x0800c746   Section        0  ring_buffer.o(i.empty)
-    i.event_empty                            0x0800c754   Section        0  event_buffer.o(i.event_empty)
-    i.event_full                             0x0800c762   Section        0  event_buffer.o(i.event_full)
-    i.event_init                             0x0800c778   Section        0  event_buffer.o(i.event_init)
-    i.expired                                0x0800c794   Section        0  time_nucleo_wrapper.o(i.expired)
-    i.fabs                                   0x0800c7b0   Section        0  fabs.o(i.fabs)
-    i.fputc                                  0x0800c7c8   Section        0  console.o(i.fputc)
-    i.fsleep                                 0x0800c7d6   Section        0  time_nucleo_wrapper.o(i.fsleep)
-    i.full                                   0x0800c7f2   Section        0  ring_buffer.o(i.full)
-    i.getNextPacketId                        0x0800c804   Section        0  mqttclient.o(i.getNextPacketId)
-    i.ind_socket_server_client_joined        0x0800c81c   Section        0  wifi_module.o(i.ind_socket_server_client_joined)
-    i.ind_socket_server_client_left          0x0800c81e   Section        0  wifi_module.o(i.ind_socket_server_client_left)
-    i.ind_wifi_ap_client_joined              0x0800c820   Section        0  wifi_module.o(i.ind_wifi_ap_client_joined)
-    i.ind_wifi_ap_client_left                0x0800c822   Section        0  wifi_module.o(i.ind_wifi_ap_client_left)
-    i.ind_wifi_ap_ready                      0x0800c824   Section        0  wifi_module.o(i.ind_wifi_ap_ready)
-    i.ind_wifi_connected                     0x0800c828   Section        0  wifi_main.o(i.ind_wifi_connected)
-    i.ind_wifi_connection_error              0x0800c864   Section        0  wifi_main.o(i.ind_wifi_connection_error)
-    i.ind_wifi_error                         0x0800c88c   Section        0  wifi_main.o(i.ind_wifi_error)
-    i.ind_wifi_file_data_available           0x0800c898   Section        0  wifi_module.o(i.ind_wifi_file_data_available)
-    i.ind_wifi_http_data_available           0x0800c89a   Section        0  wifi_module.o(i.ind_wifi_http_data_available)
-    i.ind_wifi_on                            0x0800c89c   Section        0  wifi_main.o(i.ind_wifi_on)
-    i.ind_wifi_packet_lost                   0x0800c8a8   Section        0  wifi_module.o(i.ind_wifi_packet_lost)
-    i.ind_wifi_resuming                      0x0800c8ac   Section        0  wifi_main.o(i.ind_wifi_resuming)
-    i.ind_wifi_socket_client_remote_server_closed 0x0800c8f0   Section        0  wifi_main.o(i.ind_wifi_socket_client_remote_server_closed)
-    i.ind_wifi_socket_data_received          0x0800c904   Section        0  wifi_main.o(i.ind_wifi_socket_data_received)
-    i.ind_wifi_socket_server_data_lost       0x0800c924   Section        0  wifi_module.o(i.ind_wifi_socket_server_data_lost)
-    i.ind_wifi_warning                       0x0800c926   Section        0  wifi_main.o(i.ind_wifi_warning)
-    i.init                                   0x0800c934   Section        0  ring_buffer.o(i.init)
-    i.iot_tls_connect                        0x0800c948   Section        0  network_nucleo_wrapper.o(i.iot_tls_connect)
-    i.iot_tls_disconnect                     0x0800ca98   Section        0  network_nucleo_wrapper.o(i.iot_tls_disconnect)
-    i.iot_tls_init                           0x0800caa4   Section        0  network_nucleo_wrapper.o(i.iot_tls_init)
-    i.iot_tls_read                           0x0800cae4   Section        0  network_nucleo_wrapper.o(i.iot_tls_read)
-    i.iot_tls_write                          0x0800cb3a   Section        0  network_nucleo_wrapper.o(i.iot_tls_write)
-    i.isTopicMatched                         0x0800cb60   Section        0  mqttclient.o(i.isTopicMatched)
-    i.is_half_empty                          0x0800cbd6   Section        0  ring_buffer.o(i.is_half_empty)
-    i.is_half_full                           0x0800cbe6   Section        0  ring_buffer.o(i.is_half_full)
-    i.keepalive                              0x0800cbfc   Section        0  mqttclient.o(i.keepalive)
-    i.left_ms                                0x0800cc9c   Section        0  time_nucleo_wrapper.o(i.left_ms)
-    i.main                                   0x0800cccc   Section        0  main.o(i.main)
-    i.osDelay                                0x0800cd5c   Section        0  cmsis_os.o(i.osDelay)
-    i.osKernelStart                          0x0800cd74   Section        0  cmsis_os.o(i.osKernelStart)
-    i.osSystickHandler                       0x0800cd7e   Section        0  cmsis_os.o(i.osSystickHandler)
-    i.pahoDisconnectHandler                  0x0800cd90   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoDisconnectHandler)
-    i.pahoMessageCallback                    0x0800cda4   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoMessageCallback)
-    i.parseConnectParamsForError             0x0800ce10   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.parseConnectParamsForError)
-    parseConnectParamsForError               0x0800ce11   Thumb Code    18  aws_iot_mqtt_embedded_client_wrapper.o(i.parseConnectParamsForError)
-    i.pop_buffer_queue                       0x0800ce24   Section        0  ring_buffer.o(i.pop_buffer_queue)
-    i.pop_eventbuffer_queue                  0x0800cf74   Section        0  event_buffer.o(i.pop_eventbuffer_queue)
-    i.prvAddCurrentTaskToDelayedList         0x0800cffc   Section        0  tasks.o(i.prvAddCurrentTaskToDelayedList)
-    prvAddCurrentTaskToDelayedList           0x0800cffd   Thumb Code    62  tasks.o(i.prvAddCurrentTaskToDelayedList)
-    i.prvAllocateTCBAndStack                 0x0800d050   Section        0  tasks.o(i.prvAllocateTCBAndStack)
-    prvAllocateTCBAndStack                   0x0800d051   Thumb Code    66  tasks.o(i.prvAllocateTCBAndStack)
-    i.prvCheckForValidListAndQueue           0x0800d094   Section        0  timers.o(i.prvCheckForValidListAndQueue)
-    prvCheckForValidListAndQueue             0x0800d095   Thumb Code   100  timers.o(i.prvCheckForValidListAndQueue)
-    i.prvCheckTasksWaitingTermination        0x0800d114   Section        0  tasks.o(i.prvCheckTasksWaitingTermination)
-    prvCheckTasksWaitingTermination          0x0800d115   Thumb Code    86  tasks.o(i.prvCheckTasksWaitingTermination)
-    i.prvCopyDataFromQueue                   0x0800d178   Section        0  queue.o(i.prvCopyDataFromQueue)
-    prvCopyDataFromQueue                     0x0800d179   Thumb Code    42  queue.o(i.prvCopyDataFromQueue)
-    i.prvCopyDataToQueue                     0x0800d1a2   Section        0  queue.o(i.prvCopyDataToQueue)
-    prvCopyDataToQueue                       0x0800d1a3   Thumb Code   128  queue.o(i.prvCopyDataToQueue)
-    i.prvDeleteTCB                           0x0800d222   Section        0  tasks.o(i.prvDeleteTCB)
-    prvDeleteTCB                             0x0800d223   Thumb Code    18  tasks.o(i.prvDeleteTCB)
-    i.prvGetNextExpireTime                   0x0800d234   Section        0  timers.o(i.prvGetNextExpireTime)
-    prvGetNextExpireTime                     0x0800d235   Thumb Code    36  timers.o(i.prvGetNextExpireTime)
-    i.prvHeapInit                            0x0800d25c   Section        0  heap_4.o(i.prvHeapInit)
-    prvHeapInit                              0x0800d25d   Thumb Code    98  heap_4.o(i.prvHeapInit)
-    i.prvIdleTask                            0x0800d2d8   Section        0  tasks.o(i.prvIdleTask)
-    prvIdleTask                              0x0800d2d9   Thumb Code    32  tasks.o(i.prvIdleTask)
-    i.prvInitialiseTCBVariables              0x0800d300   Section        0  tasks.o(i.prvInitialiseTCBVariables)
-    prvInitialiseTCBVariables                0x0800d301   Thumb Code    98  tasks.o(i.prvInitialiseTCBVariables)
-    i.prvInitialiseTaskLists                 0x0800d364   Section        0  tasks.o(i.prvInitialiseTaskLists)
-    prvInitialiseTaskLists                   0x0800d365   Thumb Code    70  tasks.o(i.prvInitialiseTaskLists)
-    i.prvInsertBlockIntoFreeList             0x0800d3cc   Section        0  heap_4.o(i.prvInsertBlockIntoFreeList)
-    prvInsertBlockIntoFreeList               0x0800d3cd   Thumb Code    96  heap_4.o(i.prvInsertBlockIntoFreeList)
-    i.prvInsertTimerInActiveList             0x0800d434   Section        0  timers.o(i.prvInsertTimerInActiveList)
-    prvInsertTimerInActiveList               0x0800d435   Thumb Code    80  timers.o(i.prvInsertTimerInActiveList)
-    i.prvIsQueueEmpty                        0x0800d48c   Section        0  queue.o(i.prvIsQueueEmpty)
-    prvIsQueueEmpty                          0x0800d48d   Thumb Code    26  queue.o(i.prvIsQueueEmpty)
-    i.prvIsQueueFull                         0x0800d4a6   Section        0  queue.o(i.prvIsQueueFull)
-    prvIsQueueFull                           0x0800d4a7   Thumb Code    30  queue.o(i.prvIsQueueFull)
-    i.prvProcessExpiredTimer                 0x0800d4c4   Section        0  timers.o(i.prvProcessExpiredTimer)
-    prvProcessExpiredTimer                   0x0800d4c5   Thumb Code    96  timers.o(i.prvProcessExpiredTimer)
-    i.prvProcessReceivedCommands             0x0800d528   Section        0  timers.o(i.prvProcessReceivedCommands)
-    prvProcessReceivedCommands               0x0800d529   Thumb Code   244  timers.o(i.prvProcessReceivedCommands)
-    i.prvProcessTimerOrBlockTask             0x0800d620   Section        0  timers.o(i.prvProcessTimerOrBlockTask)
-    prvProcessTimerOrBlockTask               0x0800d621   Thumb Code    82  timers.o(i.prvProcessTimerOrBlockTask)
-    i.prvResetNextTaskUnblockTime            0x0800d67c   Section        0  tasks.o(i.prvResetNextTaskUnblockTime)
-    prvResetNextTaskUnblockTime              0x0800d67d   Thumb Code    42  tasks.o(i.prvResetNextTaskUnblockTime)
-    i.prvSampleTimeNow                       0x0800d6b0   Section        0  timers.o(i.prvSampleTimeNow)
-    prvSampleTimeNow                         0x0800d6b1   Thumb Code    40  timers.o(i.prvSampleTimeNow)
-    i.prvSwitchTimerLists                    0x0800d6dc   Section        0  timers.o(i.prvSwitchTimerLists)
-    prvSwitchTimerLists                      0x0800d6dd   Thumb Code   150  timers.o(i.prvSwitchTimerLists)
-    i.prvTaskExitError                       0x0800d77c   Section        0  port.o(i.prvTaskExitError)
-    prvTaskExitError                         0x0800d77d   Thumb Code    60  port.o(i.prvTaskExitError)
-    i.prvTimerTask                           0x0800d7bc   Section        0  timers.o(i.prvTimerTask)
-    prvTimerTask                             0x0800d7bd   Thumb Code    26  timers.o(i.prvTimerTask)
-    i.prvUnlockQueue                         0x0800d7d6   Section        0  queue.o(i.prvUnlockQueue)
-    prvUnlockQueue                           0x0800d7d7   Thumb Code   126  queue.o(i.prvUnlockQueue)
-    i.push_buffer                            0x0800d854   Section        0  ring_buffer.o(i.push_buffer)
-    i.push_eventbuffer                       0x0800d88a   Section        0  event_buffer.o(i.push_eventbuffer)
-    i.pvPortMalloc                           0x0800d91c   Section        0  heap_4.o(i.pvPortMalloc)
-    i.pvTaskIncrementMutexHeldCount          0x0800da58   Section        0  tasks.o(i.pvTaskIncrementMutexHeldCount)
-    i.pxPortInitialiseStack                  0x0800da78   Section        0  port.o(i.pxPortInitialiseStack)
-    i.readChar                               0x0800daa0   Section        0  mqttpacket.o(i.readChar)
-    i.readInt                                0x0800daae   Section        0  mqttpacket.o(i.readInt)
-    i.readMQTTLenString                      0x0800dac8   Section        0  mqttpacket.o(i.readMQTTLenString)
-    i.readPacket                             0x0800db02   Section        0  mqttclient.o(i.readPacket)
-    i.reset_event                            0x0800db98   Section        0  event_buffer.o(i.reset_event)
-    i.rewind_buffer_queue                    0x0800dbb2   Section        0  ring_buffer.o(i.rewind_buffer_queue)
-    i.sendPacket                             0x0800dbf0   Section        0  mqttclient.o(i.sendPacket)
-    i.setDisconnectHandler                   0x0800dc46   Section        0  mqttclient.o(i.setDisconnectHandler)
-    i.sqrt                                   0x0800dc4a   Section        0  sqrt.o(i.sqrt)
-    i.time_get_time_from_time_server         0x0800dcb8   Section        0  wifi_main.o(i.time_get_time_from_time_server)
-    i.time_ind_wifi_socket_client_remote_server_closed 0x0800dd58   Section        0  wifi_main.o(i.time_ind_wifi_socket_client_remote_server_closed)
-    i.time_ind_wifi_socket_data_received     0x0800dda0   Section        0  wifi_main.o(i.time_ind_wifi_socket_data_received)
-    i.uartSendChar                           0x0800ddf8   Section        0  console.o(i.uartSendChar)
-    i.uxListRemove                           0x0800de10   Section        0  list.o(i.uxListRemove)
-    i.vListInitialise                        0x0800de38   Section        0  list.o(i.vListInitialise)
-    i.vListInitialiseItem                    0x0800de52   Section        0  list.o(i.vListInitialiseItem)
-    i.vListInsert                            0x0800de58   Section        0  list.o(i.vListInsert)
-    i.vListInsertEnd                         0x0800de8c   Section        0  list.o(i.vListInsertEnd)
-    i.vPortEnterCritical                     0x0800dea4   Section        0  port.o(i.vPortEnterCritical)
-    i.vPortExitCritical                      0x0800def8   Section        0  port.o(i.vPortExitCritical)
-    i.vPortFree                              0x0800df34   Section        0  heap_4.o(i.vPortFree)
-    i.vPortSetupTimerInterrupt               0x0800dfc8   Section        0  port.o(i.vPortSetupTimerInterrupt)
-    i.vPortValidateInterruptPriority         0x0800dfe8   Section        0  port.o(i.vPortValidateInterruptPriority)
-    i.vQueueAddToRegistry                    0x0800e060   Section        0  queue.o(i.vQueueAddToRegistry)
-    i.vQueueWaitForMessageRestricted         0x0800e08c   Section        0  queue.o(i.vQueueWaitForMessageRestricted)
-    i.vTaskDelay                             0x0800e0c8   Section        0  tasks.o(i.vTaskDelay)
-    i.vTaskMissedYield                       0x0800e154   Section        0  tasks.o(i.vTaskMissedYield)
-    i.vTaskPlaceOnEventList                  0x0800e160   Section        0  tasks.o(i.vTaskPlaceOnEventList)
-    i.vTaskPlaceOnEventListRestricted        0x0800e1dc   Section        0  tasks.o(i.vTaskPlaceOnEventListRestricted)
-    i.vTaskPriorityInherit                   0x0800e244   Section        0  tasks.o(i.vTaskPriorityInherit)
-    i.vTaskSetTimeOutState                   0x0800e2f4   Section        0  tasks.o(i.vTaskSetTimeOutState)
-    i.vTaskStartScheduler                    0x0800e324   Section        0  tasks.o(i.vTaskStartScheduler)
-    i.vTaskSuspendAll                        0x0800e3a0   Section        0  tasks.o(i.vTaskSuspendAll)
-    i.vTaskSwitchContext                     0x0800e3b0   Section        0  tasks.o(i.vTaskSwitchContext)
-    i.vTimerCallback                         0x0800e43c   Section        0  time_nucleo_wrapper.o(i.vTimerCallback)
-    i.wait_for_command_mode                  0x0800e440   Section        0  wifi_interface.o(i.wait_for_command_mode)
-    i.waitfor                                0x0800e450   Section        0  mqttclient.o(i.waitfor)
-    i.wifi_connect                           0x0800e480   Section        0  wifi_interface.o(i.wifi_connect)
-    i.wifi_init                              0x0800e52c   Section        0  wifi_interface.o(i.wifi_init)
-    i.wifi_main                              0x0800ea14   Section        0  wifi_main.o(i.wifi_main)
-    i.wifi_print_satatus                     0x0800ec24   Section        0  wifi_main.o(i.wifi_print_satatus)
-    i.wifi_reset                             0x0800f110   Section        0  wifi_module.o(i.wifi_reset)
-    i.wifi_socket_client_close               0x0800f1c4   Section        0  wifi_interface.o(i.wifi_socket_client_close)
-    i.wifi_socket_client_open                0x0800f1e4   Section        0  wifi_interface.o(i.wifi_socket_client_open)
-    i.wifi_socket_client_security            0x0800f218   Section        0  wifi_interface.o(i.wifi_socket_client_security)
-    i.wifi_socket_client_write               0x0800f438   Section        0  wifi_interface.o(i.wifi_socket_client_write)
-    i.wifi_wakeup                            0x0800f478   Section        0  wifi_interface.o(i.wifi_wakeup)
-    i.writeCString                           0x0800f4dc   Section        0  mqttpacket.o(i.writeCString)
-    i.writeChar                              0x0800f504   Section        0  mqttpacket.o(i.writeChar)
-    i.writeInt                               0x0800f510   Section        0  mqttpacket.o(i.writeInt)
-    i.writeMQTTString                        0x0800f540   Section        0  mqttpacket.o(i.writeMQTTString)
-    i.xPortStartScheduler                    0x0800f580   Section        0  port.o(i.xPortStartScheduler)
-    i.xPortSysTickHandler                    0x0800f6bc   Section        0  port.o(i.xPortSysTickHandler)
-    i.xQueueGenericCreate                    0x0800f6f0   Section        0  queue.o(i.xQueueGenericCreate)
-    i.xQueueGenericReceive                   0x0800f77c   Section        0  queue.o(i.xQueueGenericReceive)
-    i.xQueueGenericReset                     0x0800f928   Section        0  queue.o(i.xQueueGenericReset)
-    i.xQueueGenericSend                      0x0800f9bc   Section        0  queue.o(i.xQueueGenericSend)
-    i.xQueueGenericSendFromISR               0x0800fb5c   Section        0  queue.o(i.xQueueGenericSendFromISR)
-    i.xTaskCheckForTimeOut                   0x0800fc4c   Section        0  tasks.o(i.xTaskCheckForTimeOut)
-    i.xTaskGenericCreate                     0x0800fcd8   Section        0  tasks.o(i.xTaskGenericCreate)
-    i.xTaskGetSchedulerState                 0x0800fe48   Section        0  tasks.o(i.xTaskGetSchedulerState)
-    i.xTaskGetTickCount                      0x0800fe68   Section        0  tasks.o(i.xTaskGetTickCount)
-    i.xTaskIncrementTick                     0x0800fe74   Section        0  tasks.o(i.xTaskIncrementTick)
-    i.xTaskPriorityDisinherit                0x0800ffc0   Section        0  tasks.o(i.xTaskPriorityDisinherit)
-    i.xTaskRemoveFromEventList               0x08010088   Section        0  tasks.o(i.xTaskRemoveFromEventList)
-    i.xTaskResumeAll                         0x08010120   Section        0  tasks.o(i.xTaskResumeAll)
-    i.xTimerCreate                           0x08010224   Section        0  timers.o(i.xTimerCreate)
-    i.xTimerCreateTimerTask                  0x08010284   Section        0  timers.o(i.xTimerCreateTimerTask)
-    i.xTimerGenericCommand                   0x080102dc   Section        0  timers.o(i.xTimerGenericCommand)
-    i.xTimerIsTimerActive                    0x08010348   Section        0  timers.o(i.xTimerIsTimerActive)
-    i.xTimerLeftMs                           0x08010368   Section        0  timers.o(i.xTimerLeftMs)
-    .constdata                               0x08010396   Section       15  aws_main.o(.constdata)
-    __PRETTY_FUNCTION__                      0x08010396   Data          15  aws_main.o(.constdata)
-    .constdata                               0x080103a5   Section       16  stm32f4xx_hal_rcc.o(.constdata)
-    .constdata                               0x080103b6   Section        5  stm32f4xx_nucleo.o(.constdata)
-    .constdata                               0x080103bc   Section       88  mqttclient.o(.constdata)
-    .constdata                               0x08010414   Section       56  network_nucleo_wrapper.o(.constdata)
-    __PRETTY_FUNCTION__                      0x08010414   Data          56  network_nucleo_wrapper.o(.constdata)
-    .constdata                               0x0801044c   Section      240  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    .constdata                               0x08010540   Section      136  pow.o(.constdata)
-    bp                                       0x08010540   Data          16  pow.o(.constdata)
-    dp_h                                     0x08010550   Data          16  pow.o(.constdata)
-    dp_l                                     0x08010560   Data          16  pow.o(.constdata)
-    L                                        0x08010570   Data          48  pow.o(.constdata)
-    P                                        0x080105a0   Data          40  pow.o(.constdata)
-    .constdata                               0x080105c8   Section        8  qnan.o(.constdata)
-    .conststring                             0x080105d0   Section       36  wifi_main.o(.conststring)
-    .conststring                             0x080105f4   Section      321  aws_main.o(.conststring)
-    .conststring                             0x08010738   Section       43  aws_iot_mqtt_embedded_client_wrapper.o(.conststring)
+    _fp_digits                               0x0800ad35   Thumb Code   366  printfa.o(i._fp_digits)
+    i._printf_core                           0x0800aeb8   Section        0  printfa.o(i._printf_core)
+    _printf_core                             0x0800aeb9   Thumb Code  1744  printfa.o(i._printf_core)
+    i._printf_post_padding                   0x0800b594   Section        0  printfa.o(i._printf_post_padding)
+    _printf_post_padding                     0x0800b595   Thumb Code    36  printfa.o(i._printf_post_padding)
+    i._printf_pre_padding                    0x0800b5b8   Section        0  printfa.o(i._printf_pre_padding)
+    _printf_pre_padding                      0x0800b5b9   Thumb Code    46  printfa.o(i._printf_pre_padding)
+    i._sputc                                 0x0800b5e6   Section        0  printfa.o(i._sputc)
+    _sputc                                   0x0800b5e7   Thumb Code    10  printfa.o(i._sputc)
+    i.aws_iot_mqtt_connect                   0x0800b5f0   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_connect)
+    i.aws_iot_mqtt_disconnect                0x0800b720   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_disconnect)
+    i.aws_iot_mqtt_publish                   0x0800b740   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_publish)
+    i.aws_iot_mqtt_subscribe                 0x0800b780   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_subscribe)
+    i.aws_iot_mqtt_yield                     0x0800b7a8   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_yield)
+    i.aws_main                               0x0800b7c4   Section        0  aws_main.o(i.aws_main)
+    i.bufchar                                0x0800c058   Section        0  mqttpacket.o(i.bufchar)
+    i.countdown                              0x0800c080   Section        0  time_nucleo_wrapper.o(i.countdown)
+    i.countdown_ms                           0x0800c096   Section        0  time_nucleo_wrapper.o(i.countdown_ms)
+    i.create_global_timers                   0x0800c0bc   Section        0  time_nucleo_wrapper.o(i.create_global_timers)
+    i.cycle                                  0x0800c0f8   Section        0  mqttclient.o(i.cycle)
+    i.data_ind_wifi_socket_client_remote_server_closed 0x0800c258   Section        0  app_wifi_read.o(i.data_ind_wifi_socket_client_remote_server_closed)
+    i.data_ind_wifi_socket_data_received     0x0800c284   Section        0  app_wifi_read.o(i.data_ind_wifi_socket_data_received)
+    i.decodePacket                           0x0800c2aa   Section        0  mqttclient.o(i.decodePacket)
+    i.deliverMessage                         0x0800c314   Section        0  mqttclient.o(i.deliverMessage)
+    i.disconnectCallbackHandler              0x0800c3c4   Section        0  aws_main.o(i.disconnectCallbackHandler)
+    i.empty                                  0x0800c3c6   Section        0  ring_buffer.o(i.empty)
+    i.event_empty                            0x0800c3d4   Section        0  event_buffer.o(i.event_empty)
+    i.event_full                             0x0800c3e2   Section        0  event_buffer.o(i.event_full)
+    i.event_init                             0x0800c3f8   Section        0  event_buffer.o(i.event_init)
+    i.expired                                0x0800c414   Section        0  time_nucleo_wrapper.o(i.expired)
+    i.fabs                                   0x0800c430   Section        0  fabs.o(i.fabs)
+    i.fputc                                  0x0800c448   Section        0  console.o(i.fputc)
+    i.fsleep                                 0x0800c456   Section        0  time_nucleo_wrapper.o(i.fsleep)
+    i.full                                   0x0800c472   Section        0  ring_buffer.o(i.full)
+    i.getNextPacketId                        0x0800c484   Section        0  mqttclient.o(i.getNextPacketId)
+    i.ind_socket_server_client_joined        0x0800c49c   Section        0  wifi_module.o(i.ind_socket_server_client_joined)
+    i.ind_socket_server_client_left          0x0800c49e   Section        0  wifi_module.o(i.ind_socket_server_client_left)
+    i.ind_wifi_ap_client_joined              0x0800c4a0   Section        0  wifi_module.o(i.ind_wifi_ap_client_joined)
+    i.ind_wifi_ap_client_left                0x0800c4a2   Section        0  wifi_module.o(i.ind_wifi_ap_client_left)
+    i.ind_wifi_ap_ready                      0x0800c4a4   Section        0  wifi_module.o(i.ind_wifi_ap_ready)
+    i.ind_wifi_connected                     0x0800c4a8   Section        0  wifi_main.o(i.ind_wifi_connected)
+    i.ind_wifi_connection_error              0x0800c4e4   Section        0  wifi_main.o(i.ind_wifi_connection_error)
+    i.ind_wifi_error                         0x0800c50c   Section        0  wifi_main.o(i.ind_wifi_error)
+    i.ind_wifi_file_data_available           0x0800c518   Section        0  wifi_module.o(i.ind_wifi_file_data_available)
+    i.ind_wifi_http_data_available           0x0800c51a   Section        0  wifi_module.o(i.ind_wifi_http_data_available)
+    i.ind_wifi_on                            0x0800c51c   Section        0  wifi_main.o(i.ind_wifi_on)
+    i.ind_wifi_packet_lost                   0x0800c528   Section        0  wifi_module.o(i.ind_wifi_packet_lost)
+    i.ind_wifi_resuming                      0x0800c52c   Section        0  wifi_main.o(i.ind_wifi_resuming)
+    i.ind_wifi_socket_client_remote_server_closed 0x0800c570   Section        0  wifi_main.o(i.ind_wifi_socket_client_remote_server_closed)
+    i.ind_wifi_socket_data_received          0x0800c584   Section        0  wifi_main.o(i.ind_wifi_socket_data_received)
+    i.ind_wifi_socket_server_data_lost       0x0800c5a4   Section        0  wifi_module.o(i.ind_wifi_socket_server_data_lost)
+    i.ind_wifi_warning                       0x0800c5a6   Section        0  wifi_main.o(i.ind_wifi_warning)
+    i.init                                   0x0800c5b4   Section        0  ring_buffer.o(i.init)
+    i.iot_tls_connect                        0x0800c5c8   Section        0  network_nucleo_wrapper.o(i.iot_tls_connect)
+    i.iot_tls_disconnect                     0x0800c718   Section        0  network_nucleo_wrapper.o(i.iot_tls_disconnect)
+    i.iot_tls_init                           0x0800c724   Section        0  network_nucleo_wrapper.o(i.iot_tls_init)
+    i.iot_tls_read                           0x0800c764   Section        0  network_nucleo_wrapper.o(i.iot_tls_read)
+    i.iot_tls_write                          0x0800c7ba   Section        0  network_nucleo_wrapper.o(i.iot_tls_write)
+    i.isTopicMatched                         0x0800c7e0   Section        0  mqttclient.o(i.isTopicMatched)
+    i.is_half_empty                          0x0800c856   Section        0  ring_buffer.o(i.is_half_empty)
+    i.is_half_full                           0x0800c866   Section        0  ring_buffer.o(i.is_half_full)
+    i.keepalive                              0x0800c87c   Section        0  mqttclient.o(i.keepalive)
+    i.left_ms                                0x0800c91c   Section        0  time_nucleo_wrapper.o(i.left_ms)
+    i.main                                   0x0800c94c   Section        0  main.o(i.main)
+    i.osDelay                                0x0800c9dc   Section        0  cmsis_os.o(i.osDelay)
+    i.osKernelStart                          0x0800c9f4   Section        0  cmsis_os.o(i.osKernelStart)
+    i.osSystickHandler                       0x0800c9fe   Section        0  cmsis_os.o(i.osSystickHandler)
+    i.pahoDisconnectHandler                  0x0800ca10   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoDisconnectHandler)
+    i.pahoMessageCallback                    0x0800ca24   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoMessageCallback)
+    i.parseConnectParamsForError             0x0800ca90   Section        0  aws_iot_mqtt_embedded_client_wrapper.o(i.parseConnectParamsForError)
+    parseConnectParamsForError               0x0800ca91   Thumb Code    18  aws_iot_mqtt_embedded_client_wrapper.o(i.parseConnectParamsForError)
+    i.pop_buffer_queue                       0x0800caa4   Section        0  ring_buffer.o(i.pop_buffer_queue)
+    i.pop_eventbuffer_queue                  0x0800cbf4   Section        0  event_buffer.o(i.pop_eventbuffer_queue)
+    i.prvAddCurrentTaskToDelayedList         0x0800cc7c   Section        0  tasks.o(i.prvAddCurrentTaskToDelayedList)
+    prvAddCurrentTaskToDelayedList           0x0800cc7d   Thumb Code    62  tasks.o(i.prvAddCurrentTaskToDelayedList)
+    i.prvAllocateTCBAndStack                 0x0800ccd0   Section        0  tasks.o(i.prvAllocateTCBAndStack)
+    prvAllocateTCBAndStack                   0x0800ccd1   Thumb Code    66  tasks.o(i.prvAllocateTCBAndStack)
+    i.prvCheckForValidListAndQueue           0x0800cd14   Section        0  timers.o(i.prvCheckForValidListAndQueue)
+    prvCheckForValidListAndQueue             0x0800cd15   Thumb Code   100  timers.o(i.prvCheckForValidListAndQueue)
+    i.prvCheckTasksWaitingTermination        0x0800cd94   Section        0  tasks.o(i.prvCheckTasksWaitingTermination)
+    prvCheckTasksWaitingTermination          0x0800cd95   Thumb Code    86  tasks.o(i.prvCheckTasksWaitingTermination)
+    i.prvCopyDataFromQueue                   0x0800cdf8   Section        0  queue.o(i.prvCopyDataFromQueue)
+    prvCopyDataFromQueue                     0x0800cdf9   Thumb Code    42  queue.o(i.prvCopyDataFromQueue)
+    i.prvCopyDataToQueue                     0x0800ce22   Section        0  queue.o(i.prvCopyDataToQueue)
+    prvCopyDataToQueue                       0x0800ce23   Thumb Code   128  queue.o(i.prvCopyDataToQueue)
+    i.prvDeleteTCB                           0x0800cea2   Section        0  tasks.o(i.prvDeleteTCB)
+    prvDeleteTCB                             0x0800cea3   Thumb Code    18  tasks.o(i.prvDeleteTCB)
+    i.prvGetNextExpireTime                   0x0800ceb4   Section        0  timers.o(i.prvGetNextExpireTime)
+    prvGetNextExpireTime                     0x0800ceb5   Thumb Code    36  timers.o(i.prvGetNextExpireTime)
+    i.prvHeapInit                            0x0800cedc   Section        0  heap_4.o(i.prvHeapInit)
+    prvHeapInit                              0x0800cedd   Thumb Code    98  heap_4.o(i.prvHeapInit)
+    i.prvIdleTask                            0x0800cf58   Section        0  tasks.o(i.prvIdleTask)
+    prvIdleTask                              0x0800cf59   Thumb Code    32  tasks.o(i.prvIdleTask)
+    i.prvInitialiseTCBVariables              0x0800cf80   Section        0  tasks.o(i.prvInitialiseTCBVariables)
+    prvInitialiseTCBVariables                0x0800cf81   Thumb Code    98  tasks.o(i.prvInitialiseTCBVariables)
+    i.prvInitialiseTaskLists                 0x0800cfe4   Section        0  tasks.o(i.prvInitialiseTaskLists)
+    prvInitialiseTaskLists                   0x0800cfe5   Thumb Code    70  tasks.o(i.prvInitialiseTaskLists)
+    i.prvInsertBlockIntoFreeList             0x0800d04c   Section        0  heap_4.o(i.prvInsertBlockIntoFreeList)
+    prvInsertBlockIntoFreeList               0x0800d04d   Thumb Code    96  heap_4.o(i.prvInsertBlockIntoFreeList)
+    i.prvInsertTimerInActiveList             0x0800d0b4   Section        0  timers.o(i.prvInsertTimerInActiveList)
+    prvInsertTimerInActiveList               0x0800d0b5   Thumb Code    80  timers.o(i.prvInsertTimerInActiveList)
+    i.prvIsQueueEmpty                        0x0800d10c   Section        0  queue.o(i.prvIsQueueEmpty)
+    prvIsQueueEmpty                          0x0800d10d   Thumb Code    26  queue.o(i.prvIsQueueEmpty)
+    i.prvIsQueueFull                         0x0800d126   Section        0  queue.o(i.prvIsQueueFull)
+    prvIsQueueFull                           0x0800d127   Thumb Code    30  queue.o(i.prvIsQueueFull)
+    i.prvProcessExpiredTimer                 0x0800d144   Section        0  timers.o(i.prvProcessExpiredTimer)
+    prvProcessExpiredTimer                   0x0800d145   Thumb Code    96  timers.o(i.prvProcessExpiredTimer)
+    i.prvProcessReceivedCommands             0x0800d1a8   Section        0  timers.o(i.prvProcessReceivedCommands)
+    prvProcessReceivedCommands               0x0800d1a9   Thumb Code   244  timers.o(i.prvProcessReceivedCommands)
+    i.prvProcessTimerOrBlockTask             0x0800d2a0   Section        0  timers.o(i.prvProcessTimerOrBlockTask)
+    prvProcessTimerOrBlockTask               0x0800d2a1   Thumb Code    82  timers.o(i.prvProcessTimerOrBlockTask)
+    i.prvResetNextTaskUnblockTime            0x0800d2fc   Section        0  tasks.o(i.prvResetNextTaskUnblockTime)
+    prvResetNextTaskUnblockTime              0x0800d2fd   Thumb Code    42  tasks.o(i.prvResetNextTaskUnblockTime)
+    i.prvSampleTimeNow                       0x0800d330   Section        0  timers.o(i.prvSampleTimeNow)
+    prvSampleTimeNow                         0x0800d331   Thumb Code    40  timers.o(i.prvSampleTimeNow)
+    i.prvSwitchTimerLists                    0x0800d35c   Section        0  timers.o(i.prvSwitchTimerLists)
+    prvSwitchTimerLists                      0x0800d35d   Thumb Code   150  timers.o(i.prvSwitchTimerLists)
+    i.prvTaskExitError                       0x0800d3fc   Section        0  port.o(i.prvTaskExitError)
+    prvTaskExitError                         0x0800d3fd   Thumb Code    60  port.o(i.prvTaskExitError)
+    i.prvTimerTask                           0x0800d43c   Section        0  timers.o(i.prvTimerTask)
+    prvTimerTask                             0x0800d43d   Thumb Code    26  timers.o(i.prvTimerTask)
+    i.prvUnlockQueue                         0x0800d456   Section        0  queue.o(i.prvUnlockQueue)
+    prvUnlockQueue                           0x0800d457   Thumb Code   126  queue.o(i.prvUnlockQueue)
+    i.push_buffer                            0x0800d4d4   Section        0  ring_buffer.o(i.push_buffer)
+    i.push_eventbuffer                       0x0800d50a   Section        0  event_buffer.o(i.push_eventbuffer)
+    i.pvPortMalloc                           0x0800d59c   Section        0  heap_4.o(i.pvPortMalloc)
+    i.pvTaskIncrementMutexHeldCount          0x0800d6d8   Section        0  tasks.o(i.pvTaskIncrementMutexHeldCount)
+    i.pxPortInitialiseStack                  0x0800d6f8   Section        0  port.o(i.pxPortInitialiseStack)
+    i.readChar                               0x0800d720   Section        0  mqttpacket.o(i.readChar)
+    i.readInt                                0x0800d72e   Section        0  mqttpacket.o(i.readInt)
+    i.readMQTTLenString                      0x0800d748   Section        0  mqttpacket.o(i.readMQTTLenString)
+    i.readPacket                             0x0800d782   Section        0  mqttclient.o(i.readPacket)
+    i.reset_event                            0x0800d818   Section        0  event_buffer.o(i.reset_event)
+    i.rewind_buffer_queue                    0x0800d832   Section        0  ring_buffer.o(i.rewind_buffer_queue)
+    i.sendPacket                             0x0800d870   Section        0  mqttclient.o(i.sendPacket)
+    i.setDisconnectHandler                   0x0800d8c6   Section        0  mqttclient.o(i.setDisconnectHandler)
+    i.sqrt                                   0x0800d8ca   Section        0  sqrt.o(i.sqrt)
+    i.time_get_time_from_time_server         0x0800d938   Section        0  wifi_main.o(i.time_get_time_from_time_server)
+    i.time_ind_wifi_socket_client_remote_server_closed 0x0800d9d8   Section        0  wifi_main.o(i.time_ind_wifi_socket_client_remote_server_closed)
+    i.time_ind_wifi_socket_data_received     0x0800da20   Section        0  wifi_main.o(i.time_ind_wifi_socket_data_received)
+    i.uartSendChar                           0x0800da78   Section        0  console.o(i.uartSendChar)
+    i.uxListRemove                           0x0800da90   Section        0  list.o(i.uxListRemove)
+    i.vListInitialise                        0x0800dab8   Section        0  list.o(i.vListInitialise)
+    i.vListInitialiseItem                    0x0800dad2   Section        0  list.o(i.vListInitialiseItem)
+    i.vListInsert                            0x0800dad8   Section        0  list.o(i.vListInsert)
+    i.vListInsertEnd                         0x0800db0c   Section        0  list.o(i.vListInsertEnd)
+    i.vPortEnterCritical                     0x0800db24   Section        0  port.o(i.vPortEnterCritical)
+    i.vPortExitCritical                      0x0800db78   Section        0  port.o(i.vPortExitCritical)
+    i.vPortFree                              0x0800dbb4   Section        0  heap_4.o(i.vPortFree)
+    i.vPortSetupTimerInterrupt               0x0800dc48   Section        0  port.o(i.vPortSetupTimerInterrupt)
+    i.vPortValidateInterruptPriority         0x0800dc68   Section        0  port.o(i.vPortValidateInterruptPriority)
+    i.vQueueAddToRegistry                    0x0800dce0   Section        0  queue.o(i.vQueueAddToRegistry)
+    i.vQueueWaitForMessageRestricted         0x0800dd0c   Section        0  queue.o(i.vQueueWaitForMessageRestricted)
+    i.vTaskDelay                             0x0800dd48   Section        0  tasks.o(i.vTaskDelay)
+    i.vTaskMissedYield                       0x0800ddd4   Section        0  tasks.o(i.vTaskMissedYield)
+    i.vTaskPlaceOnEventList                  0x0800dde0   Section        0  tasks.o(i.vTaskPlaceOnEventList)
+    i.vTaskPlaceOnEventListRestricted        0x0800de5c   Section        0  tasks.o(i.vTaskPlaceOnEventListRestricted)
+    i.vTaskPriorityInherit                   0x0800dec4   Section        0  tasks.o(i.vTaskPriorityInherit)
+    i.vTaskSetTimeOutState                   0x0800df74   Section        0  tasks.o(i.vTaskSetTimeOutState)
+    i.vTaskStartScheduler                    0x0800dfa4   Section        0  tasks.o(i.vTaskStartScheduler)
+    i.vTaskSuspendAll                        0x0800e020   Section        0  tasks.o(i.vTaskSuspendAll)
+    i.vTaskSwitchContext                     0x0800e030   Section        0  tasks.o(i.vTaskSwitchContext)
+    i.vTimerCallback                         0x0800e0bc   Section        0  time_nucleo_wrapper.o(i.vTimerCallback)
+    i.wait_for_command_mode                  0x0800e0c0   Section        0  wifi_interface.o(i.wait_for_command_mode)
+    i.waitfor                                0x0800e0d0   Section        0  mqttclient.o(i.waitfor)
+    i.wifi_connect                           0x0800e100   Section        0  wifi_interface.o(i.wifi_connect)
+    i.wifi_init                              0x0800e1ac   Section        0  wifi_interface.o(i.wifi_init)
+    i.wifi_main                              0x0800e694   Section        0  wifi_main.o(i.wifi_main)
+    i.wifi_print_satatus                     0x0800e8a4   Section        0  wifi_main.o(i.wifi_print_satatus)
+    i.wifi_reset                             0x0800ed90   Section        0  wifi_module.o(i.wifi_reset)
+    i.wifi_socket_client_close               0x0800ee44   Section        0  wifi_interface.o(i.wifi_socket_client_close)
+    i.wifi_socket_client_open                0x0800ee64   Section        0  wifi_interface.o(i.wifi_socket_client_open)
+    i.wifi_socket_client_security            0x0800ee98   Section        0  wifi_interface.o(i.wifi_socket_client_security)
+    i.wifi_socket_client_write               0x0800f0b8   Section        0  wifi_interface.o(i.wifi_socket_client_write)
+    i.wifi_wakeup                            0x0800f0f8   Section        0  wifi_interface.o(i.wifi_wakeup)
+    i.writeCString                           0x0800f15c   Section        0  mqttpacket.o(i.writeCString)
+    i.writeChar                              0x0800f184   Section        0  mqttpacket.o(i.writeChar)
+    i.writeInt                               0x0800f190   Section        0  mqttpacket.o(i.writeInt)
+    i.writeMQTTString                        0x0800f1c0   Section        0  mqttpacket.o(i.writeMQTTString)
+    i.xPortStartScheduler                    0x0800f200   Section        0  port.o(i.xPortStartScheduler)
+    i.xPortSysTickHandler                    0x0800f33c   Section        0  port.o(i.xPortSysTickHandler)
+    i.xQueueGenericCreate                    0x0800f370   Section        0  queue.o(i.xQueueGenericCreate)
+    i.xQueueGenericReceive                   0x0800f3fc   Section        0  queue.o(i.xQueueGenericReceive)
+    i.xQueueGenericReset                     0x0800f5a8   Section        0  queue.o(i.xQueueGenericReset)
+    i.xQueueGenericSend                      0x0800f63c   Section        0  queue.o(i.xQueueGenericSend)
+    i.xQueueGenericSendFromISR               0x0800f7dc   Section        0  queue.o(i.xQueueGenericSendFromISR)
+    i.xTaskCheckForTimeOut                   0x0800f8cc   Section        0  tasks.o(i.xTaskCheckForTimeOut)
+    i.xTaskGenericCreate                     0x0800f958   Section        0  tasks.o(i.xTaskGenericCreate)
+    i.xTaskGetSchedulerState                 0x0800fac8   Section        0  tasks.o(i.xTaskGetSchedulerState)
+    i.xTaskGetTickCount                      0x0800fae8   Section        0  tasks.o(i.xTaskGetTickCount)
+    i.xTaskIncrementTick                     0x0800faf4   Section        0  tasks.o(i.xTaskIncrementTick)
+    i.xTaskPriorityDisinherit                0x0800fc40   Section        0  tasks.o(i.xTaskPriorityDisinherit)
+    i.xTaskRemoveFromEventList               0x0800fd08   Section        0  tasks.o(i.xTaskRemoveFromEventList)
+    i.xTaskResumeAll                         0x0800fda0   Section        0  tasks.o(i.xTaskResumeAll)
+    i.xTimerCreate                           0x0800fea4   Section        0  timers.o(i.xTimerCreate)
+    i.xTimerCreateTimerTask                  0x0800ff04   Section        0  timers.o(i.xTimerCreateTimerTask)
+    i.xTimerGenericCommand                   0x0800ff5c   Section        0  timers.o(i.xTimerGenericCommand)
+    i.xTimerIsTimerActive                    0x0800ffc8   Section        0  timers.o(i.xTimerIsTimerActive)
+    i.xTimerLeftMs                           0x0800ffe8   Section        0  timers.o(i.xTimerLeftMs)
+    .constdata                               0x08010016   Section       15  aws_main.o(.constdata)
+    __PRETTY_FUNCTION__                      0x08010016   Data          15  aws_main.o(.constdata)
+    .constdata                               0x08010025   Section       16  stm32f4xx_hal_rcc.o(.constdata)
+    .constdata                               0x08010036   Section        5  stm32f4xx_nucleo.o(.constdata)
+    .constdata                               0x0801003c   Section       88  mqttclient.o(.constdata)
+    .constdata                               0x08010094   Section       56  network_nucleo_wrapper.o(.constdata)
+    __PRETTY_FUNCTION__                      0x08010094   Data          56  network_nucleo_wrapper.o(.constdata)
+    .constdata                               0x080100cc   Section      240  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    .constdata                               0x080101c0   Section      136  pow.o(.constdata)
+    bp                                       0x080101c0   Data          16  pow.o(.constdata)
+    dp_h                                     0x080101d0   Data          16  pow.o(.constdata)
+    dp_l                                     0x080101e0   Data          16  pow.o(.constdata)
+    L                                        0x080101f0   Data          48  pow.o(.constdata)
+    P                                        0x08010220   Data          40  pow.o(.constdata)
+    .constdata                               0x08010248   Section        8  qnan.o(.constdata)
+    .conststring                             0x08010250   Section       36  wifi_main.o(.conststring)
+    .conststring                             0x08010274   Section      321  aws_main.o(.conststring)
+    .conststring                             0x080103b8   Section       43  aws_iot_mqtt_embedded_client_wrapper.o(.conststring)
     .data                                    0x20000000   Section        4  user_button.o(.data)
     .data                                    0x20000004   Section       36  wifi_main.o(.data)
     TimeSocket                               0x20000014   Data           1  wifi_main.o(.data)
@@ -4639,58 +4639,58 @@ Image Symbol Table
     .data                                    0x20000360   Section        5  aws_iot_mqtt_embedded_client_wrapper.o(.data)
     clientDisconnectHandler                  0x20000360   Data           4  aws_iot_mqtt_embedded_client_wrapper.o(.data)
     isPowerCycle                             0x20000364   Data           1  aws_iot_mqtt_embedded_client_wrapper.o(.data)
-    .data                                    0x20000365   Section     3040  aws_nucleo_certificates.o(.data)
-    .data                                    0x20000f48   Section        5  x_nucleo_iks01a1_hum_temp.o(.data)
-    Hum_tempDrv                              0x20000f48   Data           4  x_nucleo_iks01a1_hum_temp.o(.data)
-    HumTempInitialized                       0x20000f4c   Data           1  x_nucleo_iks01a1_hum_temp.o(.data)
-    .data                                    0x20000f50   Section        4  x_nucleo_iks01a1.o(.data)
-    .data                                    0x20000f54   Section        6  x_nucleo_iks01a1_pressure.o(.data)
-    PressureDrv                              0x20000f54   Data           4  x_nucleo_iks01a1_pressure.o(.data)
-    PressureInitialized                      0x20000f58   Data           1  x_nucleo_iks01a1_pressure.o(.data)
-    pressure_sensor_type                     0x20000f59   Data           1  x_nucleo_iks01a1_pressure.o(.data)
-    .data                                    0x20000f5c   Section        6  x_nucleo_iks01a1_imu_6axes.o(.data)
-    Imu6AxesDrv                              0x20000f5c   Data           4  x_nucleo_iks01a1_imu_6axes.o(.data)
-    Imu6AxesInitialized                      0x20000f60   Data           1  x_nucleo_iks01a1_imu_6axes.o(.data)
-    imu_6axes_sensor_type                    0x20000f61   Data           1  x_nucleo_iks01a1_imu_6axes.o(.data)
-    .data                                    0x20000f64   Section        5  x_nucleo_iks01a1_magneto.o(.data)
-    MagnetoDrv                               0x20000f64   Data           4  x_nucleo_iks01a1_magneto.o(.data)
-    MagnetoInitialized                       0x20000f68   Data           1  x_nucleo_iks01a1_magneto.o(.data)
-    .data                                    0x20000f6c   Section       80  hts221.o(.data)
-    .data                                    0x20000fbc   Section       61  lps25h.o(.data)
-    .data                                    0x20000ffc   Section       61  lps25hb.o(.data)
-    .data                                    0x2000103c   Section       48  lis3mdl.o(.data)
-    .data                                    0x2000106c   Section       76  lsm6ds0.o(.data)
-    .data                                    0x200010b8   Section       88  lsm6ds3.o(.data)
-    .data                                    0x20001110   Section        4  stdout.o(.data)
-    .data                                    0x20001114   Section        4  errno.o(.data)
-    _errno                                   0x20001114   Data           4  errno.o(.data)
-    .bss                                     0x20001118   Section       52  wifi_main.o(.bss)
-    .bss                                     0x2000114c   Section     1024  app_wifi_read.o(.bss)
-    .bss                                     0x2000154c   Section       36  aws_main.o(.bss)
-    .bss                                     0x20001570   Section      120  stm32_spwf_wifi.o(.bss)
-    .bss                                     0x200015e8   Section       64  queue.o(.bss)
-    .bss                                     0x20001628   Section      240  tasks.o(.bss)
-    pxReadyTasksLists                        0x20001628   Data         140  tasks.o(.bss)
-    xDelayedTaskList1                        0x200016b4   Data          20  tasks.o(.bss)
-    xDelayedTaskList2                        0x200016c8   Data          20  tasks.o(.bss)
-    xPendingReadyList                        0x200016dc   Data          20  tasks.o(.bss)
-    xTasksWaitingTermination                 0x200016f0   Data          20  tasks.o(.bss)
-    xSuspendedTaskList                       0x20001704   Data          20  tasks.o(.bss)
-    .bss                                     0x20001718   Section       40  timers.o(.bss)
-    xActiveTimerList1                        0x20001718   Data          20  timers.o(.bss)
-    xActiveTimerList2                        0x2000172c   Data          20  timers.o(.bss)
-    .bss                                     0x20001740   Section    15360  heap_4.o(.bss)
-    ucHeap                                   0x20001740   Data       15360  heap_4.o(.bss)
-    .bss                                     0x20005340   Section     6412  wifi_module.o(.bss)
-    .bss                                     0x20006c4c   Section      120  time_nucleo_wrapper.o(.bss)
-    .bss                                     0x20006cc4   Section     1152  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
-    n                                        0x20006cc4   Data          16  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
-    c                                        0x20006cd4   Data         112  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
-    writebuf                                 0x20006d44   Data         512  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
-    readbuf                                  0x20006f44   Data         512  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
-    .bss                                     0x20007144   Section       60  x_nucleo_iks01a1.o(.bss)
-    I2C_EXPBD_Handle                         0x20007144   Data          60  x_nucleo_iks01a1.o(.bss)
-    STACK                                    0x20007180   Section     8192  startup_stm32f401xe.o(STACK)
+    .data                                    0x20000365   Section     2996  aws_nucleo_certificates.o(.data)
+    .data                                    0x20000f1c   Section        5  x_nucleo_iks01a1_hum_temp.o(.data)
+    Hum_tempDrv                              0x20000f1c   Data           4  x_nucleo_iks01a1_hum_temp.o(.data)
+    HumTempInitialized                       0x20000f20   Data           1  x_nucleo_iks01a1_hum_temp.o(.data)
+    .data                                    0x20000f24   Section        4  x_nucleo_iks01a1.o(.data)
+    .data                                    0x20000f28   Section        6  x_nucleo_iks01a1_pressure.o(.data)
+    PressureDrv                              0x20000f28   Data           4  x_nucleo_iks01a1_pressure.o(.data)
+    PressureInitialized                      0x20000f2c   Data           1  x_nucleo_iks01a1_pressure.o(.data)
+    pressure_sensor_type                     0x20000f2d   Data           1  x_nucleo_iks01a1_pressure.o(.data)
+    .data                                    0x20000f30   Section        6  x_nucleo_iks01a1_imu_6axes.o(.data)
+    Imu6AxesDrv                              0x20000f30   Data           4  x_nucleo_iks01a1_imu_6axes.o(.data)
+    Imu6AxesInitialized                      0x20000f34   Data           1  x_nucleo_iks01a1_imu_6axes.o(.data)
+    imu_6axes_sensor_type                    0x20000f35   Data           1  x_nucleo_iks01a1_imu_6axes.o(.data)
+    .data                                    0x20000f38   Section        5  x_nucleo_iks01a1_magneto.o(.data)
+    MagnetoDrv                               0x20000f38   Data           4  x_nucleo_iks01a1_magneto.o(.data)
+    MagnetoInitialized                       0x20000f3c   Data           1  x_nucleo_iks01a1_magneto.o(.data)
+    .data                                    0x20000f40   Section       80  hts221.o(.data)
+    .data                                    0x20000f90   Section       61  lps25h.o(.data)
+    .data                                    0x20000fd0   Section       61  lps25hb.o(.data)
+    .data                                    0x20001010   Section       48  lis3mdl.o(.data)
+    .data                                    0x20001040   Section       76  lsm6ds0.o(.data)
+    .data                                    0x2000108c   Section       88  lsm6ds3.o(.data)
+    .data                                    0x200010e4   Section        4  stdout.o(.data)
+    .data                                    0x200010e8   Section        4  errno.o(.data)
+    _errno                                   0x200010e8   Data           4  errno.o(.data)
+    .bss                                     0x200010ec   Section       52  wifi_main.o(.bss)
+    .bss                                     0x20001120   Section     1024  app_wifi_read.o(.bss)
+    .bss                                     0x20001520   Section       36  aws_main.o(.bss)
+    .bss                                     0x20001544   Section      120  stm32_spwf_wifi.o(.bss)
+    .bss                                     0x200015bc   Section       64  queue.o(.bss)
+    .bss                                     0x200015fc   Section      240  tasks.o(.bss)
+    pxReadyTasksLists                        0x200015fc   Data         140  tasks.o(.bss)
+    xDelayedTaskList1                        0x20001688   Data          20  tasks.o(.bss)
+    xDelayedTaskList2                        0x2000169c   Data          20  tasks.o(.bss)
+    xPendingReadyList                        0x200016b0   Data          20  tasks.o(.bss)
+    xTasksWaitingTermination                 0x200016c4   Data          20  tasks.o(.bss)
+    xSuspendedTaskList                       0x200016d8   Data          20  tasks.o(.bss)
+    .bss                                     0x200016ec   Section       40  timers.o(.bss)
+    xActiveTimerList1                        0x200016ec   Data          20  timers.o(.bss)
+    xActiveTimerList2                        0x20001700   Data          20  timers.o(.bss)
+    .bss                                     0x20001714   Section    15360  heap_4.o(.bss)
+    ucHeap                                   0x20001714   Data       15360  heap_4.o(.bss)
+    .bss                                     0x20005314   Section     6412  wifi_module.o(.bss)
+    .bss                                     0x20006c20   Section      120  time_nucleo_wrapper.o(.bss)
+    .bss                                     0x20006c98   Section     1152  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
+    n                                        0x20006c98   Data          16  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
+    c                                        0x20006ca8   Data         112  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
+    writebuf                                 0x20006d18   Data         512  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
+    readbuf                                  0x20006f18   Data         512  aws_iot_mqtt_embedded_client_wrapper.o(.bss)
+    .bss                                     0x20007118   Section       60  x_nucleo_iks01a1.o(.bss)
+    I2C_EXPBD_Handle                         0x20007118   Data          60  x_nucleo_iks01a1.o(.bss)
+    STACK                                    0x20007158   Section     8192  startup_stm32f401xe.o(STACK)
 
     Global Symbols
 
@@ -5056,157 +5056,157 @@ Image Symbol Table
     __scatterload_null                       0x0800ad17   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x0800ad19   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
     __set_errno                              0x0800ad29   Thumb Code     6  errno.o(i.__set_errno)
-    aws_iot_mqtt_connect                     0x0800b5d1   Thumb Code   270  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_connect)
-    aws_iot_mqtt_disconnect                  0x0800b701   Thumb Code    24  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_disconnect)
-    aws_iot_mqtt_publish                     0x0800b721   Thumb Code    58  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_publish)
-    aws_iot_mqtt_subscribe                   0x0800b761   Thumb Code    30  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_subscribe)
-    aws_iot_mqtt_yield                       0x0800b789   Thumb Code    22  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_yield)
-    aws_main                                 0x0800b7a5   Thumb Code  3070  aws_main.o(i.aws_main)
-    bufchar                                  0x0800c3d9   Thumb Code    36  mqttpacket.o(i.bufchar)
-    countdown                                0x0800c401   Thumb Code    22  time_nucleo_wrapper.o(i.countdown)
-    countdown_ms                             0x0800c417   Thumb Code    38  time_nucleo_wrapper.o(i.countdown_ms)
-    create_global_timers                     0x0800c43d   Thumb Code    42  time_nucleo_wrapper.o(i.create_global_timers)
-    cycle                                    0x0800c479   Thumb Code   334  mqttclient.o(i.cycle)
-    data_ind_wifi_socket_client_remote_server_closed 0x0800c5d9   Thumb Code    12  app_wifi_read.o(i.data_ind_wifi_socket_client_remote_server_closed)
-    data_ind_wifi_socket_data_received       0x0800c605   Thumb Code    38  app_wifi_read.o(i.data_ind_wifi_socket_data_received)
-    decodePacket                             0x0800c62b   Thumb Code   106  mqttclient.o(i.decodePacket)
-    deliverMessage                           0x0800c695   Thumb Code   176  mqttclient.o(i.deliverMessage)
-    disconnectCallbackHandler                0x0800c745   Thumb Code     2  aws_main.o(i.disconnectCallbackHandler)
-    empty                                    0x0800c747   Thumb Code    14  ring_buffer.o(i.empty)
-    event_empty                              0x0800c755   Thumb Code    14  event_buffer.o(i.event_empty)
-    event_full                               0x0800c763   Thumb Code    20  event_buffer.o(i.event_full)
-    event_init                               0x0800c779   Thumb Code    22  event_buffer.o(i.event_init)
-    expired                                  0x0800c795   Thumb Code    28  time_nucleo_wrapper.o(i.expired)
-    fabs                                     0x0800c7b1   Thumb Code    24  fabs.o(i.fabs)
-    fputc                                    0x0800c7c9   Thumb Code    14  console.o(i.fputc)
-    fsleep                                   0x0800c7d7   Thumb Code    28  time_nucleo_wrapper.o(i.fsleep)
-    full                                     0x0800c7f3   Thumb Code    18  ring_buffer.o(i.full)
-    getNextPacketId                          0x0800c805   Thumb Code    24  mqttclient.o(i.getNextPacketId)
-    ind_socket_server_client_joined          0x0800c81d   Thumb Code     2  wifi_module.o(i.ind_socket_server_client_joined)
-    ind_socket_server_client_left            0x0800c81f   Thumb Code     2  wifi_module.o(i.ind_socket_server_client_left)
-    ind_wifi_ap_client_joined                0x0800c821   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_client_joined)
-    ind_wifi_ap_client_left                  0x0800c823   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_client_left)
-    ind_wifi_ap_ready                        0x0800c825   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_ready)
-    ind_wifi_connected                       0x0800c829   Thumb Code    20  wifi_main.o(i.ind_wifi_connected)
-    ind_wifi_connection_error                0x0800c865   Thumb Code    18  wifi_main.o(i.ind_wifi_connection_error)
-    ind_wifi_error                           0x0800c88d   Thumb Code    12  wifi_main.o(i.ind_wifi_error)
-    ind_wifi_file_data_available             0x0800c899   Thumb Code     2  wifi_module.o(i.ind_wifi_file_data_available)
-    ind_wifi_http_data_available             0x0800c89b   Thumb Code     2  wifi_module.o(i.ind_wifi_http_data_available)
-    ind_wifi_on                              0x0800c89d   Thumb Code     8  wifi_main.o(i.ind_wifi_on)
-    ind_wifi_packet_lost                     0x0800c8a9   Thumb Code     2  wifi_module.o(i.ind_wifi_packet_lost)
-    ind_wifi_resuming                        0x0800c8ad   Thumb Code    16  wifi_main.o(i.ind_wifi_resuming)
-    ind_wifi_socket_client_remote_server_closed 0x0800c8f1   Thumb Code    14  wifi_main.o(i.ind_wifi_socket_client_remote_server_closed)
-    ind_wifi_socket_data_received            0x0800c905   Thumb Code    28  wifi_main.o(i.ind_wifi_socket_data_received)
-    ind_wifi_socket_server_data_lost         0x0800c925   Thumb Code     2  wifi_module.o(i.ind_wifi_socket_server_data_lost)
-    ind_wifi_warning                         0x0800c927   Thumb Code    12  wifi_main.o(i.ind_wifi_warning)
-    init                                     0x0800c935   Thumb Code    16  ring_buffer.o(i.init)
-    iot_tls_connect                          0x0800c949   Thumb Code   164  network_nucleo_wrapper.o(i.iot_tls_connect)
-    iot_tls_disconnect                       0x0800ca99   Thumb Code    12  network_nucleo_wrapper.o(i.iot_tls_disconnect)
-    iot_tls_init                             0x0800caa5   Thumb Code    34  network_nucleo_wrapper.o(i.iot_tls_init)
-    iot_tls_read                             0x0800cae5   Thumb Code    86  network_nucleo_wrapper.o(i.iot_tls_read)
-    iot_tls_write                            0x0800cb3b   Thumb Code    38  network_nucleo_wrapper.o(i.iot_tls_write)
-    isTopicMatched                           0x0800cb61   Thumb Code   118  mqttclient.o(i.isTopicMatched)
-    is_half_empty                            0x0800cbd7   Thumb Code    16  ring_buffer.o(i.is_half_empty)
-    is_half_full                             0x0800cbe7   Thumb Code    22  ring_buffer.o(i.is_half_full)
-    keepalive                                0x0800cbfd   Thumb Code   140  mqttclient.o(i.keepalive)
-    left_ms                                  0x0800cc9d   Thumb Code    46  time_nucleo_wrapper.o(i.left_ms)
-    main                                     0x0800cccd   Thumb Code    94  main.o(i.main)
-    osDelay                                  0x0800cd5d   Thumb Code    24  cmsis_os.o(i.osDelay)
-    osKernelStart                            0x0800cd75   Thumb Code    10  cmsis_os.o(i.osKernelStart)
-    osSystickHandler                         0x0800cd7f   Thumb Code    16  cmsis_os.o(i.osSystickHandler)
-    pahoDisconnectHandler                    0x0800cd91   Thumb Code    16  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoDisconnectHandler)
-    pahoMessageCallback                      0x0800cda5   Thumb Code   108  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoMessageCallback)
-    pop_buffer_queue                         0x0800ce25   Thumb Code   322  ring_buffer.o(i.pop_buffer_queue)
-    pop_eventbuffer_queue                    0x0800cf75   Thumb Code   130  event_buffer.o(i.pop_eventbuffer_queue)
-    push_buffer                              0x0800d855   Thumb Code    54  ring_buffer.o(i.push_buffer)
-    push_eventbuffer                         0x0800d88b   Thumb Code   144  event_buffer.o(i.push_eventbuffer)
-    pvPortMalloc                             0x0800d91d   Thumb Code   296  heap_4.o(i.pvPortMalloc)
-    pvTaskIncrementMutexHeldCount            0x0800da59   Thumb Code    26  tasks.o(i.pvTaskIncrementMutexHeldCount)
-    pxPortInitialiseStack                    0x0800da79   Thumb Code    34  port.o(i.pxPortInitialiseStack)
-    readChar                                 0x0800daa1   Thumb Code    14  mqttpacket.o(i.readChar)
-    readInt                                  0x0800daaf   Thumb Code    26  mqttpacket.o(i.readInt)
-    readMQTTLenString                        0x0800dac9   Thumb Code    58  mqttpacket.o(i.readMQTTLenString)
-    readPacket                               0x0800db03   Thumb Code   150  mqttclient.o(i.readPacket)
-    reset_event                              0x0800db99   Thumb Code    26  event_buffer.o(i.reset_event)
-    rewind_buffer_queue                      0x0800dbb3   Thumb Code    62  ring_buffer.o(i.rewind_buffer_queue)
-    sendPacket                               0x0800dbf1   Thumb Code    86  mqttclient.o(i.sendPacket)
-    setDisconnectHandler                     0x0800dc47   Thumb Code     4  mqttclient.o(i.setDisconnectHandler)
-    sqrt                                     0x0800dc4b   Thumb Code   110  sqrt.o(i.sqrt)
-    time_get_time_from_time_server           0x0800dcb9   Thumb Code    56  wifi_main.o(i.time_get_time_from_time_server)
-    time_ind_wifi_socket_client_remote_server_closed 0x0800dd59   Thumb Code    30  wifi_main.o(i.time_ind_wifi_socket_client_remote_server_closed)
-    time_ind_wifi_socket_data_received       0x0800dda1   Thumb Code    44  wifi_main.o(i.time_ind_wifi_socket_data_received)
-    uartSendChar                             0x0800ddf9   Thumb Code    20  console.o(i.uartSendChar)
-    uxListRemove                             0x0800de11   Thumb Code    40  list.o(i.uxListRemove)
-    vListInitialise                          0x0800de39   Thumb Code    26  list.o(i.vListInitialise)
-    vListInitialiseItem                      0x0800de53   Thumb Code     6  list.o(i.vListInitialiseItem)
-    vListInsert                              0x0800de59   Thumb Code    52  list.o(i.vListInsert)
-    vListInsertEnd                           0x0800de8d   Thumb Code    24  list.o(i.vListInsertEnd)
-    vPortEnterCritical                       0x0800dea5   Thumb Code    76  port.o(i.vPortEnterCritical)
-    vPortExitCritical                        0x0800def9   Thumb Code    56  port.o(i.vPortExitCritical)
-    vPortFree                                0x0800df35   Thumb Code   140  heap_4.o(i.vPortFree)
-    vPortSetupTimerInterrupt                 0x0800dfc9   Thumb Code    26  port.o(i.vPortSetupTimerInterrupt)
-    vPortValidateInterruptPriority           0x0800dfe9   Thumb Code   106  port.o(i.vPortValidateInterruptPriority)
-    vQueueAddToRegistry                      0x0800e061   Thumb Code    38  queue.o(i.vQueueAddToRegistry)
-    vQueueWaitForMessageRestricted           0x0800e08d   Thumb Code    58  queue.o(i.vQueueWaitForMessageRestricted)
-    vTaskDelay                               0x0800e0c9   Thumb Code   120  tasks.o(i.vTaskDelay)
-    vTaskMissedYield                         0x0800e155   Thumb Code     8  tasks.o(i.vTaskMissedYield)
-    vTaskPlaceOnEventList                    0x0800e161   Thumb Code   108  tasks.o(i.vTaskPlaceOnEventList)
-    vTaskPlaceOnEventListRestricted          0x0800e1dd   Thumb Code    90  tasks.o(i.vTaskPlaceOnEventListRestricted)
-    vTaskPriorityInherit                     0x0800e245   Thumb Code   164  tasks.o(i.vTaskPriorityInherit)
-    vTaskSetTimeOutState                     0x0800e2f5   Thumb Code    38  tasks.o(i.vTaskSetTimeOutState)
-    vTaskStartScheduler                      0x0800e325   Thumb Code   102  tasks.o(i.vTaskStartScheduler)
-    vTaskSuspendAll                          0x0800e3a1   Thumb Code    12  tasks.o(i.vTaskSuspendAll)
-    vTaskSwitchContext                       0x0800e3b1   Thumb Code   118  tasks.o(i.vTaskSwitchContext)
-    vTimerCallback                           0x0800e43d   Thumb Code     2  time_nucleo_wrapper.o(i.vTimerCallback)
-    wait_for_command_mode                    0x0800e441   Thumb Code    12  wifi_interface.o(i.wait_for_command_mode)
-    waitfor                                  0x0800e451   Thumb Code    48  mqttclient.o(i.waitfor)
-    wifi_connect                             0x0800e481   Thumb Code   132  wifi_interface.o(i.wifi_connect)
-    wifi_init                                0x0800e52d   Thumb Code   834  wifi_interface.o(i.wifi_init)
-    wifi_main                                0x0800ea15   Thumb Code   240  wifi_main.o(i.wifi_main)
-    wifi_print_satatus                       0x0800ec25   Thumb Code   332  wifi_main.o(i.wifi_print_satatus)
-    wifi_reset                               0x0800f111   Thumb Code   156  wifi_module.o(i.wifi_reset)
-    wifi_socket_client_close                 0x0800f1c5   Thumb Code    26  wifi_interface.o(i.wifi_socket_client_close)
-    wifi_socket_client_open                  0x0800f1e5   Thumb Code    46  wifi_interface.o(i.wifi_socket_client_open)
-    wifi_socket_client_security              0x0800f219   Thumb Code   374  wifi_interface.o(i.wifi_socket_client_security)
-    wifi_socket_client_write                 0x0800f439   Thumb Code    60  wifi_interface.o(i.wifi_socket_client_write)
-    wifi_wakeup                              0x0800f479   Thumb Code    88  wifi_interface.o(i.wifi_wakeup)
-    writeCString                             0x0800f4dd   Thumb Code    40  mqttpacket.o(i.writeCString)
-    writeChar                                0x0800f505   Thumb Code    12  mqttpacket.o(i.writeChar)
-    writeInt                                 0x0800f511   Thumb Code    48  mqttpacket.o(i.writeInt)
-    writeMQTTString                          0x0800f541   Thumb Code    62  mqttpacket.o(i.writeMQTTString)
-    xPortStartScheduler                      0x0800f581   Thumb Code   288  port.o(i.xPortStartScheduler)
-    xPortSysTickHandler                      0x0800f6bd   Thumb Code    48  port.o(i.xPortSysTickHandler)
-    xQueueGenericCreate                      0x0800f6f1   Thumb Code   140  queue.o(i.xQueueGenericCreate)
-    xQueueGenericReceive                     0x0800f77d   Thumb Code   424  queue.o(i.xQueueGenericReceive)
-    xQueueGenericReset                       0x0800f929   Thumb Code   144  queue.o(i.xQueueGenericReset)
-    xQueueGenericSend                        0x0800f9bd   Thumb Code   412  queue.o(i.xQueueGenericSend)
-    xQueueGenericSendFromISR                 0x0800fb5d   Thumb Code   240  queue.o(i.xQueueGenericSendFromISR)
-    xTaskCheckForTimeOut                     0x0800fc4d   Thumb Code   132  tasks.o(i.xTaskCheckForTimeOut)
-    xTaskGenericCreate                       0x0800fcd9   Thumb Code   340  tasks.o(i.xTaskGenericCreate)
-    xTaskGetSchedulerState                   0x0800fe49   Thumb Code    24  tasks.o(i.xTaskGetSchedulerState)
-    xTaskGetTickCount                        0x0800fe69   Thumb Code     6  tasks.o(i.xTaskGetTickCount)
-    xTaskIncrementTick                       0x0800fe75   Thumb Code   286  tasks.o(i.xTaskIncrementTick)
-    xTaskPriorityDisinherit                  0x0800ffc1   Thumb Code   188  tasks.o(i.xTaskPriorityDisinherit)
-    xTaskRemoveFromEventList                 0x08010089   Thumb Code   128  tasks.o(i.xTaskRemoveFromEventList)
-    xTaskResumeAll                           0x08010121   Thumb Code   224  tasks.o(i.xTaskResumeAll)
-    xTimerCreate                             0x08010225   Thumb Code    94  timers.o(i.xTimerCreate)
-    xTimerCreateTimerTask                    0x08010285   Thumb Code    72  timers.o(i.xTimerCreateTimerTask)
-    xTimerGenericCommand                     0x080102dd   Thumb Code   102  timers.o(i.xTimerGenericCommand)
-    xTimerIsTimerActive                      0x08010349   Thumb Code    32  timers.o(i.xTimerIsTimerActive)
-    xTimerLeftMs                             0x08010369   Thumb Code    46  timers.o(i.xTimerLeftMs)
-    APBAHBPrescTable                         0x080103a5   Data          16  stm32f4xx_hal_rcc.o(.constdata)
-    GPIO_PIN                                 0x080103b6   Data           2  stm32f4xx_nucleo.o(.constdata)
-    BUTTON_PIN                               0x080103b8   Data           2  stm32f4xx_nucleo.o(.constdata)
-    BUTTON_IRQn                              0x080103ba   Data           1  stm32f4xx_nucleo.o(.constdata)
-    MQTTConnectParamsDefault                 0x0801044c   Data          68  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    MQTTPublishParamsDefault                 0x08010490   Data          20  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    MQTTSubscribeParamsDefault               0x080104a4   Data          12  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    MQTTCallbackParamsDefault                0x080104b0   Data          24  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    MQTTMessageParamsDefault                 0x080104c8   Data          16  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    MQTTwillOptionsDefault                   0x080104d8   Data          12  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
-    __mathlib_zero                           0x080105c8   Data           8  qnan.o(.constdata)
-    Region$$Table$$Base                      0x08010764   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08010784   Number         0  anon$$obj.o(Region$$Table)
+    aws_iot_mqtt_connect                     0x0800b5f1   Thumb Code   270  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_connect)
+    aws_iot_mqtt_disconnect                  0x0800b721   Thumb Code    24  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_disconnect)
+    aws_iot_mqtt_publish                     0x0800b741   Thumb Code    58  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_publish)
+    aws_iot_mqtt_subscribe                   0x0800b781   Thumb Code    30  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_subscribe)
+    aws_iot_mqtt_yield                       0x0800b7a9   Thumb Code    22  aws_iot_mqtt_embedded_client_wrapper.o(i.aws_iot_mqtt_yield)
+    aws_main                                 0x0800b7c5   Thumb Code  2032  aws_main.o(i.aws_main)
+    bufchar                                  0x0800c059   Thumb Code    36  mqttpacket.o(i.bufchar)
+    countdown                                0x0800c081   Thumb Code    22  time_nucleo_wrapper.o(i.countdown)
+    countdown_ms                             0x0800c097   Thumb Code    38  time_nucleo_wrapper.o(i.countdown_ms)
+    create_global_timers                     0x0800c0bd   Thumb Code    42  time_nucleo_wrapper.o(i.create_global_timers)
+    cycle                                    0x0800c0f9   Thumb Code   334  mqttclient.o(i.cycle)
+    data_ind_wifi_socket_client_remote_server_closed 0x0800c259   Thumb Code    12  app_wifi_read.o(i.data_ind_wifi_socket_client_remote_server_closed)
+    data_ind_wifi_socket_data_received       0x0800c285   Thumb Code    38  app_wifi_read.o(i.data_ind_wifi_socket_data_received)
+    decodePacket                             0x0800c2ab   Thumb Code   106  mqttclient.o(i.decodePacket)
+    deliverMessage                           0x0800c315   Thumb Code   176  mqttclient.o(i.deliverMessage)
+    disconnectCallbackHandler                0x0800c3c5   Thumb Code     2  aws_main.o(i.disconnectCallbackHandler)
+    empty                                    0x0800c3c7   Thumb Code    14  ring_buffer.o(i.empty)
+    event_empty                              0x0800c3d5   Thumb Code    14  event_buffer.o(i.event_empty)
+    event_full                               0x0800c3e3   Thumb Code    20  event_buffer.o(i.event_full)
+    event_init                               0x0800c3f9   Thumb Code    22  event_buffer.o(i.event_init)
+    expired                                  0x0800c415   Thumb Code    28  time_nucleo_wrapper.o(i.expired)
+    fabs                                     0x0800c431   Thumb Code    24  fabs.o(i.fabs)
+    fputc                                    0x0800c449   Thumb Code    14  console.o(i.fputc)
+    fsleep                                   0x0800c457   Thumb Code    28  time_nucleo_wrapper.o(i.fsleep)
+    full                                     0x0800c473   Thumb Code    18  ring_buffer.o(i.full)
+    getNextPacketId                          0x0800c485   Thumb Code    24  mqttclient.o(i.getNextPacketId)
+    ind_socket_server_client_joined          0x0800c49d   Thumb Code     2  wifi_module.o(i.ind_socket_server_client_joined)
+    ind_socket_server_client_left            0x0800c49f   Thumb Code     2  wifi_module.o(i.ind_socket_server_client_left)
+    ind_wifi_ap_client_joined                0x0800c4a1   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_client_joined)
+    ind_wifi_ap_client_left                  0x0800c4a3   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_client_left)
+    ind_wifi_ap_ready                        0x0800c4a5   Thumb Code     2  wifi_module.o(i.ind_wifi_ap_ready)
+    ind_wifi_connected                       0x0800c4a9   Thumb Code    20  wifi_main.o(i.ind_wifi_connected)
+    ind_wifi_connection_error                0x0800c4e5   Thumb Code    18  wifi_main.o(i.ind_wifi_connection_error)
+    ind_wifi_error                           0x0800c50d   Thumb Code    12  wifi_main.o(i.ind_wifi_error)
+    ind_wifi_file_data_available             0x0800c519   Thumb Code     2  wifi_module.o(i.ind_wifi_file_data_available)
+    ind_wifi_http_data_available             0x0800c51b   Thumb Code     2  wifi_module.o(i.ind_wifi_http_data_available)
+    ind_wifi_on                              0x0800c51d   Thumb Code     8  wifi_main.o(i.ind_wifi_on)
+    ind_wifi_packet_lost                     0x0800c529   Thumb Code     2  wifi_module.o(i.ind_wifi_packet_lost)
+    ind_wifi_resuming                        0x0800c52d   Thumb Code    16  wifi_main.o(i.ind_wifi_resuming)
+    ind_wifi_socket_client_remote_server_closed 0x0800c571   Thumb Code    14  wifi_main.o(i.ind_wifi_socket_client_remote_server_closed)
+    ind_wifi_socket_data_received            0x0800c585   Thumb Code    28  wifi_main.o(i.ind_wifi_socket_data_received)
+    ind_wifi_socket_server_data_lost         0x0800c5a5   Thumb Code     2  wifi_module.o(i.ind_wifi_socket_server_data_lost)
+    ind_wifi_warning                         0x0800c5a7   Thumb Code    12  wifi_main.o(i.ind_wifi_warning)
+    init                                     0x0800c5b5   Thumb Code    16  ring_buffer.o(i.init)
+    iot_tls_connect                          0x0800c5c9   Thumb Code   164  network_nucleo_wrapper.o(i.iot_tls_connect)
+    iot_tls_disconnect                       0x0800c719   Thumb Code    12  network_nucleo_wrapper.o(i.iot_tls_disconnect)
+    iot_tls_init                             0x0800c725   Thumb Code    34  network_nucleo_wrapper.o(i.iot_tls_init)
+    iot_tls_read                             0x0800c765   Thumb Code    86  network_nucleo_wrapper.o(i.iot_tls_read)
+    iot_tls_write                            0x0800c7bb   Thumb Code    38  network_nucleo_wrapper.o(i.iot_tls_write)
+    isTopicMatched                           0x0800c7e1   Thumb Code   118  mqttclient.o(i.isTopicMatched)
+    is_half_empty                            0x0800c857   Thumb Code    16  ring_buffer.o(i.is_half_empty)
+    is_half_full                             0x0800c867   Thumb Code    22  ring_buffer.o(i.is_half_full)
+    keepalive                                0x0800c87d   Thumb Code   140  mqttclient.o(i.keepalive)
+    left_ms                                  0x0800c91d   Thumb Code    46  time_nucleo_wrapper.o(i.left_ms)
+    main                                     0x0800c94d   Thumb Code    94  main.o(i.main)
+    osDelay                                  0x0800c9dd   Thumb Code    24  cmsis_os.o(i.osDelay)
+    osKernelStart                            0x0800c9f5   Thumb Code    10  cmsis_os.o(i.osKernelStart)
+    osSystickHandler                         0x0800c9ff   Thumb Code    16  cmsis_os.o(i.osSystickHandler)
+    pahoDisconnectHandler                    0x0800ca11   Thumb Code    16  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoDisconnectHandler)
+    pahoMessageCallback                      0x0800ca25   Thumb Code   108  aws_iot_mqtt_embedded_client_wrapper.o(i.pahoMessageCallback)
+    pop_buffer_queue                         0x0800caa5   Thumb Code   322  ring_buffer.o(i.pop_buffer_queue)
+    pop_eventbuffer_queue                    0x0800cbf5   Thumb Code   130  event_buffer.o(i.pop_eventbuffer_queue)
+    push_buffer                              0x0800d4d5   Thumb Code    54  ring_buffer.o(i.push_buffer)
+    push_eventbuffer                         0x0800d50b   Thumb Code   144  event_buffer.o(i.push_eventbuffer)
+    pvPortMalloc                             0x0800d59d   Thumb Code   296  heap_4.o(i.pvPortMalloc)
+    pvTaskIncrementMutexHeldCount            0x0800d6d9   Thumb Code    26  tasks.o(i.pvTaskIncrementMutexHeldCount)
+    pxPortInitialiseStack                    0x0800d6f9   Thumb Code    34  port.o(i.pxPortInitialiseStack)
+    readChar                                 0x0800d721   Thumb Code    14  mqttpacket.o(i.readChar)
+    readInt                                  0x0800d72f   Thumb Code    26  mqttpacket.o(i.readInt)
+    readMQTTLenString                        0x0800d749   Thumb Code    58  mqttpacket.o(i.readMQTTLenString)
+    readPacket                               0x0800d783   Thumb Code   150  mqttclient.o(i.readPacket)
+    reset_event                              0x0800d819   Thumb Code    26  event_buffer.o(i.reset_event)
+    rewind_buffer_queue                      0x0800d833   Thumb Code    62  ring_buffer.o(i.rewind_buffer_queue)
+    sendPacket                               0x0800d871   Thumb Code    86  mqttclient.o(i.sendPacket)
+    setDisconnectHandler                     0x0800d8c7   Thumb Code     4  mqttclient.o(i.setDisconnectHandler)
+    sqrt                                     0x0800d8cb   Thumb Code   110  sqrt.o(i.sqrt)
+    time_get_time_from_time_server           0x0800d939   Thumb Code    56  wifi_main.o(i.time_get_time_from_time_server)
+    time_ind_wifi_socket_client_remote_server_closed 0x0800d9d9   Thumb Code    30  wifi_main.o(i.time_ind_wifi_socket_client_remote_server_closed)
+    time_ind_wifi_socket_data_received       0x0800da21   Thumb Code    44  wifi_main.o(i.time_ind_wifi_socket_data_received)
+    uartSendChar                             0x0800da79   Thumb Code    20  console.o(i.uartSendChar)
+    uxListRemove                             0x0800da91   Thumb Code    40  list.o(i.uxListRemove)
+    vListInitialise                          0x0800dab9   Thumb Code    26  list.o(i.vListInitialise)
+    vListInitialiseItem                      0x0800dad3   Thumb Code     6  list.o(i.vListInitialiseItem)
+    vListInsert                              0x0800dad9   Thumb Code    52  list.o(i.vListInsert)
+    vListInsertEnd                           0x0800db0d   Thumb Code    24  list.o(i.vListInsertEnd)
+    vPortEnterCritical                       0x0800db25   Thumb Code    76  port.o(i.vPortEnterCritical)
+    vPortExitCritical                        0x0800db79   Thumb Code    56  port.o(i.vPortExitCritical)
+    vPortFree                                0x0800dbb5   Thumb Code   140  heap_4.o(i.vPortFree)
+    vPortSetupTimerInterrupt                 0x0800dc49   Thumb Code    26  port.o(i.vPortSetupTimerInterrupt)
+    vPortValidateInterruptPriority           0x0800dc69   Thumb Code   106  port.o(i.vPortValidateInterruptPriority)
+    vQueueAddToRegistry                      0x0800dce1   Thumb Code    38  queue.o(i.vQueueAddToRegistry)
+    vQueueWaitForMessageRestricted           0x0800dd0d   Thumb Code    58  queue.o(i.vQueueWaitForMessageRestricted)
+    vTaskDelay                               0x0800dd49   Thumb Code   120  tasks.o(i.vTaskDelay)
+    vTaskMissedYield                         0x0800ddd5   Thumb Code     8  tasks.o(i.vTaskMissedYield)
+    vTaskPlaceOnEventList                    0x0800dde1   Thumb Code   108  tasks.o(i.vTaskPlaceOnEventList)
+    vTaskPlaceOnEventListRestricted          0x0800de5d   Thumb Code    90  tasks.o(i.vTaskPlaceOnEventListRestricted)
+    vTaskPriorityInherit                     0x0800dec5   Thumb Code   164  tasks.o(i.vTaskPriorityInherit)
+    vTaskSetTimeOutState                     0x0800df75   Thumb Code    38  tasks.o(i.vTaskSetTimeOutState)
+    vTaskStartScheduler                      0x0800dfa5   Thumb Code   102  tasks.o(i.vTaskStartScheduler)
+    vTaskSuspendAll                          0x0800e021   Thumb Code    12  tasks.o(i.vTaskSuspendAll)
+    vTaskSwitchContext                       0x0800e031   Thumb Code   118  tasks.o(i.vTaskSwitchContext)
+    vTimerCallback                           0x0800e0bd   Thumb Code     2  time_nucleo_wrapper.o(i.vTimerCallback)
+    wait_for_command_mode                    0x0800e0c1   Thumb Code    12  wifi_interface.o(i.wait_for_command_mode)
+    waitfor                                  0x0800e0d1   Thumb Code    48  mqttclient.o(i.waitfor)
+    wifi_connect                             0x0800e101   Thumb Code   132  wifi_interface.o(i.wifi_connect)
+    wifi_init                                0x0800e1ad   Thumb Code   834  wifi_interface.o(i.wifi_init)
+    wifi_main                                0x0800e695   Thumb Code   240  wifi_main.o(i.wifi_main)
+    wifi_print_satatus                       0x0800e8a5   Thumb Code   332  wifi_main.o(i.wifi_print_satatus)
+    wifi_reset                               0x0800ed91   Thumb Code   156  wifi_module.o(i.wifi_reset)
+    wifi_socket_client_close                 0x0800ee45   Thumb Code    26  wifi_interface.o(i.wifi_socket_client_close)
+    wifi_socket_client_open                  0x0800ee65   Thumb Code    46  wifi_interface.o(i.wifi_socket_client_open)
+    wifi_socket_client_security              0x0800ee99   Thumb Code   374  wifi_interface.o(i.wifi_socket_client_security)
+    wifi_socket_client_write                 0x0800f0b9   Thumb Code    60  wifi_interface.o(i.wifi_socket_client_write)
+    wifi_wakeup                              0x0800f0f9   Thumb Code    88  wifi_interface.o(i.wifi_wakeup)
+    writeCString                             0x0800f15d   Thumb Code    40  mqttpacket.o(i.writeCString)
+    writeChar                                0x0800f185   Thumb Code    12  mqttpacket.o(i.writeChar)
+    writeInt                                 0x0800f191   Thumb Code    48  mqttpacket.o(i.writeInt)
+    writeMQTTString                          0x0800f1c1   Thumb Code    62  mqttpacket.o(i.writeMQTTString)
+    xPortStartScheduler                      0x0800f201   Thumb Code   288  port.o(i.xPortStartScheduler)
+    xPortSysTickHandler                      0x0800f33d   Thumb Code    48  port.o(i.xPortSysTickHandler)
+    xQueueGenericCreate                      0x0800f371   Thumb Code   140  queue.o(i.xQueueGenericCreate)
+    xQueueGenericReceive                     0x0800f3fd   Thumb Code   424  queue.o(i.xQueueGenericReceive)
+    xQueueGenericReset                       0x0800f5a9   Thumb Code   144  queue.o(i.xQueueGenericReset)
+    xQueueGenericSend                        0x0800f63d   Thumb Code   412  queue.o(i.xQueueGenericSend)
+    xQueueGenericSendFromISR                 0x0800f7dd   Thumb Code   240  queue.o(i.xQueueGenericSendFromISR)
+    xTaskCheckForTimeOut                     0x0800f8cd   Thumb Code   132  tasks.o(i.xTaskCheckForTimeOut)
+    xTaskGenericCreate                       0x0800f959   Thumb Code   340  tasks.o(i.xTaskGenericCreate)
+    xTaskGetSchedulerState                   0x0800fac9   Thumb Code    24  tasks.o(i.xTaskGetSchedulerState)
+    xTaskGetTickCount                        0x0800fae9   Thumb Code     6  tasks.o(i.xTaskGetTickCount)
+    xTaskIncrementTick                       0x0800faf5   Thumb Code   286  tasks.o(i.xTaskIncrementTick)
+    xTaskPriorityDisinherit                  0x0800fc41   Thumb Code   188  tasks.o(i.xTaskPriorityDisinherit)
+    xTaskRemoveFromEventList                 0x0800fd09   Thumb Code   128  tasks.o(i.xTaskRemoveFromEventList)
+    xTaskResumeAll                           0x0800fda1   Thumb Code   224  tasks.o(i.xTaskResumeAll)
+    xTimerCreate                             0x0800fea5   Thumb Code    94  timers.o(i.xTimerCreate)
+    xTimerCreateTimerTask                    0x0800ff05   Thumb Code    72  timers.o(i.xTimerCreateTimerTask)
+    xTimerGenericCommand                     0x0800ff5d   Thumb Code   102  timers.o(i.xTimerGenericCommand)
+    xTimerIsTimerActive                      0x0800ffc9   Thumb Code    32  timers.o(i.xTimerIsTimerActive)
+    xTimerLeftMs                             0x0800ffe9   Thumb Code    46  timers.o(i.xTimerLeftMs)
+    APBAHBPrescTable                         0x08010025   Data          16  stm32f4xx_hal_rcc.o(.constdata)
+    GPIO_PIN                                 0x08010036   Data           2  stm32f4xx_nucleo.o(.constdata)
+    BUTTON_PIN                               0x08010038   Data           2  stm32f4xx_nucleo.o(.constdata)
+    BUTTON_IRQn                              0x0801003a   Data           1  stm32f4xx_nucleo.o(.constdata)
+    MQTTConnectParamsDefault                 0x080100cc   Data          68  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    MQTTPublishParamsDefault                 0x08010110   Data          20  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    MQTTSubscribeParamsDefault               0x08010124   Data          12  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    MQTTCallbackParamsDefault                0x08010130   Data          24  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    MQTTMessageParamsDefault                 0x08010148   Data          16  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    MQTTwillOptionsDefault                   0x08010158   Data          12  aws_iot_mqtt_embedded_client_wrapper.o(.constdata)
+    __mathlib_zero                           0x08010248   Data           8  qnan.o(.constdata)
+    Region$$Table$$Base                      0x080103e4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08010404   Number         0  anon$$obj.o(Region$$Table)
     BpushButtonState                         0x20000000   Data           4  user_button.o(.data)
     ssid                                     0x20000004   Data           4  wifi_main.o(.data)
     seckey                                   0x20000008   Data           4  wifi_main.o(.data)
@@ -5379,64 +5379,64 @@ Image Symbol Table
     prefetch_str                             0x20000348   Data           4  wifi_module.o(.data)
     event_pop_s                              0x2000034c   Data           4  wifi_module.o(.data)
     rootCA                                   0x20000365   Data        1708  aws_nucleo_certificates.o(.data)
-    clientCRT                                0x20000a11   Data        1032  aws_nucleo_certificates.o(.data)
-    clientKey                                0x20000e19   Data         300  aws_nucleo_certificates.o(.data)
-    I2C_EXPBD_Timeout                        0x20000f50   Data           4  x_nucleo_iks01a1.o(.data)
-    Hts221Drv                                0x20000f6c   Data          48  hts221.o(.data)
-    Hts221Drv_ext                            0x20000f9c   Data           8  hts221.o(.data)
-    T0_degC                                  0x20000fa4   Data           4  hts221.o(.data)
-    T1_degC                                  0x20000fa8   Data           4  hts221.o(.data)
-    T0_out                                   0x20000fac   Data           2  hts221.o(.data)
-    T1_out                                   0x20000fae   Data           2  hts221.o(.data)
-    H0_rh                                    0x20000fb0   Data           4  hts221.o(.data)
-    H1_rh                                    0x20000fb4   Data           4  hts221.o(.data)
-    H0_T0_out                                0x20000fb8   Data           2  hts221.o(.data)
-    H1_T0_out                                0x20000fba   Data           2  hts221.o(.data)
-    LPS25HDrv                                0x20000fbc   Data          52  lps25h.o(.data)
-    LPS25HDrv_ext                            0x20000ff0   Data           8  lps25h.o(.data)
-    LPS25H_SlaveAddress                      0x20000ff8   Data           1  lps25h.o(.data)
-    LPS25HBDrv                               0x20000ffc   Data          52  lps25hb.o(.data)
-    LPS25HBDrv_ext                           0x20001030   Data           8  lps25hb.o(.data)
-    LPS25HB_SlaveAddress                     0x20001038   Data           1  lps25hb.o(.data)
-    LIS3MDLDrv                               0x2000103c   Data          40  lis3mdl.o(.data)
-    LIS3MDLDrv_ext                           0x20001064   Data           8  lis3mdl.o(.data)
-    LSM6DS0Drv                               0x2000106c   Data          68  lsm6ds0.o(.data)
-    LSM6DS0Drv_ext                           0x200010b0   Data           8  lsm6ds0.o(.data)
-    LSM6DS3Drv                               0x200010b8   Data          68  lsm6ds3.o(.data)
-    LSM6DS3Drv_ext_internal                  0x200010fc   Data          12  lsm6ds3.o(.data)
-    LSM6DS3Drv_ext                           0x20001108   Data           8  lsm6ds3.o(.data)
-    __stdout                                 0x20001110   Data           4  stdout.o(.data)
-    config                                   0x20001118   Data          52  wifi_main.o(.bss)
-    bufferRead                               0x2000114c   Data        1024  app_wifi_read.o(.bss)
-    Accelerometer                            0x2000154c   Data          12  aws_main.o(.bss)
-    Gyroscope                                0x20001558   Data          12  aws_main.o(.bss)
-    Magnetometer                             0x20001564   Data          12  aws_main.o(.bss)
-    TimHandle                                0x20001570   Data          60  stm32_spwf_wifi.o(.bss)
-    PushTimHandle                            0x200015ac   Data          60  stm32_spwf_wifi.o(.bss)
-    xQueueRegistry                           0x200015e8   Data          64  queue.o(.bss)
-    process_buffer                           0x20005340   Data         512  wifi_module.o(.bss)
-    UserDataBuff                             0x20005540   Data         512  wifi_module.o(.bss)
-    USART_RxBuffer                           0x20005740   Data          64  wifi_module.o(.bss)
-    print_msg_buff                           0x20005780   Data         512  wifi_module.o(.bss)
-    ring_buffer                              0x20005980   Data        1024  wifi_module.o(.bss)
-    event_buffer                             0x20005d80   Data         800  wifi_module.o(.bss)
-    pop_buffer                               0x200060a0   Data         512  wifi_module.o(.bss)
-    prefetch_buffer                          0x200062a0   Data          20  wifi_module.o(.bss)
-    big_buff                                 0x200062b4   Data          20  wifi_module.o(.bss)
-    event_buff                               0x200062c8   Data          20  wifi_module.o(.bss)
-    element                                  0x200062dc   Data          16  wifi_module.o(.bss)
-    UartWiFiHandle                           0x200062ec   Data          64  wifi_module.o(.bss)
-    UartMsgHandle                            0x2000632c   Data          64  wifi_module.o(.bss)
-    WiFi_Config_Variables                    0x2000636c   Data          52  wifi_module.o(.bss)
-    WiFi_WIND_State                          0x200063a0   Data          35  wifi_module.o(.bss)
-    get_cfg_value                            0x200063c3   Data          64  wifi_module.o(.bss)
-    client_MAC_address                       0x20006403   Data          17  wifi_module.o(.bss)
-    GPIO_InitStruct                          0x20006414   Data          20  wifi_module.o(.bss)
-    WAKEUP_InitStruct                        0x20006428   Data          20  wifi_module.o(.bss)
-    WiFi_AT_Cmd_Buff                         0x2000643c   Data        2048  wifi_module.o(.bss)
-    event_s                                  0x20006c3c   Data          16  wifi_module.o(.bss)
-    stTimers                                 0x20006c4c   Data         120  time_nucleo_wrapper.o(.bss)
-    __initial_sp                             0x20009180   Data           0  startup_stm32f401xe.o(STACK)
+    clientCRT                                0x20000a11   Data         988  aws_nucleo_certificates.o(.data)
+    clientKey                                0x20000ded   Data         300  aws_nucleo_certificates.o(.data)
+    I2C_EXPBD_Timeout                        0x20000f24   Data           4  x_nucleo_iks01a1.o(.data)
+    Hts221Drv                                0x20000f40   Data          48  hts221.o(.data)
+    Hts221Drv_ext                            0x20000f70   Data           8  hts221.o(.data)
+    T0_degC                                  0x20000f78   Data           4  hts221.o(.data)
+    T1_degC                                  0x20000f7c   Data           4  hts221.o(.data)
+    T0_out                                   0x20000f80   Data           2  hts221.o(.data)
+    T1_out                                   0x20000f82   Data           2  hts221.o(.data)
+    H0_rh                                    0x20000f84   Data           4  hts221.o(.data)
+    H1_rh                                    0x20000f88   Data           4  hts221.o(.data)
+    H0_T0_out                                0x20000f8c   Data           2  hts221.o(.data)
+    H1_T0_out                                0x20000f8e   Data           2  hts221.o(.data)
+    LPS25HDrv                                0x20000f90   Data          52  lps25h.o(.data)
+    LPS25HDrv_ext                            0x20000fc4   Data           8  lps25h.o(.data)
+    LPS25H_SlaveAddress                      0x20000fcc   Data           1  lps25h.o(.data)
+    LPS25HBDrv                               0x20000fd0   Data          52  lps25hb.o(.data)
+    LPS25HBDrv_ext                           0x20001004   Data           8  lps25hb.o(.data)
+    LPS25HB_SlaveAddress                     0x2000100c   Data           1  lps25hb.o(.data)
+    LIS3MDLDrv                               0x20001010   Data          40  lis3mdl.o(.data)
+    LIS3MDLDrv_ext                           0x20001038   Data           8  lis3mdl.o(.data)
+    LSM6DS0Drv                               0x20001040   Data          68  lsm6ds0.o(.data)
+    LSM6DS0Drv_ext                           0x20001084   Data           8  lsm6ds0.o(.data)
+    LSM6DS3Drv                               0x2000108c   Data          68  lsm6ds3.o(.data)
+    LSM6DS3Drv_ext_internal                  0x200010d0   Data          12  lsm6ds3.o(.data)
+    LSM6DS3Drv_ext                           0x200010dc   Data           8  lsm6ds3.o(.data)
+    __stdout                                 0x200010e4   Data           4  stdout.o(.data)
+    config                                   0x200010ec   Data          52  wifi_main.o(.bss)
+    bufferRead                               0x20001120   Data        1024  app_wifi_read.o(.bss)
+    Accelerometer                            0x20001520   Data          12  aws_main.o(.bss)
+    Gyroscope                                0x2000152c   Data          12  aws_main.o(.bss)
+    Magnetometer                             0x20001538   Data          12  aws_main.o(.bss)
+    TimHandle                                0x20001544   Data          60  stm32_spwf_wifi.o(.bss)
+    PushTimHandle                            0x20001580   Data          60  stm32_spwf_wifi.o(.bss)
+    xQueueRegistry                           0x200015bc   Data          64  queue.o(.bss)
+    process_buffer                           0x20005314   Data         512  wifi_module.o(.bss)
+    UserDataBuff                             0x20005514   Data         512  wifi_module.o(.bss)
+    USART_RxBuffer                           0x20005714   Data          64  wifi_module.o(.bss)
+    print_msg_buff                           0x20005754   Data         512  wifi_module.o(.bss)
+    ring_buffer                              0x20005954   Data        1024  wifi_module.o(.bss)
+    event_buffer                             0x20005d54   Data         800  wifi_module.o(.bss)
+    pop_buffer                               0x20006074   Data         512  wifi_module.o(.bss)
+    prefetch_buffer                          0x20006274   Data          20  wifi_module.o(.bss)
+    big_buff                                 0x20006288   Data          20  wifi_module.o(.bss)
+    event_buff                               0x2000629c   Data          20  wifi_module.o(.bss)
+    element                                  0x200062b0   Data          16  wifi_module.o(.bss)
+    UartWiFiHandle                           0x200062c0   Data          64  wifi_module.o(.bss)
+    UartMsgHandle                            0x20006300   Data          64  wifi_module.o(.bss)
+    WiFi_Config_Variables                    0x20006340   Data          52  wifi_module.o(.bss)
+    WiFi_WIND_State                          0x20006374   Data          35  wifi_module.o(.bss)
+    get_cfg_value                            0x20006397   Data          64  wifi_module.o(.bss)
+    client_MAC_address                       0x200063d7   Data          17  wifi_module.o(.bss)
+    GPIO_InitStruct                          0x200063e8   Data          20  wifi_module.o(.bss)
+    WAKEUP_InitStruct                        0x200063fc   Data          20  wifi_module.o(.bss)
+    WiFi_AT_Cmd_Buff                         0x20006410   Data        2048  wifi_module.o(.bss)
+    event_s                                  0x20006c10   Data          16  wifi_module.o(.bss)
+    stTimers                                 0x20006c20   Data         120  time_nucleo_wrapper.o(.bss)
+    __initial_sp                             0x20009158   Data           0  startup_stm32f401xe.o(STACK)
 
 
 
@@ -5446,9 +5446,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000195
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0001189c, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x000112d4])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000114f0, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x00010f7c])
 
-    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x00010784, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x00010404, Max: 0x00080000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -5812,209 +5812,209 @@ Memory Map of the image
     0x0800ad18   0x0000000e   Code   RO         8915    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x0800ad26   0x00000002   PAD
     0x0800ad28   0x0000000c   Code   RO         8857    i.__set_errno       mc_w.l(errno.o)
-    0x0800ad34   0x00000164   Code   RO         8752    i._fp_digits        mc_w.l(printfa.o)
-    0x0800ae98   0x000006dc   Code   RO         8753    i._printf_core      mc_w.l(printfa.o)
-    0x0800b574   0x00000024   Code   RO         8754    i._printf_post_padding  mc_w.l(printfa.o)
-    0x0800b598   0x0000002e   Code   RO         8755    i._printf_pre_padding  mc_w.l(printfa.o)
-    0x0800b5c6   0x0000000a   Code   RO         8757    i._sputc            mc_w.l(printfa.o)
-    0x0800b5d0   0x00000130   Code   RO         6820    i.aws_iot_mqtt_connect  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800b700   0x00000020   Code   RO         6821    i.aws_iot_mqtt_disconnect  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800b720   0x00000040   Code   RO         6823    i.aws_iot_mqtt_publish  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800b760   0x00000028   Code   RO         6824    i.aws_iot_mqtt_subscribe  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800b788   0x0000001c   Code   RO         6826    i.aws_iot_mqtt_yield  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800b7a4   0x00000c34   Code   RO          590    i.aws_main          aws_main.o
-    0x0800c3d8   0x00000028   Code   RO         6318    i.bufchar           mqttpacket.o
-    0x0800c400   0x00000016   Code   RO         6754    i.countdown         time_nucleo_wrapper.o
-    0x0800c416   0x00000026   Code   RO         6755    i.countdown_ms      time_nucleo_wrapper.o
-    0x0800c43c   0x0000003c   Code   RO         6756    i.create_global_timers  time_nucleo_wrapper.o
-    0x0800c478   0x00000160   Code   RO         6558    i.cycle             mqttclient.o
-    0x0800c5d8   0x0000002c   Code   RO          503    i.data_ind_wifi_socket_client_remote_server_closed  app_wifi_read.o
-    0x0800c604   0x00000026   Code   RO          504    i.data_ind_wifi_socket_data_received  app_wifi_read.o
-    0x0800c62a   0x0000006a   Code   RO         6559    i.decodePacket      mqttclient.o
-    0x0800c694   0x000000b0   Code   RO         6560    i.deliverMessage    mqttclient.o
-    0x0800c744   0x00000002   Code   RO          591    i.disconnectCallbackHandler  aws_main.o
-    0x0800c746   0x0000000e   Code   RO         6000    i.empty             ring_buffer.o
-    0x0800c754   0x0000000e   Code   RO         6079    i.event_empty       event_buffer.o
-    0x0800c762   0x00000014   Code   RO         6080    i.event_full        event_buffer.o
-    0x0800c776   0x00000002   PAD
-    0x0800c778   0x0000001c   Code   RO         6081    i.event_init        event_buffer.o
-    0x0800c794   0x0000001c   Code   RO         6757    i.expired           time_nucleo_wrapper.o
-    0x0800c7b0   0x00000018   Code   RO         8813    i.fabs              m_wm.l(fabs.o)
-    0x0800c7c8   0x0000000e   Code   RO          541    i.fputc             console.o
-    0x0800c7d6   0x0000001c   Code   RO         6758    i.fsleep            time_nucleo_wrapper.o
-    0x0800c7f2   0x00000012   Code   RO         6002    i.full              ring_buffer.o
-    0x0800c804   0x00000018   Code   RO         6561    i.getNextPacketId   mqttclient.o
-    0x0800c81c   0x00000002   Code   RO         5578    i.ind_socket_server_client_joined  wifi_module.o
-    0x0800c81e   0x00000002   Code   RO         5579    i.ind_socket_server_client_left  wifi_module.o
-    0x0800c820   0x00000002   Code   RO         5580    i.ind_wifi_ap_client_joined  wifi_module.o
-    0x0800c822   0x00000002   Code   RO         5581    i.ind_wifi_ap_client_left  wifi_module.o
-    0x0800c824   0x00000002   Code   RO         5582    i.ind_wifi_ap_ready  wifi_module.o
-    0x0800c826   0x00000002   PAD
-    0x0800c828   0x0000003c   Code   RO          396    i.ind_wifi_connected  wifi_main.o
-    0x0800c864   0x00000028   Code   RO          397    i.ind_wifi_connection_error  wifi_main.o
-    0x0800c88c   0x0000000c   Code   RO          398    i.ind_wifi_error    wifi_main.o
-    0x0800c898   0x00000002   Code   RO         5586    i.ind_wifi_file_data_available  wifi_module.o
-    0x0800c89a   0x00000002   Code   RO         5588    i.ind_wifi_http_data_available  wifi_module.o
-    0x0800c89c   0x0000000c   Code   RO          399    i.ind_wifi_on       wifi_main.o
-    0x0800c8a8   0x00000002   Code   RO         5590    i.ind_wifi_packet_lost  wifi_module.o
-    0x0800c8aa   0x00000002   PAD
-    0x0800c8ac   0x00000044   Code   RO          400    i.ind_wifi_resuming  wifi_main.o
-    0x0800c8f0   0x00000014   Code   RO          401    i.ind_wifi_socket_client_remote_server_closed  wifi_main.o
-    0x0800c904   0x00000020   Code   RO          402    i.ind_wifi_socket_data_received  wifi_main.o
-    0x0800c924   0x00000002   Code   RO         5594    i.ind_wifi_socket_server_data_lost  wifi_module.o
-    0x0800c926   0x0000000c   Code   RO          403    i.ind_wifi_warning  wifi_main.o
-    0x0800c932   0x00000002   PAD
-    0x0800c934   0x00000014   Code   RO         6003    i.init              ring_buffer.o
-    0x0800c948   0x00000150   Code   RO         6681    i.iot_tls_connect   network_nucleo_wrapper.o
-    0x0800ca98   0x0000000c   Code   RO         6683    i.iot_tls_disconnect  network_nucleo_wrapper.o
-    0x0800caa4   0x00000040   Code   RO         6684    i.iot_tls_init      network_nucleo_wrapper.o
-    0x0800cae4   0x00000056   Code   RO         6685    i.iot_tls_read      network_nucleo_wrapper.o
-    0x0800cb3a   0x00000026   Code   RO         6686    i.iot_tls_write     network_nucleo_wrapper.o
-    0x0800cb60   0x00000076   Code   RO         6562    i.isTopicMatched    mqttclient.o
-    0x0800cbd6   0x00000010   Code   RO         6004    i.is_half_empty     ring_buffer.o
-    0x0800cbe6   0x00000016   Code   RO         6005    i.is_half_full      ring_buffer.o
-    0x0800cbfc   0x000000a0   Code   RO         6563    i.keepalive         mqttclient.o
-    0x0800cc9c   0x0000002e   Code   RO         6759    i.left_ms           time_nucleo_wrapper.o
-    0x0800ccca   0x00000002   PAD
-    0x0800cccc   0x00000090   Code   RO            7    i.main              main.o
-    0x0800cd5c   0x00000018   Code   RO         4117    i.osDelay           cmsis_os.o
-    0x0800cd74   0x0000000a   Code   RO         4120    i.osKernelStart     cmsis_os.o
-    0x0800cd7e   0x00000010   Code   RO         4149    i.osSystickHandler  cmsis_os.o
-    0x0800cd8e   0x00000002   PAD
-    0x0800cd90   0x00000014   Code   RO         6827    i.pahoDisconnectHandler  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800cda4   0x0000006c   Code   RO         6828    i.pahoMessageCallback  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800ce10   0x00000012   Code   RO         6829    i.parseConnectParamsForError  aws_iot_mqtt_embedded_client_wrapper.o
-    0x0800ce22   0x00000002   PAD
-    0x0800ce24   0x00000150   Code   RO         6006    i.pop_buffer_queue  ring_buffer.o
-    0x0800cf74   0x00000088   Code   RO         6082    i.pop_eventbuffer_queue  event_buffer.o
-    0x0800cffc   0x00000054   Code   RO         4830    i.prvAddCurrentTaskToDelayedList  tasks.o
-    0x0800d050   0x00000042   Code   RO         4831    i.prvAllocateTCBAndStack  tasks.o
-    0x0800d092   0x00000002   PAD
-    0x0800d094   0x00000080   Code   RO         5139    i.prvCheckForValidListAndQueue  timers.o
-    0x0800d114   0x00000064   Code   RO         4832    i.prvCheckTasksWaitingTermination  tasks.o
-    0x0800d178   0x0000002a   Code   RO         4649    i.prvCopyDataFromQueue  queue.o
-    0x0800d1a2   0x00000080   Code   RO         4650    i.prvCopyDataToQueue  queue.o
-    0x0800d222   0x00000012   Code   RO         4833    i.prvDeleteTCB      tasks.o
-    0x0800d234   0x00000028   Code   RO         5140    i.prvGetNextExpireTime  timers.o
-    0x0800d25c   0x0000007c   Code   RO         5249    i.prvHeapInit       heap_4.o
-    0x0800d2d8   0x00000028   Code   RO         4834    i.prvIdleTask       tasks.o
-    0x0800d300   0x00000062   Code   RO         4835    i.prvInitialiseTCBVariables  tasks.o
-    0x0800d362   0x00000002   PAD
-    0x0800d364   0x00000068   Code   RO         4836    i.prvInitialiseTaskLists  tasks.o
-    0x0800d3cc   0x00000068   Code   RO         5250    i.prvInsertBlockIntoFreeList  heap_4.o
-    0x0800d434   0x00000058   Code   RO         5141    i.prvInsertTimerInActiveList  timers.o
-    0x0800d48c   0x0000001a   Code   RO         4651    i.prvIsQueueEmpty   queue.o
-    0x0800d4a6   0x0000001e   Code   RO         4652    i.prvIsQueueFull    queue.o
-    0x0800d4c4   0x00000064   Code   RO         5142    i.prvProcessExpiredTimer  timers.o
-    0x0800d528   0x000000f8   Code   RO         5143    i.prvProcessReceivedCommands  timers.o
-    0x0800d620   0x0000005c   Code   RO         5144    i.prvProcessTimerOrBlockTask  timers.o
-    0x0800d67c   0x00000034   Code   RO         4838    i.prvResetNextTaskUnblockTime  tasks.o
-    0x0800d6b0   0x0000002c   Code   RO         5145    i.prvSampleTimeNow  timers.o
-    0x0800d6dc   0x000000a0   Code   RO         5146    i.prvSwitchTimerLists  timers.o
-    0x0800d77c   0x00000040   Code   RO         4442    i.prvTaskExitError  port.o
-    0x0800d7bc   0x0000001a   Code   RO         5147    i.prvTimerTask      timers.o
-    0x0800d7d6   0x0000007e   Code   RO         4653    i.prvUnlockQueue    queue.o
-    0x0800d854   0x00000036   Code   RO         6008    i.push_buffer       ring_buffer.o
-    0x0800d88a   0x00000090   Code   RO         6083    i.push_eventbuffer  event_buffer.o
-    0x0800d91a   0x00000002   PAD
-    0x0800d91c   0x0000013c   Code   RO         5251    i.pvPortMalloc      heap_4.o
-    0x0800da58   0x00000020   Code   RO         4841    i.pvTaskIncrementMutexHeldCount  tasks.o
-    0x0800da78   0x00000028   Code   RO         4443    i.pxPortInitialiseStack  port.o
-    0x0800daa0   0x0000000e   Code   RO         6320    i.readChar          mqttpacket.o
-    0x0800daae   0x0000001a   Code   RO         6321    i.readInt           mqttpacket.o
-    0x0800dac8   0x0000003a   Code   RO         6322    i.readMQTTLenString  mqttpacket.o
-    0x0800db02   0x00000096   Code   RO         6564    i.readPacket        mqttclient.o
-    0x0800db98   0x0000001a   Code   RO         6084    i.reset_event       event_buffer.o
-    0x0800dbb2   0x0000003e   Code   RO         6009    i.rewind_buffer_queue  ring_buffer.o
-    0x0800dbf0   0x00000056   Code   RO         6565    i.sendPacket        mqttclient.o
-    0x0800dc46   0x00000004   Code   RO         6566    i.setDisconnectHandler  mqttclient.o
-    0x0800dc4a   0x0000006e   Code   RO         8824    i.sqrt              m_wm.l(sqrt.o)
-    0x0800dcb8   0x000000a0   Code   RO          404    i.time_get_time_from_time_server  wifi_main.o
-    0x0800dd58   0x00000048   Code   RO          405    i.time_ind_wifi_socket_client_remote_server_closed  wifi_main.o
-    0x0800dda0   0x00000058   Code   RO          406    i.time_ind_wifi_socket_data_received  wifi_main.o
-    0x0800ddf8   0x00000018   Code   RO          543    i.uartSendChar      console.o
-    0x0800de10   0x00000028   Code   RO         4613    i.uxListRemove      list.o
-    0x0800de38   0x0000001a   Code   RO         4614    i.vListInitialise   list.o
-    0x0800de52   0x00000006   Code   RO         4615    i.vListInitialiseItem  list.o
-    0x0800de58   0x00000034   Code   RO         4616    i.vListInsert       list.o
-    0x0800de8c   0x00000018   Code   RO         4617    i.vListInsertEnd    list.o
-    0x0800dea4   0x00000054   Code   RO         4445    i.vPortEnterCritical  port.o
-    0x0800def8   0x0000003c   Code   RO         4446    i.vPortExitCritical  port.o
-    0x0800df34   0x00000094   Code   RO         5252    i.vPortFree         heap_4.o
-    0x0800dfc8   0x00000020   Code   RO         4447    i.vPortSetupTimerInterrupt  port.o
-    0x0800dfe8   0x00000078   Code   RO         4448    i.vPortValidateInterruptPriority  port.o
-    0x0800e060   0x0000002c   Code   RO         4659    i.vQueueAddToRegistry  queue.o
-    0x0800e08c   0x0000003a   Code   RO         4663    i.vQueueWaitForMessageRestricted  queue.o
-    0x0800e0c6   0x00000002   PAD
-    0x0800e0c8   0x0000008c   Code   RO         4849    i.vTaskDelay        tasks.o
-    0x0800e154   0x0000000c   Code   RO         4852    i.vTaskMissedYield  tasks.o
-    0x0800e160   0x0000007c   Code   RO         4854    i.vTaskPlaceOnEventList  tasks.o
-    0x0800e1dc   0x00000068   Code   RO         4855    i.vTaskPlaceOnEventListRestricted  tasks.o
-    0x0800e244   0x000000b0   Code   RO         4857    i.vTaskPriorityInherit  tasks.o
-    0x0800e2f4   0x00000030   Code   RO         4861    i.vTaskSetTimeOutState  tasks.o
-    0x0800e324   0x0000007c   Code   RO         4862    i.vTaskStartScheduler  tasks.o
-    0x0800e3a0   0x00000010   Code   RO         4864    i.vTaskSuspendAll   tasks.o
-    0x0800e3b0   0x0000008c   Code   RO         4865    i.vTaskSwitchContext  tasks.o
-    0x0800e43c   0x00000002   Code   RO         6760    i.vTimerCallback    time_nucleo_wrapper.o
-    0x0800e43e   0x00000002   PAD
-    0x0800e440   0x00000010   Code   RO         5304    i.wait_for_command_mode  wifi_interface.o
-    0x0800e450   0x00000030   Code   RO         6567    i.waitfor           mqttclient.o
-    0x0800e480   0x000000ac   Code   RO         5307    i.wifi_connect      wifi_interface.o
-    0x0800e52c   0x000004e8   Code   RO         5322    i.wifi_init         wifi_interface.o
-    0x0800ea14   0x00000210   Code   RO          407    i.wifi_main         wifi_main.o
-    0x0800ec24   0x000004ec   Code   RO          408    i.wifi_print_satatus  wifi_main.o
-    0x0800f110   0x000000b4   Code   RO         5598    i.wifi_reset        wifi_module.o
-    0x0800f1c4   0x00000020   Code   RO         5326    i.wifi_socket_client_close  wifi_interface.o
-    0x0800f1e4   0x00000034   Code   RO         5327    i.wifi_socket_client_open  wifi_interface.o
-    0x0800f218   0x00000220   Code   RO         5328    i.wifi_socket_client_security  wifi_interface.o
-    0x0800f438   0x00000040   Code   RO         5329    i.wifi_socket_client_write  wifi_interface.o
-    0x0800f478   0x00000064   Code   RO         5334    i.wifi_wakeup       wifi_interface.o
-    0x0800f4dc   0x00000028   Code   RO         6323    i.writeCString      mqttpacket.o
-    0x0800f504   0x0000000c   Code   RO         6324    i.writeChar         mqttpacket.o
-    0x0800f510   0x00000030   Code   RO         6325    i.writeInt          mqttpacket.o
-    0x0800f540   0x0000003e   Code   RO         6326    i.writeMQTTString   mqttpacket.o
-    0x0800f57e   0x00000002   PAD
-    0x0800f580   0x0000013c   Code   RO         4449    i.xPortStartScheduler  port.o
-    0x0800f6bc   0x00000034   Code   RO         4450    i.xPortSysTickHandler  port.o
-    0x0800f6f0   0x0000008c   Code   RO         4666    i.xQueueGenericCreate  queue.o
-    0x0800f77c   0x000001ac   Code   RO         4667    i.xQueueGenericReceive  queue.o
-    0x0800f928   0x00000094   Code   RO         4668    i.xQueueGenericReset  queue.o
-    0x0800f9bc   0x000001a0   Code   RO         4669    i.xQueueGenericSend  queue.o
-    0x0800fb5c   0x000000f0   Code   RO         4670    i.xQueueGenericSendFromISR  queue.o
-    0x0800fc4c   0x0000008c   Code   RO         4866    i.xTaskCheckForTimeOut  tasks.o
-    0x0800fcd8   0x00000170   Code   RO         4867    i.xTaskGenericCreate  tasks.o
-    0x0800fe48   0x00000020   Code   RO         4870    i.xTaskGetSchedulerState  tasks.o
-    0x0800fe68   0x0000000c   Code   RO         4871    i.xTaskGetTickCount  tasks.o
-    0x0800fe74   0x0000014c   Code   RO         4873    i.xTaskIncrementTick  tasks.o
-    0x0800ffc0   0x000000c8   Code   RO         4876    i.xTaskPriorityDisinherit  tasks.o
-    0x08010088   0x00000098   Code   RO         4877    i.xTaskRemoveFromEventList  tasks.o
-    0x08010120   0x00000104   Code   RO         4879    i.xTaskResumeAll    tasks.o
-    0x08010224   0x0000005e   Code   RO         5150    i.xTimerCreate      timers.o
-    0x08010282   0x00000002   PAD
-    0x08010284   0x00000058   Code   RO         5151    i.xTimerCreateTimerTask  timers.o
-    0x080102dc   0x0000006c   Code   RO         5152    i.xTimerGenericCommand  timers.o
-    0x08010348   0x00000020   Code   RO         5153    i.xTimerIsTimerActive  timers.o
-    0x08010368   0x0000002e   Code   RO         5154    i.xTimerLeftMs      timers.o
-    0x08010396   0x0000000f   Data   RO          593    .constdata          aws_main.o
-    0x080103a5   0x00000010   Data   RO         1889    .constdata          stm32f4xx_hal_rcc.o
-    0x080103b5   0x00000001   PAD
-    0x080103b6   0x00000005   Data   RO         3967    .constdata          stm32f4xx_nucleo.o
-    0x080103bb   0x00000001   PAD
-    0x080103bc   0x00000058   Data   RO         6568    .constdata          mqttclient.o
-    0x08010414   0x00000038   Data   RO         6687    .constdata          network_nucleo_wrapper.o
-    0x0801044c   0x000000f0   Data   RO         6831    .constdata          aws_iot_mqtt_embedded_client_wrapper.o
-    0x0801053c   0x00000004   PAD
-    0x08010540   0x00000088   Data   RO         8473    .constdata          m_wm.l(pow.o)
-    0x080105c8   0x00000008   Data   RO         8821    .constdata          m_wm.l(qnan.o)
-    0x080105d0   0x00000024   Data   RO          410    .conststring        wifi_main.o
-    0x080105f4   0x00000141   Data   RO          594    .conststring        aws_main.o
-    0x08010735   0x00000003   PAD
-    0x08010738   0x0000002b   Data   RO         6832    .conststring        aws_iot_mqtt_embedded_client_wrapper.o
-    0x08010763   0x00000001   PAD
-    0x08010764   0x00000020   Data   RO         8911    Region$$Table       anon$$obj.o
+    0x0800ad34   0x00000184   Code   RO         8752    i._fp_digits        mc_w.l(printfa.o)
+    0x0800aeb8   0x000006dc   Code   RO         8753    i._printf_core      mc_w.l(printfa.o)
+    0x0800b594   0x00000024   Code   RO         8754    i._printf_post_padding  mc_w.l(printfa.o)
+    0x0800b5b8   0x0000002e   Code   RO         8755    i._printf_pre_padding  mc_w.l(printfa.o)
+    0x0800b5e6   0x0000000a   Code   RO         8757    i._sputc            mc_w.l(printfa.o)
+    0x0800b5f0   0x00000130   Code   RO         6820    i.aws_iot_mqtt_connect  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800b720   0x00000020   Code   RO         6821    i.aws_iot_mqtt_disconnect  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800b740   0x00000040   Code   RO         6823    i.aws_iot_mqtt_publish  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800b780   0x00000028   Code   RO         6824    i.aws_iot_mqtt_subscribe  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800b7a8   0x0000001c   Code   RO         6826    i.aws_iot_mqtt_yield  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800b7c4   0x00000894   Code   RO          590    i.aws_main          aws_main.o
+    0x0800c058   0x00000028   Code   RO         6318    i.bufchar           mqttpacket.o
+    0x0800c080   0x00000016   Code   RO         6754    i.countdown         time_nucleo_wrapper.o
+    0x0800c096   0x00000026   Code   RO         6755    i.countdown_ms      time_nucleo_wrapper.o
+    0x0800c0bc   0x0000003c   Code   RO         6756    i.create_global_timers  time_nucleo_wrapper.o
+    0x0800c0f8   0x00000160   Code   RO         6558    i.cycle             mqttclient.o
+    0x0800c258   0x0000002c   Code   RO          503    i.data_ind_wifi_socket_client_remote_server_closed  app_wifi_read.o
+    0x0800c284   0x00000026   Code   RO          504    i.data_ind_wifi_socket_data_received  app_wifi_read.o
+    0x0800c2aa   0x0000006a   Code   RO         6559    i.decodePacket      mqttclient.o
+    0x0800c314   0x000000b0   Code   RO         6560    i.deliverMessage    mqttclient.o
+    0x0800c3c4   0x00000002   Code   RO          591    i.disconnectCallbackHandler  aws_main.o
+    0x0800c3c6   0x0000000e   Code   RO         6000    i.empty             ring_buffer.o
+    0x0800c3d4   0x0000000e   Code   RO         6079    i.event_empty       event_buffer.o
+    0x0800c3e2   0x00000014   Code   RO         6080    i.event_full        event_buffer.o
+    0x0800c3f6   0x00000002   PAD
+    0x0800c3f8   0x0000001c   Code   RO         6081    i.event_init        event_buffer.o
+    0x0800c414   0x0000001c   Code   RO         6757    i.expired           time_nucleo_wrapper.o
+    0x0800c430   0x00000018   Code   RO         8813    i.fabs              m_wm.l(fabs.o)
+    0x0800c448   0x0000000e   Code   RO          541    i.fputc             console.o
+    0x0800c456   0x0000001c   Code   RO         6758    i.fsleep            time_nucleo_wrapper.o
+    0x0800c472   0x00000012   Code   RO         6002    i.full              ring_buffer.o
+    0x0800c484   0x00000018   Code   RO         6561    i.getNextPacketId   mqttclient.o
+    0x0800c49c   0x00000002   Code   RO         5578    i.ind_socket_server_client_joined  wifi_module.o
+    0x0800c49e   0x00000002   Code   RO         5579    i.ind_socket_server_client_left  wifi_module.o
+    0x0800c4a0   0x00000002   Code   RO         5580    i.ind_wifi_ap_client_joined  wifi_module.o
+    0x0800c4a2   0x00000002   Code   RO         5581    i.ind_wifi_ap_client_left  wifi_module.o
+    0x0800c4a4   0x00000002   Code   RO         5582    i.ind_wifi_ap_ready  wifi_module.o
+    0x0800c4a6   0x00000002   PAD
+    0x0800c4a8   0x0000003c   Code   RO          396    i.ind_wifi_connected  wifi_main.o
+    0x0800c4e4   0x00000028   Code   RO          397    i.ind_wifi_connection_error  wifi_main.o
+    0x0800c50c   0x0000000c   Code   RO          398    i.ind_wifi_error    wifi_main.o
+    0x0800c518   0x00000002   Code   RO         5586    i.ind_wifi_file_data_available  wifi_module.o
+    0x0800c51a   0x00000002   Code   RO         5588    i.ind_wifi_http_data_available  wifi_module.o
+    0x0800c51c   0x0000000c   Code   RO          399    i.ind_wifi_on       wifi_main.o
+    0x0800c528   0x00000002   Code   RO         5590    i.ind_wifi_packet_lost  wifi_module.o
+    0x0800c52a   0x00000002   PAD
+    0x0800c52c   0x00000044   Code   RO          400    i.ind_wifi_resuming  wifi_main.o
+    0x0800c570   0x00000014   Code   RO          401    i.ind_wifi_socket_client_remote_server_closed  wifi_main.o
+    0x0800c584   0x00000020   Code   RO          402    i.ind_wifi_socket_data_received  wifi_main.o
+    0x0800c5a4   0x00000002   Code   RO         5594    i.ind_wifi_socket_server_data_lost  wifi_module.o
+    0x0800c5a6   0x0000000c   Code   RO          403    i.ind_wifi_warning  wifi_main.o
+    0x0800c5b2   0x00000002   PAD
+    0x0800c5b4   0x00000014   Code   RO         6003    i.init              ring_buffer.o
+    0x0800c5c8   0x00000150   Code   RO         6681    i.iot_tls_connect   network_nucleo_wrapper.o
+    0x0800c718   0x0000000c   Code   RO         6683    i.iot_tls_disconnect  network_nucleo_wrapper.o
+    0x0800c724   0x00000040   Code   RO         6684    i.iot_tls_init      network_nucleo_wrapper.o
+    0x0800c764   0x00000056   Code   RO         6685    i.iot_tls_read      network_nucleo_wrapper.o
+    0x0800c7ba   0x00000026   Code   RO         6686    i.iot_tls_write     network_nucleo_wrapper.o
+    0x0800c7e0   0x00000076   Code   RO         6562    i.isTopicMatched    mqttclient.o
+    0x0800c856   0x00000010   Code   RO         6004    i.is_half_empty     ring_buffer.o
+    0x0800c866   0x00000016   Code   RO         6005    i.is_half_full      ring_buffer.o
+    0x0800c87c   0x000000a0   Code   RO         6563    i.keepalive         mqttclient.o
+    0x0800c91c   0x0000002e   Code   RO         6759    i.left_ms           time_nucleo_wrapper.o
+    0x0800c94a   0x00000002   PAD
+    0x0800c94c   0x00000090   Code   RO            7    i.main              main.o
+    0x0800c9dc   0x00000018   Code   RO         4117    i.osDelay           cmsis_os.o
+    0x0800c9f4   0x0000000a   Code   RO         4120    i.osKernelStart     cmsis_os.o
+    0x0800c9fe   0x00000010   Code   RO         4149    i.osSystickHandler  cmsis_os.o
+    0x0800ca0e   0x00000002   PAD
+    0x0800ca10   0x00000014   Code   RO         6827    i.pahoDisconnectHandler  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800ca24   0x0000006c   Code   RO         6828    i.pahoMessageCallback  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800ca90   0x00000012   Code   RO         6829    i.parseConnectParamsForError  aws_iot_mqtt_embedded_client_wrapper.o
+    0x0800caa2   0x00000002   PAD
+    0x0800caa4   0x00000150   Code   RO         6006    i.pop_buffer_queue  ring_buffer.o
+    0x0800cbf4   0x00000088   Code   RO         6082    i.pop_eventbuffer_queue  event_buffer.o
+    0x0800cc7c   0x00000054   Code   RO         4830    i.prvAddCurrentTaskToDelayedList  tasks.o
+    0x0800ccd0   0x00000042   Code   RO         4831    i.prvAllocateTCBAndStack  tasks.o
+    0x0800cd12   0x00000002   PAD
+    0x0800cd14   0x00000080   Code   RO         5139    i.prvCheckForValidListAndQueue  timers.o
+    0x0800cd94   0x00000064   Code   RO         4832    i.prvCheckTasksWaitingTermination  tasks.o
+    0x0800cdf8   0x0000002a   Code   RO         4649    i.prvCopyDataFromQueue  queue.o
+    0x0800ce22   0x00000080   Code   RO         4650    i.prvCopyDataToQueue  queue.o
+    0x0800cea2   0x00000012   Code   RO         4833    i.prvDeleteTCB      tasks.o
+    0x0800ceb4   0x00000028   Code   RO         5140    i.prvGetNextExpireTime  timers.o
+    0x0800cedc   0x0000007c   Code   RO         5249    i.prvHeapInit       heap_4.o
+    0x0800cf58   0x00000028   Code   RO         4834    i.prvIdleTask       tasks.o
+    0x0800cf80   0x00000062   Code   RO         4835    i.prvInitialiseTCBVariables  tasks.o
+    0x0800cfe2   0x00000002   PAD
+    0x0800cfe4   0x00000068   Code   RO         4836    i.prvInitialiseTaskLists  tasks.o
+    0x0800d04c   0x00000068   Code   RO         5250    i.prvInsertBlockIntoFreeList  heap_4.o
+    0x0800d0b4   0x00000058   Code   RO         5141    i.prvInsertTimerInActiveList  timers.o
+    0x0800d10c   0x0000001a   Code   RO         4651    i.prvIsQueueEmpty   queue.o
+    0x0800d126   0x0000001e   Code   RO         4652    i.prvIsQueueFull    queue.o
+    0x0800d144   0x00000064   Code   RO         5142    i.prvProcessExpiredTimer  timers.o
+    0x0800d1a8   0x000000f8   Code   RO         5143    i.prvProcessReceivedCommands  timers.o
+    0x0800d2a0   0x0000005c   Code   RO         5144    i.prvProcessTimerOrBlockTask  timers.o
+    0x0800d2fc   0x00000034   Code   RO         4838    i.prvResetNextTaskUnblockTime  tasks.o
+    0x0800d330   0x0000002c   Code   RO         5145    i.prvSampleTimeNow  timers.o
+    0x0800d35c   0x000000a0   Code   RO         5146    i.prvSwitchTimerLists  timers.o
+    0x0800d3fc   0x00000040   Code   RO         4442    i.prvTaskExitError  port.o
+    0x0800d43c   0x0000001a   Code   RO         5147    i.prvTimerTask      timers.o
+    0x0800d456   0x0000007e   Code   RO         4653    i.prvUnlockQueue    queue.o
+    0x0800d4d4   0x00000036   Code   RO         6008    i.push_buffer       ring_buffer.o
+    0x0800d50a   0x00000090   Code   RO         6083    i.push_eventbuffer  event_buffer.o
+    0x0800d59a   0x00000002   PAD
+    0x0800d59c   0x0000013c   Code   RO         5251    i.pvPortMalloc      heap_4.o
+    0x0800d6d8   0x00000020   Code   RO         4841    i.pvTaskIncrementMutexHeldCount  tasks.o
+    0x0800d6f8   0x00000028   Code   RO         4443    i.pxPortInitialiseStack  port.o
+    0x0800d720   0x0000000e   Code   RO         6320    i.readChar          mqttpacket.o
+    0x0800d72e   0x0000001a   Code   RO         6321    i.readInt           mqttpacket.o
+    0x0800d748   0x0000003a   Code   RO         6322    i.readMQTTLenString  mqttpacket.o
+    0x0800d782   0x00000096   Code   RO         6564    i.readPacket        mqttclient.o
+    0x0800d818   0x0000001a   Code   RO         6084    i.reset_event       event_buffer.o
+    0x0800d832   0x0000003e   Code   RO         6009    i.rewind_buffer_queue  ring_buffer.o
+    0x0800d870   0x00000056   Code   RO         6565    i.sendPacket        mqttclient.o
+    0x0800d8c6   0x00000004   Code   RO         6566    i.setDisconnectHandler  mqttclient.o
+    0x0800d8ca   0x0000006e   Code   RO         8824    i.sqrt              m_wm.l(sqrt.o)
+    0x0800d938   0x000000a0   Code   RO          404    i.time_get_time_from_time_server  wifi_main.o
+    0x0800d9d8   0x00000048   Code   RO          405    i.time_ind_wifi_socket_client_remote_server_closed  wifi_main.o
+    0x0800da20   0x00000058   Code   RO          406    i.time_ind_wifi_socket_data_received  wifi_main.o
+    0x0800da78   0x00000018   Code   RO          543    i.uartSendChar      console.o
+    0x0800da90   0x00000028   Code   RO         4613    i.uxListRemove      list.o
+    0x0800dab8   0x0000001a   Code   RO         4614    i.vListInitialise   list.o
+    0x0800dad2   0x00000006   Code   RO         4615    i.vListInitialiseItem  list.o
+    0x0800dad8   0x00000034   Code   RO         4616    i.vListInsert       list.o
+    0x0800db0c   0x00000018   Code   RO         4617    i.vListInsertEnd    list.o
+    0x0800db24   0x00000054   Code   RO         4445    i.vPortEnterCritical  port.o
+    0x0800db78   0x0000003c   Code   RO         4446    i.vPortExitCritical  port.o
+    0x0800dbb4   0x00000094   Code   RO         5252    i.vPortFree         heap_4.o
+    0x0800dc48   0x00000020   Code   RO         4447    i.vPortSetupTimerInterrupt  port.o
+    0x0800dc68   0x00000078   Code   RO         4448    i.vPortValidateInterruptPriority  port.o
+    0x0800dce0   0x0000002c   Code   RO         4659    i.vQueueAddToRegistry  queue.o
+    0x0800dd0c   0x0000003a   Code   RO         4663    i.vQueueWaitForMessageRestricted  queue.o
+    0x0800dd46   0x00000002   PAD
+    0x0800dd48   0x0000008c   Code   RO         4849    i.vTaskDelay        tasks.o
+    0x0800ddd4   0x0000000c   Code   RO         4852    i.vTaskMissedYield  tasks.o
+    0x0800dde0   0x0000007c   Code   RO         4854    i.vTaskPlaceOnEventList  tasks.o
+    0x0800de5c   0x00000068   Code   RO         4855    i.vTaskPlaceOnEventListRestricted  tasks.o
+    0x0800dec4   0x000000b0   Code   RO         4857    i.vTaskPriorityInherit  tasks.o
+    0x0800df74   0x00000030   Code   RO         4861    i.vTaskSetTimeOutState  tasks.o
+    0x0800dfa4   0x0000007c   Code   RO         4862    i.vTaskStartScheduler  tasks.o
+    0x0800e020   0x00000010   Code   RO         4864    i.vTaskSuspendAll   tasks.o
+    0x0800e030   0x0000008c   Code   RO         4865    i.vTaskSwitchContext  tasks.o
+    0x0800e0bc   0x00000002   Code   RO         6760    i.vTimerCallback    time_nucleo_wrapper.o
+    0x0800e0be   0x00000002   PAD
+    0x0800e0c0   0x00000010   Code   RO         5304    i.wait_for_command_mode  wifi_interface.o
+    0x0800e0d0   0x00000030   Code   RO         6567    i.waitfor           mqttclient.o
+    0x0800e100   0x000000ac   Code   RO         5307    i.wifi_connect      wifi_interface.o
+    0x0800e1ac   0x000004e8   Code   RO         5322    i.wifi_init         wifi_interface.o
+    0x0800e694   0x00000210   Code   RO          407    i.wifi_main         wifi_main.o
+    0x0800e8a4   0x000004ec   Code   RO          408    i.wifi_print_satatus  wifi_main.o
+    0x0800ed90   0x000000b4   Code   RO         5598    i.wifi_reset        wifi_module.o
+    0x0800ee44   0x00000020   Code   RO         5326    i.wifi_socket_client_close  wifi_interface.o
+    0x0800ee64   0x00000034   Code   RO         5327    i.wifi_socket_client_open  wifi_interface.o
+    0x0800ee98   0x00000220   Code   RO         5328    i.wifi_socket_client_security  wifi_interface.o
+    0x0800f0b8   0x00000040   Code   RO         5329    i.wifi_socket_client_write  wifi_interface.o
+    0x0800f0f8   0x00000064   Code   RO         5334    i.wifi_wakeup       wifi_interface.o
+    0x0800f15c   0x00000028   Code   RO         6323    i.writeCString      mqttpacket.o
+    0x0800f184   0x0000000c   Code   RO         6324    i.writeChar         mqttpacket.o
+    0x0800f190   0x00000030   Code   RO         6325    i.writeInt          mqttpacket.o
+    0x0800f1c0   0x0000003e   Code   RO         6326    i.writeMQTTString   mqttpacket.o
+    0x0800f1fe   0x00000002   PAD
+    0x0800f200   0x0000013c   Code   RO         4449    i.xPortStartScheduler  port.o
+    0x0800f33c   0x00000034   Code   RO         4450    i.xPortSysTickHandler  port.o
+    0x0800f370   0x0000008c   Code   RO         4666    i.xQueueGenericCreate  queue.o
+    0x0800f3fc   0x000001ac   Code   RO         4667    i.xQueueGenericReceive  queue.o
+    0x0800f5a8   0x00000094   Code   RO         4668    i.xQueueGenericReset  queue.o
+    0x0800f63c   0x000001a0   Code   RO         4669    i.xQueueGenericSend  queue.o
+    0x0800f7dc   0x000000f0   Code   RO         4670    i.xQueueGenericSendFromISR  queue.o
+    0x0800f8cc   0x0000008c   Code   RO         4866    i.xTaskCheckForTimeOut  tasks.o
+    0x0800f958   0x00000170   Code   RO         4867    i.xTaskGenericCreate  tasks.o
+    0x0800fac8   0x00000020   Code   RO         4870    i.xTaskGetSchedulerState  tasks.o
+    0x0800fae8   0x0000000c   Code   RO         4871    i.xTaskGetTickCount  tasks.o
+    0x0800faf4   0x0000014c   Code   RO         4873    i.xTaskIncrementTick  tasks.o
+    0x0800fc40   0x000000c8   Code   RO         4876    i.xTaskPriorityDisinherit  tasks.o
+    0x0800fd08   0x00000098   Code   RO         4877    i.xTaskRemoveFromEventList  tasks.o
+    0x0800fda0   0x00000104   Code   RO         4879    i.xTaskResumeAll    tasks.o
+    0x0800fea4   0x0000005e   Code   RO         5150    i.xTimerCreate      timers.o
+    0x0800ff02   0x00000002   PAD
+    0x0800ff04   0x00000058   Code   RO         5151    i.xTimerCreateTimerTask  timers.o
+    0x0800ff5c   0x0000006c   Code   RO         5152    i.xTimerGenericCommand  timers.o
+    0x0800ffc8   0x00000020   Code   RO         5153    i.xTimerIsTimerActive  timers.o
+    0x0800ffe8   0x0000002e   Code   RO         5154    i.xTimerLeftMs      timers.o
+    0x08010016   0x0000000f   Data   RO          593    .constdata          aws_main.o
+    0x08010025   0x00000010   Data   RO         1889    .constdata          stm32f4xx_hal_rcc.o
+    0x08010035   0x00000001   PAD
+    0x08010036   0x00000005   Data   RO         3967    .constdata          stm32f4xx_nucleo.o
+    0x0801003b   0x00000001   PAD
+    0x0801003c   0x00000058   Data   RO         6568    .constdata          mqttclient.o
+    0x08010094   0x00000038   Data   RO         6687    .constdata          network_nucleo_wrapper.o
+    0x080100cc   0x000000f0   Data   RO         6831    .constdata          aws_iot_mqtt_embedded_client_wrapper.o
+    0x080101bc   0x00000004   PAD
+    0x080101c0   0x00000088   Data   RO         8473    .constdata          m_wm.l(pow.o)
+    0x08010248   0x00000008   Data   RO         8821    .constdata          m_wm.l(qnan.o)
+    0x08010250   0x00000024   Data   RO          410    .conststring        wifi_main.o
+    0x08010274   0x00000141   Data   RO          594    .conststring        aws_main.o
+    0x080103b5   0x00000003   PAD
+    0x080103b8   0x0000002b   Data   RO         6832    .conststring        aws_iot_mqtt_embedded_client_wrapper.o
+    0x080103e3   0x00000001   PAD
+    0x080103e4   0x00000020   Data   RO         8911    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00009180, Max: 0x00018000, ABSOLUTE, COMPRESSED[0x00000b50])
+    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00009158, Max: 0x00018000, ABSOLUTE, COMPRESSED[0x00000b78])
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -6037,40 +6037,41 @@ Memory Map of the image
     0x20000358   0x00000004   Data   RW         6327    .data               mqttpacket.o
     0x2000035c   0x00000004   Data   RW         6762    .data               time_nucleo_wrapper.o
     0x20000360   0x00000005   Data   RW         6833    .data               aws_iot_mqtt_embedded_client_wrapper.o
-    0x20000365   0x00000be0   Data   RW         6902    .data               aws_nucleo_certificates.o
-    0x20000f45   0x00000003   PAD
-    0x20000f48   0x00000005   Data   RW         7401    .data               x_nucleo_iks01a1_hum_temp.o
-    0x20000f4d   0x00000003   PAD
-    0x20000f50   0x00000004   Data   RW         7503    .data               x_nucleo_iks01a1.o
-    0x20000f54   0x00000006   Data   RW         7717    .data               x_nucleo_iks01a1_pressure.o
-    0x20000f5a   0x00000002   PAD
-    0x20000f5c   0x00000006   Data   RW         7794    .data               x_nucleo_iks01a1_imu_6axes.o
-    0x20000f62   0x00000002   PAD
-    0x20000f64   0x00000005   Data   RW         7936    .data               x_nucleo_iks01a1_magneto.o
-    0x20000f69   0x00000003   PAD
-    0x20000f6c   0x00000050   Data   RW         8021    .data               hts221.o
-    0x20000fbc   0x0000003d   Data   RW         8075    .data               lps25h.o
-    0x20000ff9   0x00000003   PAD
-    0x20000ffc   0x0000003d   Data   RW         8137    .data               lps25hb.o
-    0x20001039   0x00000003   PAD
-    0x2000103c   0x00000030   Data   RW         8198    .data               lis3mdl.o
-    0x2000106c   0x0000004c   Data   RW         8264    .data               lsm6ds0.o
-    0x200010b8   0x00000058   Data   RW         8370    .data               lsm6ds3.o
-    0x20001110   0x00000004   Data   RW         8489    .data               mc_w.l(stdout.o)
-    0x20001114   0x00000004   Data   RW         8858    .data               mc_w.l(errno.o)
-    0x20001118   0x00000034   Zero   RW          409    .bss                wifi_main.o
-    0x2000114c   0x00000400   Zero   RW          505    .bss                app_wifi_read.o
-    0x2000154c   0x00000024   Zero   RW          592    .bss                aws_main.o
-    0x20001570   0x00000078   Zero   RW         3876    .bss                stm32_spwf_wifi.o
-    0x200015e8   0x00000040   Zero   RW         4678    .bss                queue.o
-    0x20001628   0x000000f0   Zero   RW         4881    .bss                tasks.o
-    0x20001718   0x00000028   Zero   RW         5155    .bss                timers.o
-    0x20001740   0x00003c00   Zero   RW         5256    .bss                heap_4.o
-    0x20005340   0x0000190c   Zero   RW         5599    .bss                wifi_module.o
-    0x20006c4c   0x00000078   Zero   RW         6761    .bss                time_nucleo_wrapper.o
-    0x20006cc4   0x00000480   Zero   RW         6830    .bss                aws_iot_mqtt_embedded_client_wrapper.o
-    0x20007144   0x0000003c   Zero   RW         7502    .bss                x_nucleo_iks01a1.o
-    0x20007180   0x00002000   Zero   RW          720    STACK               startup_stm32f401xe.o
+    0x20000365   0x00000bb4   Data   RW         6902    .data               aws_nucleo_certificates.o
+    0x20000f19   0x00000003   PAD
+    0x20000f1c   0x00000005   Data   RW         7401    .data               x_nucleo_iks01a1_hum_temp.o
+    0x20000f21   0x00000003   PAD
+    0x20000f24   0x00000004   Data   RW         7503    .data               x_nucleo_iks01a1.o
+    0x20000f28   0x00000006   Data   RW         7717    .data               x_nucleo_iks01a1_pressure.o
+    0x20000f2e   0x00000002   PAD
+    0x20000f30   0x00000006   Data   RW         7794    .data               x_nucleo_iks01a1_imu_6axes.o
+    0x20000f36   0x00000002   PAD
+    0x20000f38   0x00000005   Data   RW         7936    .data               x_nucleo_iks01a1_magneto.o
+    0x20000f3d   0x00000003   PAD
+    0x20000f40   0x00000050   Data   RW         8021    .data               hts221.o
+    0x20000f90   0x0000003d   Data   RW         8075    .data               lps25h.o
+    0x20000fcd   0x00000003   PAD
+    0x20000fd0   0x0000003d   Data   RW         8137    .data               lps25hb.o
+    0x2000100d   0x00000003   PAD
+    0x20001010   0x00000030   Data   RW         8198    .data               lis3mdl.o
+    0x20001040   0x0000004c   Data   RW         8264    .data               lsm6ds0.o
+    0x2000108c   0x00000058   Data   RW         8370    .data               lsm6ds3.o
+    0x200010e4   0x00000004   Data   RW         8489    .data               mc_w.l(stdout.o)
+    0x200010e8   0x00000004   Data   RW         8858    .data               mc_w.l(errno.o)
+    0x200010ec   0x00000034   Zero   RW          409    .bss                wifi_main.o
+    0x20001120   0x00000400   Zero   RW          505    .bss                app_wifi_read.o
+    0x20001520   0x00000024   Zero   RW          592    .bss                aws_main.o
+    0x20001544   0x00000078   Zero   RW         3876    .bss                stm32_spwf_wifi.o
+    0x200015bc   0x00000040   Zero   RW         4678    .bss                queue.o
+    0x200015fc   0x000000f0   Zero   RW         4881    .bss                tasks.o
+    0x200016ec   0x00000028   Zero   RW         5155    .bss                timers.o
+    0x20001714   0x00003c00   Zero   RW         5256    .bss                heap_4.o
+    0x20005314   0x0000190c   Zero   RW         5599    .bss                wifi_module.o
+    0x20006c20   0x00000078   Zero   RW         6761    .bss                time_nucleo_wrapper.o
+    0x20006c98   0x00000480   Zero   RW         6830    .bss                aws_iot_mqtt_embedded_client_wrapper.o
+    0x20007118   0x0000003c   Zero   RW         7502    .bss                x_nucleo_iks01a1.o
+    0x20007154   0x00000004   PAD
+    0x20007158   0x00002000   Zero   RW          720    STACK               startup_stm32f401xe.o
 
 
 ==============================================================================
@@ -6080,64 +6081,64 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       214         56          0          9       1024       3741   app_wifi_read.o
-       614         68        283          5       1152      13077   aws_iot_mqtt_embedded_client_wrapper.o
-      3278        952        336        369         36      15308   aws_main.o
-         0          0          0       3040          0       1077   aws_nucleo_certificates.o
-        50          0          0          0          0      12345   cmsis_os.o
-        38          4          0          0          0       1239   console.o
-       368         12          0          0          0       6772   event_buffer.o
+       214         56          0          9       1024       3605   app_wifi_read.o
+       614         68        283          5       1152      12825   aws_iot_mqtt_embedded_client_wrapper.o
+      2350        792        336        369         36      15036   aws_main.o
+         0          0          0       2996          0       1033   aws_nucleo_certificates.o
+        50          0          0          0          0      12193   cmsis_os.o
+        38          4          0          0          0       1195   console.o
+       368         12          0          0          0       6592   event_buffer.o
          0          0          0          0          0       1472   event_groups.o
-       692         62          0         24      15360       5435   heap_4.o
-      1546        106          0         80          0       7896   hts221.o
-      1322         62          0         48          0       8460   lis3mdl.o
-       148          0          0          0          0       4218   list.o
-       700         48          0         61          0       8238   lps25h.o
-       700         48          0         61          0       8305   lps25hb.o
-      2380        168          0         76          0      16076   lsm6ds0.o
-      3522        220          0         88          0      29312   lsm6ds3.o
-       558         74          0          0          0     287865   main.o
-      2146         54         88          0          0      21433   mqttclient.o
-       708         18          0          0          0       9340   mqttconnectclient.o
-       276          0          0          0          0       3240   mqttdeserializepublish.o
-       600         18          0          4          0      12896   mqttpacket.o
-       324          0          0          0          0       3338   mqttserializepublish.o
-       368          0          0          0          0       4115   mqttsubscribeclient.o
-       536        202         56          0          0       5093   network_nucleo_wrapper.o
-       954         90          0         12          0      19369   port.o
-      1826         18          0          0         64      15037   queue.o
-       542         18          0          0          0       7351   ring_buffer.o
-        36          8        404          0       8192       1028   startup_stm32f401xe.o
-       796         78          0          4        120       6750   stm32_spwf_wifi.o
-       124         28          0          0          0      13033   stm32_xx_it.o
-       152         16          0          4          0       5528   stm32f4xx_hal.o
-       366         28          0          0          0      32767   stm32f4xx_hal_cortex.o
-       816         66          0          0          0       4413   stm32f4xx_hal_gpio.o
-      2026         36          0          0          0      11200   stm32f4xx_hal_i2c.o
-      2040         66         16          0          0       6839   stm32f4xx_hal_rcc.o
-       420         20          0          0          0       1608   stm32f4xx_hal_rcc_ex.o
-       672         28          0          0          0       6639   stm32f4xx_hal_tim.o
-         4          0          0          0          0       1914   stm32f4xx_hal_tim_ex.o
-      1888         20          0          0          0       9626   stm32f4xx_hal_uart.o
-       188         30          5         12          0       3159   stm32f4xx_nucleo.o
-       100         18          0          4          0       1657   system_stm32f4xx.o
-      2974        386          0         56        240      26876   tasks.o
-       352         30          0          4        120       9037   time_nucleo_wrapper.o
-      1294        104          0         16         40      19859   timers.o
-        24          0          0          4          0       1828   user_button.o
-      2516        766          0          0          0      12102   wifi_interface.o
-      2364       1570         36         36         52      10607   wifi_main.o
-     11378       2412          0        298       6412      46846   wifi_module.o
-      1318         58          0          4         60      33198   x_nucleo_iks01a1.o
-       212         26          0          5          0       3329   x_nucleo_iks01a1_hum_temp.o
-       624         54          0          6          0       4472   x_nucleo_iks01a1_imu_6axes.o
-       196         22          0          5          0       2507   x_nucleo_iks01a1_magneto.o
-       448         32          0          6          0       2779   x_nucleo_iks01a1_pressure.o
+       692         62          0         24      15360       5303   heap_4.o
+      1546        106          0         80          0       7676   hts221.o
+      1322         62          0         48          0       8228   lis3mdl.o
+       148          0          0          0          0       4094   list.o
+       700         48          0         61          0       7970   lps25h.o
+       700         48          0         61          0       8045   lps25hb.o
+      2380        168          0         76          0      15652   lsm6ds0.o
+      3522        220          0         88          0      28780   lsm6ds3.o
+       558         74          0          0          0     287245   main.o
+      2146         54         88          0          0      20973   mqttclient.o
+       708         18          0          0          0       9144   mqttconnectclient.o
+       276          0          0          0          0       3172   mqttdeserializepublish.o
+       600         18          0          4          0      12548   mqttpacket.o
+       324          0          0          0          0       3274   mqttserializepublish.o
+       368          0          0          0          0       4031   mqttsubscribeclient.o
+       536        202         56          0          0       4977   network_nucleo_wrapper.o
+       954         90          0         12          0      19061   port.o
+      1826         18          0          0         64      14729   queue.o
+       542         18          0          0          0       7151   ring_buffer.o
+        36          8        404          0       8192       1008   startup_stm32f401xe.o
+       796         78          0          4        120       6550   stm32_spwf_wifi.o
+       124         28          0          0          0      12709   stm32_xx_it.o
+       152         16          0          4          0       5340   stm32f4xx_hal.o
+       366         28          0          0          0      32579   stm32f4xx_hal_cortex.o
+       816         66          0          0          0       4305   stm32f4xx_hal_gpio.o
+      2026         36          0          0          0      10932   stm32f4xx_hal_i2c.o
+      2040         66         16          0          0       6659   stm32f4xx_hal_rcc.o
+       420         20          0          0          0       1564   stm32f4xx_hal_rcc_ex.o
+       672         28          0          0          0       6451   stm32f4xx_hal_tim.o
+         4          0          0          0          0       1846   stm32f4xx_hal_tim_ex.o
+      1888         20          0          0          0       9350   stm32f4xx_hal_uart.o
+       188         30          5         12          0       3071   stm32f4xx_nucleo.o
+       100         18          0          4          0       1589   system_stm32f4xx.o
+      2974        386          0         56        240      26264   tasks.o
+       352         30          0          4        120       8789   time_nucleo_wrapper.o
+      1294        104          0         16         40      19467   timers.o
+        24          0          0          4          0       1740   user_button.o
+      2516        766          0          0          0      11866   wifi_interface.o
+      2364       1570         36         36         52      10299   wifi_main.o
+     11378       2412          0        298       6412      45834   wifi_module.o
+      1318         58          0          4         60      32278   x_nucleo_iks01a1.o
+       212         26          0          5          0       3217   x_nucleo_iks01a1_hum_temp.o
+       624         54          0          6          0       4348   x_nucleo_iks01a1_imu_6axes.o
+       196         22          0          5          0       2419   x_nucleo_iks01a1_magneto.o
+       448         32          0          6          0       2695   x_nucleo_iks01a1_pressure.o
 
     ----------------------------------------------------------------------
-     57814       8200       1266       4368      32872     811649   Object Totals
+     56886       8040       1266       4324      32876     799173   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        76          0         10         27          0          0   (incl. Padding)
+        76          0         10         27          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -6168,7 +6169,7 @@ Image component sizes
         32          0          0          0          0         68   llushr.o
         36          0          0          0          0         68   memcpya.o
         36          0          0          0          0        108   memseta.o
-      2276         96          0          0          0        596   printfa.o
+      2308         96          0          0          0        604   printfa.o
          0          0          0          4          0          0   stdout.o
         14          0          0          0          0         68   strlen.o
         30          0          0          0          0         80   strncmp.o
@@ -6191,7 +6192,7 @@ Image component sizes
        110          0          0          0          0        168   fepilogue.o
 
     ----------------------------------------------------------------------
-      8236        458        144          8          0       4424   Library Totals
+      8268        458        144          8          0       4432   Library Totals
          6          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
@@ -6199,11 +6200,11 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
       3746        340        144          0          0       1520   m_wm.l
-      2860        118          0          8          0       1512   mc_w.l
+      2892        118          0          8          0       1520   mc_w.l
       1624          0          0          0          0       1392   mf_w.l
 
     ----------------------------------------------------------------------
-      8236        458        144          8          0       4424   Library Totals
+      8268        458        144          8          0       4432   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -6212,15 +6213,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     66050       8658       1410       4376      32872     770097   Grand Totals
-     66050       8658       1410       2896      32872     770097   ELF Image Totals (compressed)
-     66050       8658       1410       2896          0          0   ROM Totals
+     65154       8498       1410       4332      32876     757629   Grand Totals
+     65154       8498       1410       2936      32876     757629   ELF Image Totals (compressed)
+     65154       8498       1410       2936          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                67460 (  65.88kB)
-    Total RW  Size (RW Data + ZI Data)             37248 (  36.38kB)
-    Total ROM Size (Code + RO Data + RW Data)      70356 (  68.71kB)
+    Total RO  Size (Code + RO Data)                66564 (  65.00kB)
+    Total RW  Size (RW Data + ZI Data)             37208 (  36.34kB)
+    Total ROM Size (Code + RO Data + RW Data)      69500 (  67.87kB)
 
 ==============================================================================
 

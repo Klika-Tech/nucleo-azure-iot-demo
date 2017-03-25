@@ -1,4 +1,5 @@
 *.swp
 .idea
 nucleo/DebugConfig/
+nucleo/Projects/Multi/Applications/MQTT_AWS/MDK-ARM/STM32F401RE-Nucleo/Objects/
 nucleo/Projects/Multi/Applications/MQTT_AWS/MDK-ARM/STM32F401RE-Nucleo/Project.uvguix.*

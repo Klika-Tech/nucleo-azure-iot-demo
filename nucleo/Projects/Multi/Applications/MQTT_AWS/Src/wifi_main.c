@@ -47,7 +47,7 @@
 */
 
 
-char * ssid = "<SSID>";
+char * ssid = "nucleospot";
 char * seckey = "<KEY>";
 
 /**
@@ -99,7 +99,7 @@ static uint8_t TimeSocketClosed = 0;
 int32_t last_ticks=0;
 wifi_state_t wifi_state;
 wifi_config config;
-WiFi_Priv_Mode mode = WPA_Personal;
+WiFi_Priv_Mode mode = None;
 volatile uint32_t data_arrived_on_socket = 0;
 
 
