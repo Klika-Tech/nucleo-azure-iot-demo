@@ -1,0 +1,16 @@
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow.c
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_error.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_log.h
+.\objects\aws_iot_shadow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_actions.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_interface.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\protocol\mqtt\aws_iot_mqtt_interface.h
+.\objects\aws_iot_shadow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\aws_iot_shadow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\aws_iot_shadow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_json_data.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_json.h
+.\objects\aws_iot_shadow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_key.h
+.\objects\aws_iot_shadow.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\shadow\aws_iot_shadow_records.h
+.\objects\aws_iot_shadow.o: ..\..\Inc\aws_iot_config.h

@@ -1,0 +1,11 @@
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTSerializePublish.c
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPacket.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTConnect.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPublish.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTSubscribe.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTUnsubscribe.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTFormat.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\StackTrace.h
+.\objects\mqttserializepublish.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\mqttserializepublish.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPacket.h
+.\objects\mqttserializepublish.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

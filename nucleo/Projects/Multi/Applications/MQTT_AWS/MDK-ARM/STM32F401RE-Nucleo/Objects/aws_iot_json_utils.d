@@ -1,0 +1,11 @@
+.\objects\aws_iot_json_utils.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_json_utils.c
+.\objects\aws_iot_json_utils.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_json_utils.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\aws_iot_json_utils.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_error.h
+.\objects\aws_iot_json_utils.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\jsmn.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\objects\aws_iot_json_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\aws_iot_json_utils.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_iot_src\utils\aws_iot_log.h

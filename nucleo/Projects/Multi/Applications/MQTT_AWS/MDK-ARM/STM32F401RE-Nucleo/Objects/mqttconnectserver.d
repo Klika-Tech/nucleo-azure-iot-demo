@@ -1,0 +1,11 @@
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTConnectServer.c
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\StackTrace.h
+.\objects\mqttconnectserver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPacket.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTConnect.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPublish.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTSubscribe.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTUnsubscribe.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTFormat.h
+.\objects\mqttconnectserver.o: ..\..\..\..\..\..\Aws_iot_sdks\aws_mqtt_embedded_client_lib\MQTTPacket\src\MQTTPacket.h
+.\objects\mqttconnectserver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
