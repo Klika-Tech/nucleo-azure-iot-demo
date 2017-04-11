@@ -3,7 +3,7 @@ const { Client, Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const Random = require('random-js');
 const _ = require('lodash');
-const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers } = require('./config.js');
+const { connectionString, deviceId, sendMessageIntervalMs, generateMarkers, generateMarkerEach} = require('./config.js');
 
 console.log("==========================");
 console.log("=====DEVICE EMULATOR======");
@@ -22,6 +22,7 @@ const random = new Random(Random.engines.nativeMath);
 let client;
 let messageSendInterval;
 let lastGeneratedData;
+let lastMarkerAt;
 
 const getDeviceInfoPromise = new Promise((resolve, reject) => {
     registry.get(device.deviceId, (err, deviceInfo) => {
@@ -139,10 +140,14 @@ function generateSensorsData(lastValue = {}) {
         return (lastValue) ? deviateSensor(config, lastValue[key]) : deviateSensor(config);
     });
 
-    const rnd1 = random.real(0, 1);
-    const rnd2 = random.real(0, 1);
-    if(generateMarkers && (rnd1 < .25 && rnd2 < .25)) {
-        newSensorValues.marker = true;
+    if(generateMarkers) {
+        const now = Date.now();
+        const checkMarkerAt = now - generateMarkerEach;
+        if(!lastMarkerAt || lastMarkerAt < checkMarkerAt) {
+            console.log('Set marker at: '+ now);
+            newSensorValues.marker = true;
+            lastMarkerAt = now;
+        }
     }
 
     return newSensorValues;
