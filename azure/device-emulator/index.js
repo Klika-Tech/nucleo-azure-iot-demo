@@ -51,6 +51,10 @@ getOrCreateDevicePromise.then((deviceInfo) => {
    console.log('Device connectionString:', deviceConnectionString);
     client = Client.fromConnectionString(deviceConnectionString, Mqtt);
     client.open(connectCallback);
+    setInterval(() => {
+        console.log('Reonnect to IoT Hub ...');
+        client.close()
+    }, 10 * 60 * 1000);
 });
 
 function getDeviceConnectionString(connectionString, deviceId, deviceInfo) {
@@ -79,6 +83,7 @@ function connectCallback(err) {
 
         client.on('error', function (err) {
             console.error('Error on send message:', JSON.stringify(err));
+            client.close();
         });
 
         client.on('disconnect', function () {
@@ -140,8 +145,9 @@ function generateSensorsData(lastValue = {}) {
         return (lastValue) ? deviateSensor(config, lastValue[key]) : deviateSensor(config);
     });
 
+    const now = Date.now();
+
     if(generateMarkers) {
-        const now = Date.now();
         const checkMarkerAt = now - generateMarkerEach;
         if(!lastMarkerAt || lastMarkerAt < checkMarkerAt) {
             console.log('Set marker at: '+ now);
@@ -149,6 +155,9 @@ function generateSensorsData(lastValue = {}) {
             lastMarkerAt = now;
         }
     }
+
+    newSensorValues.device_id = deviceId;
+    newSensorValues.timestamp = now;
 
     return newSensorValues;
 }

@@ -80,8 +80,9 @@ const generateSensorsData = (context, document) => {
         return (document.value[key]) ? deviateSensor(config, document.value[key]) : deviateSensor(config);
     });
 
+    const now = Date.now();
+
     if(generateMarkers) {
-        const now = Date.now();
         const checkMarkerAt = now - generateMarkerEachMinutes * 60 * 1000;
         if(!document.meta.lastMarkerAt || document.meta.lastMarkerAt < checkMarkerAt) {
             context.log('Set marker at: '+ now);
@@ -89,6 +90,9 @@ const generateSensorsData = (context, document) => {
             document.meta.lastMarkerAt = now;
         }
     }
+
+    newSensorValues.device_id = deviceId;
+    newSensorValues.timestamp = now;
 
     return {
         value: newSensorValues,
