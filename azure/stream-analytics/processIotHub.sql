@@ -1,5 +1,5 @@
 SELECT
-    System.Timestamp AS timestamp,
+    iot.timestamp AS timestamp,
     iot.device_id AS device_id,
     iot.temperature AS temperature,
     iot.humidity AS humidity,

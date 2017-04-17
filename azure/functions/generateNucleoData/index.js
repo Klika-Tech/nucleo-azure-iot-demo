@@ -1,5 +1,5 @@
-const { Mqtt } = require('azure-iot-device-mqtt');
-const { Client, Message } = require('azure-iot-device');
+const { clientFromConnectionString } = require('azure-iot-device-http');
+const { Message } = require('azure-iot-device');
 const iothub = require('azure-iothub');
 const Random = require('random-js');
 const Q = require('q');
@@ -7,7 +7,6 @@ const fs = require('fs');
 const _ = require('lodash');
 const { connectionString, deviceId, generateMarkers, generateMarkerEachMinutes } = require('./config.js');
 
-const storageFilePath = 'D:/local/Temp/functionStorage.txt';
 const registry = iothub.Registry.fromConnectionString(connectionString);
 const device = {
     deviceId: deviceId
@@ -106,9 +105,15 @@ const getDeviceConnectionString = (connectionString, deviceId, deviceInfo) => {
     return `HostName=${HostName};DeviceId=${deviceId};SharedAccessKey=${SharedAccessKey}`;
 };
 
+const getStorageFilePath = (context) => {
+    return (context.modeDev)
+        ? './functionStorage.txt'
+        : 'D:/local/Temp/functionStorage.txt';
+};
+
 const getDocument = (context) => {
     const defer = Q.defer();
-    fs.readFile(storageFilePath, 'utf8', (err, data) => {
+    fs.readFile(getStorageFilePath(context), 'utf8', (err, data) => {
         if (err || data === null) {
             context.log('Loaded error: ' + JSON.stringify(err || { message: 'File are empty!' }));
             defer.reject(err);
@@ -148,7 +153,7 @@ const sendData = (context, client) => (document) =>  {
 
 const upsertDocument = (context) => (document) => {
     const defer = Q.defer();
-    fs.writeFile(storageFilePath, JSON.stringify(document), 'utf8', (err, data) => {
+    fs.writeFile(getStorageFilePath(context), JSON.stringify(document), 'utf8', (err, data) => {
         if (err) {
             context.log('Replace error: ' + JSON.stringify(err));
             defer.reject(err);
@@ -178,6 +183,7 @@ const createDevice = (context) => {
         if (err) {
             context.log('CREATE device error: ' + err.toString());
             defer.reject(err);
+            context.done(); // Hotfix
         }
         if (deviceInfo) defer.resolve(deviceInfo);
     });
@@ -194,7 +200,7 @@ const getOrCreateDevice = (context) => {
 module.exports = function (context) {
     getOrCreateDevice(context).then((deviceInfo) => {
         const deviceConnectionString = getDeviceConnectionString(connectionString, deviceId, deviceInfo);
-        const client = Client.fromConnectionString(deviceConnectionString, Mqtt);
+        const client = clientFromConnectionString(deviceConnectionString);
         client.open(function(err) {
             if (err) {
                 context.log('Could not connect: ' + err.message);
@@ -204,7 +210,7 @@ module.exports = function (context) {
                 getGeneratedValue(context)
                     .then(sendData(context, client))
                     .then(upsertDocument(context))
-                    .then((data) => {
+                    .then(() => {
                         context.done();
                     }, (err) => {
                         context.log('Bubbled error:' + JSON.stringify(err));

@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "azure-iot-device": "1.1.1",
+    "azure-iot-device-http": "^1.1.9",
     "azure-iot-device-mqtt": "1.1.1",
     "azure-iothub": "1.1.1",
     "lodash": "4.17.2",
@@ -27,7 +28,8 @@
     "webpack-shell-plugin": "0.4.3"
   },
   "scripts": {
+    "local": "node ./local.js",
     "test": "eslint .",
-    "build": "node_modules/webpack/bin/webpack.js -p"
+    "build": "node_modules/webpack/bin/webpack.js -p ./index.js"
   }
 }
